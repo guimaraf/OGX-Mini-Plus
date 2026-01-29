@@ -1,0 +1,13 @@
+{
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+
+    "cmake.configureArgs": [
+        "-DOGXM_BOARD=ESP32_BLUERETRO_I2C",
+        // "-DOGXM_RETAIL=TRUE",
+        "-DMAX_GAMEPADS=1"
+    ],
+    
+    "files.associations": {
+
+    }
+}

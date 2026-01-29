@@ -1,41 +1,34 @@
-# Prerequisites
-*.d
+# VSCode
+Firmware/.vscode
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Build directories
+Firmware/RP2040/build
+Firmware/RP2040/build_pico
+Firmware/RP2040/build_pico2w
+Firmware/RP2040/.ignore
 
-# Precompiled Headers
-*.gch
-*.pch
+# Generated files
+Firmware/RP2040/src/USBDevice/DeviceDriver/XboxOG/tud_xid/tud_xid_xremote_rom.h
+Firmware/RP2040/src/BLEServer/att_delayed_response.h
 
-# Linker files
-*.ilk
+# ESP32
+Firmware/ESP32/main/BLEServer/att_delayed_response.h
+Firmware/ESP32/.ignore
+Firmware/ESP32/build
+Firmware/ESP32/components/btstack
+Firmware/ESP32/sdkconfig.old
 
-# Debugger Files
-*.pdb
+# External dependencies (managed by submodules, downloaded during build)
+Firmware/external/
+Firmware/ESP32_Blueretro/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Tools
+Tools/dvd-dongle-rom.bin
 
-# Fortran module files
-*.mod
-*.smod
+# Backup/temp directories (don't commit)
+OGX-Mini-master/
+compileProcess.txt
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# debug information files
-*.dwo
+# Ignore compiled Python
+*.pyc
+__pycache__/

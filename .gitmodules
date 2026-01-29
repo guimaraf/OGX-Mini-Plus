@@ -1,0 +1,22 @@
+[submodule "Firmware/external/bluepad32"]
+	path = Firmware/external/bluepad32
+	url = https://github.com/guimaraf/bluepad32.git
+[submodule "Firmware/external/tinyusb"]
+	path = Firmware/external/tinyusb
+	url = https://github.com/hathach/tinyusb.git
+	branch = 0.17.0
+[submodule "Tools/dump-dvd-kit"]
+	path = Tools/dump-dvd-kit
+	url = https://github.com/XboxDev/dump-dvd-kit.git
+[submodule "Firmware/external/Pico-PIO-USB"]
+	path = Firmware/external/Pico-PIO-USB
+	url = https://github.com/wiredopposite/Pico-PIO-USB.git
+[submodule "WebApp"]
+	path = WebApp
+	url = https://github.com/wiredopposite/OGX-Mini-WebApp.git
+[submodule "Firmware/external/libfixmath"]
+	path = Firmware/external/libfixmath
+	url = https://github.com/PetteriAimonen/libfixmath.git
+[submodule "Firmware/ESP32_Blueretro"]
+	path = Firmware/ESP32_Blueretro
+	url = https://github.com/wiredopposite/BlueRetro.git

@@ -1,14 +1,9 @@
+/*  
+
+TinyUSB XID Device driver based on https://github.com/Ryzee119/ogx360_t4
+
 MIT License
 
-Note: Wired configurations of this project exclusively contain MIT licensed 
-code, configurations using Bluetooth libraries/functionality are licensed 
-under Apache 2.0 (Bluepad32) and BTStack's proprietary (non-commercial) 
-license. For full details, please refer to the repositories contained in the 
-Firmware/external directory of this project.
-
-Copyright (c) 2024 wiredOpposite (wiredopposite.com)
-Copyright (c) 2024 OpenStickCommunity (gp2040-ce.info)
-Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
 Copyright (c) 2020 Ryan Wendland
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,3 +23,33 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+*/
+
+#ifndef _TUD_XID_H_
+#define _TUD_XID_H_
+
+#include <cstdint>
+#include <array>
+
+#include "tusb.h"
+#include "device/usbd.h"
+#include "device/usbd_pvt.h"
+
+namespace tud_xid
+{
+    enum class Type { GAMEPAD, STEELBATTALION, XREMOTE };
+
+    void initialize(tud_xid::Type xid_type);
+
+    const usbd_class_driver_t* class_driver();
+
+    uint8_t get_index_by_type(uint8_t type_index, tud_xid::Type xid_type);
+    bool receive_report(uint8_t idx, uint8_t* buffer, uint16_t len);
+    bool send_report(uint8_t idx, const uint8_t* buffer, uint16_t len);
+    bool send_report_ready(uint8_t idx);
+    bool xremote_rom_available();
+
+} // namespace TUDXID
+
+#endif // _TUD_XID_H_
