@@ -159,37 +159,21 @@ Adding supported controllers
 If your third party controller isn't working, but the original version is listed above, send me the device's VID and PID and I'll add it so it's recognized properly.
 
 ## Build
-### RP2040
 
-You can compile this for different boards with the CMake argument OGXM_BOARD while configuring the project.
+For complete build instructions, requirements, and troubleshooting, see **[CompileHelp.md](CompileHelp.md)**.
 
-The options are:
-- PI_PICO
-- PI_PICO2
-- PI_PICOW
-- PI_PICO2W
-- RP2040_ZERO
-- ADAFRUIT_FEATHER
-- ESP32_BLUEPAD32_I2C- ESP32_BLUERETRO_I2C
-- EXTERNAL_4CH_I2C
+### Quick Start
 
-You can also set MAX_GAMEPADS which, if greater than one, will only support DInput (PS3) and Switch.
-
-You'll need git, python3, CMake, Ninja and the GCC ARM toolchain installed. CMake scripts will patch some files in Bluepad32 and BTStack and also make sure all git submodules (plus their submodules and dependencies) are downloaded. Here's an example on Windows:
-
-```
-git clone --recursive https://github.com/wiredopposite/OGX-Mini.git
-cd OGX-Mini/Firmware/RP2040
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICOW -DMAX_GAMEPADS=1
-cmake --build build
+```bash
+git clone --recursive https://github.com/guimaraf/OGX-Mini-Plus.git
+cd OGX-Mini-Plus/Firmware/RP2040
+cmake -S . -B build_pico -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO
+cmake --build build_pico
 ```
 
-Or just install the GCC ARM toolchain and use the CMake Tools extension in VSCode.
+Supported boards: `PI_PICO`, `PI_PICO2`, `PI_PICOW`, `PI_PICO2W`, `RP2040_ZERO`, `ADAFRUIT_FEATHER`
 
 ### ESP32
 
-Please see the Hardware directory for a diagram showing how to hookup the ESP32 to your RP2040.
+Please see the Hardware directory for ESP32 setup instructions.
 
-You will need ESP-IDF v5.1, esptool, python3, and git installed. If you use VSCode, you can install the ESP-IDF extension and configure the project for ESP-IDF v5.1, it'll download everything for you and then you just click the build button at the bottom of the window.
-
-When you build with ESP-IDF, Cmake will run a python script that copies the necessary BTStack files into the components directory, this is needed since BTStack isn't configured as an ESP-IDF component when you download it with git.
