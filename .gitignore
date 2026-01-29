@@ -18,8 +18,9 @@ Firmware/ESP32/build
 Firmware/ESP32/components/btstack
 Firmware/ESP32/sdkconfig.old
 
-# External dependencies (managed by submodules, downloaded during build)
-Firmware/external/
+# External dependencies (only pico-sdk and picotool are downloaded by CMake)
+Firmware/external/pico-sdk/
+Firmware/external/picotool/
 Firmware/ESP32_Blueretro/
 
 # Tools
