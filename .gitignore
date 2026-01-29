@@ -1,10 +1,12 @@
 # VSCode
 Firmware/.vscode
 
-# Build directories
-Firmware/RP2040/build
-Firmware/RP2040/build_pico
-Firmware/RP2040/build_pico2w
+# Build directories (ignore contents, keep folders)
+Firmware/RP2040/build/
+Firmware/RP2040/build_pico/*
+Firmware/RP2040/build_pico2w/*
+!Firmware/RP2040/build_pico/.gitkeep
+!Firmware/RP2040/build_pico2w/.gitkeep
 Firmware/RP2040/.ignore
 
 # Generated files
