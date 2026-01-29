@@ -1,0 +1,190 @@
+=========================== USB Port1 ===========================
+Connection Status        : 0x01 (Dispositivo conectado)
+Port Chain               : 1-1-6
+Properties               : 0x00
+ IsUserConnectable       : no
+ PortIsDebugCapable      : no
+ PortHasMultiCompanions  : no
+ PortConnectorIsTypeC    : no
+ConnectionIndex          : 0x06 (Porta 6)
+
+      ========================== Summary =========================
+Vendor ID                : 0x1BAD (Harmonix Music Systems):contentReference[oaicite:2]{index=2}
+Product ID               : 0x0003
+Manufacturer String      : "Harmonix Music Systems":contentReference[oaicite:3]{index=3}
+Product String           : "Harmonix Guitar for Xbox 360":contentReference[oaicite:4]{index=4}
+Serial Number            : "00439814":contentReference[oaicite:5]{index=5}
+USB Version              : 2.00
+Device Speed             : Full-Speed (12 Mb/s):contentReference[oaicite:6]{index=6}
+Device Connection Speed  : Full-Speed
+Self Powered            : no
+Bus Powered             : yes
+Max Power (bus)          : 500 mA:contentReference[oaicite:7]{index=7}
+
+      ======================== USB Device ========================
+
+        ++++ Device Descriptor ++++
+bLength                  : 0x12 (18 bytes)
+bDescriptorType          : 0x01 (DEVICE)
+bcdUSB                   : 0x0200
+bDeviceClass             : 0xFF (Vendor Specific)
+bDeviceSubClass          : 0xFF
+bDeviceProtocol          : 0xFF
+bMaxPacketSize0          : 8
+idVendor                : 0x1BAD (Harmonix Music Systems):contentReference[oaicite:8]{index=8}
+idProduct               : 0x0003
+bcdDevice               : 0x0101
+iManufacturer           : 0x01 (String Index 1) "Harmonix Music Systems":contentReference[oaicite:9]{index=9}
+iProduct                : 0x02 (String Index 2) "Harmonix Guitar for Xbox 360":contentReference[oaicite:10]{index=10}
+iSerialNumber           : 0x03 (String Index 3) "00439814":contentReference[oaicite:11]{index=11}
+bNumConfigurations      : 0x01
+
+        ++++ Configuration Descriptor ++++
+bLength                  : 0x09 (9 bytes)
+bDescriptorType          : 0x02 (CONFIGURATION)
+wTotalLength             : 0x0099 (153 bytes)
+bNumInterfaces           : 0x04
+bConfigurationValue      : 0x01
+iConfiguration           : 0x00 (sem string)
+bmAttributes             : 0xA0 (1000 0000b: Bus Powered, *Remote Wakeup* suportado)
+bMaxPower                : 0xFA (500 mA)
+
+        ---- Interface Descriptor (Interface 0, Alt 0) ----
+bLength                  : 0x09 (9 bytes)
+bDescriptorType          : 0x04 (INTERFACE)
+bInterfaceNumber         : 0x00
+bAlternateSetting        : 0x00
+bNumEndpoints           : 0x02
+bInterfaceClass          : 0xFF (Vendor Specific)
+bInterfaceSubClass       : 0x5D
+bInterfaceProtocol       : 0x01
+iInterface               : 0x00 (sem string)
+
+        ---- HID Descriptor (Interface 0) ----
+bLength                  : 0x11 (17 bytes)
+bDescriptorType          : 0x21 (HID)
+bcdHID                   : 0x0110
+bCountryCode             : 0x06
+bNumDescriptors          : 0x01
+bDescriptorType (Report) : 0x22
+wDescriptorLength        : 0x0314 (788 bytes)
+
+        ---- Endpoint Descriptor (EP 0x81: IN) ----
+bLength                  : 0x07 (7 bytes)
+bDescriptorType          : 0x05 (ENDPOINT)
+bEndpointAddress         : 0x81  (IN endpoint 1)
+bmAttributes             : 0x03  (Interrupt)
+wMaxPacketSize           : 32
+bInterval                : 0x00
+
+        ---- Endpoint Descriptor (EP 0x02: OUT) ----
+bLength                  : 0x07 (7 bytes)
+bDescriptorType          : 0x05 (ENDPOINT)
+bEndpointAddress         : 0x02  (OUT endpoint 2)
+bmAttributes             : 0x03  (Interrupt)
+wMaxPacketSize           : 32
+bInterval                : 0x00
+
+        ---- Interface Descriptor (Interface 1, Alt 0) ----
+bLength                  : 0x09 (9 bytes)
+bDescriptorType          : 0x04 (INTERFACE)
+bInterfaceNumber         : 0x01
+bAlternateSetting        : 0x00
+bNumEndpoints           : 0x04
+bInterfaceClass          : 0xFF (Vendor Specific)
+bInterfaceSubClass       : 0x5D
+bInterfaceProtocol       : 0x03
+iInterface               : 0x00 (sem string)
+
+        ---- HID Descriptor (Interface 1) ----
+bLength                  : 0x1B (27 bytes)
+bDescriptorType          : 0x21 (HID)
+bcdHID                   : 0x0101
+bCountryCode             : 0x01
+bNumDescriptors          : 0x01
+bDescriptorType (Report) : 0x22
+wDescriptorLength        : 0x? (informação não listada explicitamente)
+
+        ---- Endpoint Descriptor (EP 0x83: IN) ----
+bLength                  : 0x07 (7 bytes)
+bDescriptorType          : 0x05 (ENDPOINT)
+bEndpointAddress         : 0x83 (IN endpoint 3)
+bmAttributes             : 0x03 (Interrupt)
+wMaxPacketSize           : 32
+bInterval                : 0x02
+
+        ---- Endpoint Descriptor (EP 0x04: OUT) ----
+bLength                  : 0x07 (7 bytes)
+bDescriptorType          : 0x05 (ENDPOINT)
+bEndpointAddress         : 0x04 (OUT endpoint 4)
+bmAttributes             : 0x03 (Interrupt)
+wMaxPacketSize           : 32
+bInterval                : 0x04
+
+        ---- Endpoint Descriptor (EP 0x85: IN) ----
+bLength                  : 0x07 (7 bytes)
+bDescriptorType          : 0x05 (ENDPOINT)
+bEndpointAddress         : 0x85 (IN endpoint 5)
+bmAttributes             : 0x03 (Interrupt)
+wMaxPacketSize           : 32
+bInterval                : 0x40
+
+        ---- Endpoint Descriptor (EP 0x05: OUT) ----
+bLength                  : 0x07 (7 bytes)
+bDescriptorType          : 0x05 (ENDPOINT)
+bEndpointAddress         : 0x05 (OUT endpoint 5)
+bmAttributes             : 0x03 (Interrupt)
+wMaxPacketSize           : 32
+bInterval                : 0x10
+
+        ---- Interface Descriptor (Interface 2, Alt 0) ----
+bLength                  : 0x09 (9 bytes)
+bDescriptorType          : 0x04 (INTERFACE)
+bInterfaceNumber         : 0x02
+bAlternateSetting        : 0x00
+bNumEndpoints           : 0x01
+bInterfaceClass          : 0xFF (Vendor Specific)
+bInterfaceSubClass       : 0x5D
+bInterfaceProtocol       : 0x02
+iInterface               : 0x00 (sem string)
+
+        ---- HID Descriptor (Interface 2) ----
+bLength                  : 0x09 (9 bytes)
+bDescriptorType          : 0x21 (HID)
+bcdHID                   : 0x0100
+bCountryCode             : 0x01
+bNumDescriptors          : 0x01
+bDescriptorType (Report) : 0x22
+wDescriptorLength        : 0x0786 (1926 bytes)
+
+        ---- Endpoint Descriptor (EP 0x86: IN) ----
+bLength                  : 0x07 (7 bytes)
+bDescriptorType          : 0x05 (ENDPOINT)
+bEndpointAddress         : 0x86 (IN endpoint 6)
+bmAttributes             : 0x03 (Interrupt)
+wMaxPacketSize           : 32
+bInterval                : 0x10
+
+        ---- Interface Descriptor (Interface 3, Alt 0) ----
+bLength                  : 0x09 (9 bytes)
+bDescriptorType          : 0x04 (INTERFACE)
+bInterfaceNumber         : 0x03
+bAlternateSetting        : 0x00
+bNumEndpoints           : 0x00
+bInterfaceClass          : 0xFF (Vendor Specific)
+bInterfaceSubClass       : 0xFD
+bInterfaceProtocol       : 0x13
+iInterface               : 0x04
+
+        ---- HID Descriptor (Interface 3) ----
+bLength                  : 0x06 (6 bytes)
+bDescriptorType          : 0x21 (HID)
+bcdHID                   : 0x0100
+bCountryCode             : 0x01
+bNumDescriptors          : 0x01
+iInterface               : 0x03
+
+      Driver Name            : xusb21.sys (Xbox 360 Controller driver)
+      Service Name           : xusb21
+      Bus Location           : USB Bus (roteador USB padrão)
+      Localização de Barramento: Porta USB ligada ao hub  root (informação genérica)

@@ -1,0 +1,29 @@
+
+        +++++++++++++++++ Device Information ++++++++++++++++++
+Device Description       : Controlador de jogo compatível com HID
+Device Path              : \\?\HID#VID_054C&PID_0268#7&329950a&1&0000#{4d1e55b2-f16f-11cf-88cb-001111000030} (GUID_DEVINTERFACE_HID)
+Kernel Name              : \Device\000000c6
+Device ID                : HID\VID_054C&PID_0268\7&329950A&1&0000
+Hardware IDs             : HID\VID_054C&PID_0268&REV_0100 HID\VID_054C&PID_0268 HID\VID_054C&UP:0001_U:0004 HID_DEVICE_SYSTEM_GAME HID_DEVICE_UP:0001_U:0004 HID_DEVICE
+Driver KeyName           : {745a17a0-74d3-11d0-b6fe-00a0c90f57da}\0168 (GUID_DEVCLASS_HIDCLASS)
+Driver Inf               : C:\WINDOWS\inf\input.inf
+Legacy BusType           : PNPBus
+Class                    : HIDClass
+Class GUID               : {745a17a0-74d3-11d0-b6fe-00a0c90f57da} (GUID_DEVCLASS_HIDCLASS)
+Service                  : -
+Enumerator               : HID
+Location Info            : -
+Address                  : 1
+Manufacturer Info        : (Dispositivos padrão do sistema)
+Capabilities             : 0xE0 (SilentInstall, RawDeviceOK, SurpriseRemovalOK)
+Status                   : 0x0180200A (DN_DRIVER_LOADED, DN_STARTED, DN_DISABLEABLE, DN_NT_ENUMERATOR, DN_NT_DRIVER)
+First Install Date       : 2025-11-27 12:22:39
+Last Arrival Date        : 2025-12-30 14:10:03
+EnhancedPowerMgmtEnabled : 0
+Power State              : D0 (supported: D0, D2, D3, wake from D0, wake from D2)
+
+             ++++++++++++++ HID Information +++++++++++++++
+Manufacturer             : Sony
+Product                  : PLAYSTATION(R)3 Controller
+UsagePage                : 0x01 (Generic Desktop Controls)
+Usage                    : 0x04 (Joystick)

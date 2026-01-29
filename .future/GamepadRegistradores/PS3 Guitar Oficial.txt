@@ -1,0 +1,170 @@
+
+    =========================== USB Port4 ===========================
+
+Connection Status        : 0x01 (Device is connected)
+Port Chain               : 1-2-4
+Properties               : 0x01
+ IsUserConnectable       : yes
+ PortIsDebugCapable      : no
+ PortHasMultiCompanions  : no
+ PortConnectorIsTypeC    : no
+ConnectionIndex          : 0x04 (Port 4)
+CompanionIndex           : 0
+ CompanionHubSymLnk      : USB#VID_05E3&PID_0626#5&153678d8&1&18#{f18a0e88-c30c-11d0-8815-00a0c906bed8}
+ CompanionPortNumber     : 0x04 (Port 4)
+ -> CompanionPortChain   : 1-18-4
+
+      ========================== Summary =========================
+Vendor ID                : 0x12BA (Sony Computer Entertainment America)
+Product ID               : 0x0100
+Manufacturer String      : "Licensed by Sony Computer Entertainment"
+Product String           : "Guitar Hero3 for PlayStation (R) 3"
+Serial                   : ---
+USB Version              : 1.0 (12 Mbit/s FullSpeed)
+Port maximum Speed       : High-Speed (Companion Port 1-18-4 is doing the SuperSpeed)
+Device maximum Speed     : Full-Speed
+Device Connection Speed  : Full-Speed
+Self powered             : no
+Demanded Current         : 500 mA
+Used Endpoints           : 3
+
+      ======================== USB Device ========================
+
+        +++++++++++++++++ Device Information ++++++++++++++++++
+Device Description       : Dispositivo de Entrada USB
+BusReported Device Desc  : Guitar Hero3 for PlayStation (R) 3
+Device Path              : \\?\USB#VID_12BA&PID_0100#6&2edb1f16&0&4#{a5dcbf10-6530-11d2-901f-00c04fb951ed} (GUID_DEVINTERFACE_USB_DEVICE)
+Kernel Name              : \Device\USBPDO-8
+Device ID                : USB\VID_12BA&PID_0100\6&2EDB1F16&0&4
+Hardware IDs             : USB\VID_12BA&PID_0100&REV_0108 USB\VID_12BA&PID_0100
+Driver KeyName           : {745a17a0-74d3-11d0-b6fe-00a0c90f57da}\0221 (GUID_DEVCLASS_HIDCLASS)
+Driver                   : \SystemRoot\System32\drivers\hidusb.sys (Version: 10.0.26100.7309  Date: 2025-12-09  Company: Microsoft Corporation)
+Driver Inf               : C:\WINDOWS\inf\input.inf
+Legacy BusType           : PNPBus
+Class                    : HIDClass
+Class GUID               : {745a17a0-74d3-11d0-b6fe-00a0c90f57da} (GUID_DEVCLASS_HIDCLASS)
+Service                  : HidUsb
+Enumerator               : USB
+Location Info            : Port_#0004.Hub_#0004
+Address                  : 4
+Location IDs             : PCIROOT(0)#PCI(1400)#USBROOT(0)#USB(2)#USB(4), ACPI(_SB_)#ACPI(PC00)#ACPI(XHCI)#ACPI(RHUB)#ACPI(HS02)#USB(4)
+Container ID             : {f306ddc7-d5c2-11f0-9dd5-04421a04f038}
+Manufacturer Info        : (Dispositivos padrão do sistema)
+Capabilities             : 0x84 (Removable, SurpriseRemovalOK)
+Status                   : 0x0180600A (DN_DRIVER_LOADED, DN_STARTED, DN_DISABLEABLE, DN_REMOVABLE, DN_NT_ENUMERATOR, DN_NT_DRIVER)
+First Install Date       : 2025-12-10 10:04:56
+Last Arrival Date        : 2025-12-13 11:29:20
+Bus Relations            : HID\VID_12BA&PID_0100\7&1ec87339&0&0000
+SelectiveSuspendEnabled  : 0
+EnhancedPowerMgmtEnabled : 1
+Power State              : D0 (supported: D0, D2, D3, wake from D0, wake from D2)
+
+        ---------------- Connection Information ---------------
+Connection Index         : 0x04 (Port 4)
+Connection Status        : 0x01 (DeviceConnected)
+Current Config Value     : 0x01 (Configuration 1)
+Device Address           : 0x08 (8)
+Is Hub                   : 0x00 (no)
+Device Bus Speed         : 0x01 (Full-Speed)
+Number of open Pipes     : 0x02 (2 pipes to data endpoints)
+Pipe[0]                  : EndpointID=1  Direction=IN   ScheduleOffset=0  Type=Interrupt  wMaxPacketSize=0x40    bInterval=10  -> 718 Bits/ms = 89750 Bytes/s
+Pipe[1]                  : EndpointID=2  Direction=OUT  ScheduleOffset=0  Type=Interrupt  wMaxPacketSize=0x40    bInterval=10  -> 718 Bits/ms = 89750 Bytes/s
+
+        --------------- Connection Information V2 -------------
+Connection Index         : 0x04 (4)
+Length                   : 0x10 (16 bytes)
+SupportedUsbProtocols    : 0x03
+ Usb110                  : 1 (yes, port supports USB 1.1)
+ Usb200                  : 1 (yes, port supports USB 2.0)
+ Usb300                  : 0 (no, port not supports USB 3.0) -> but Companion Port 1-18-4 does
+ ReservedMBZ             : 0x00
+Flags                    : 0x00
+ DevIsOpAtSsOrHigher     : 0 (Device is not operating at SuperSpeed or higher)
+ DevIsSsCapOrHigher      : 0 (Device is not SuperSpeed capable or higher)
+ DevIsOpAtSsPlusOrHigher : 0 (Device is not operating at SuperSpeedPlus or higher)
+ DevIsSsPlusCapOrHigher  : 0 (Device is not SuperSpeedPlus capable or higher)
+ ReservedMBZ             : 0x00
+
+    ---------------------- Device Descriptor ----------------------
+bLength                  : 0x12 (18 bytes)
+bDescriptorType          : 0x01 (Device Descriptor)
+bcdUSB                   : 0x100 (USB Version 1.0)
+bDeviceClass             : 0x00 (defined by the interface descriptors)
+bDeviceSubClass          : 0x00
+bDeviceProtocol          : 0x00
+bMaxPacketSize0          : 0x40 (64 bytes)
+idVendor                 : 0x12BA (Sony Computer Entertainment America)
+idProduct                : 0x0100
+bcdDevice                : 0x0108
+iManufacturer            : 0x01 (String Descriptor 1)
+ Language 0x0409         : "Licensed by Sony Computer Entertainment"
+iProduct                 : 0x02 (String Descriptor 2)
+ Language 0x0409         : "Guitar Hero3 for PlayStation (R) 3"
+iSerialNumber            : 0x00 (No String Descriptor)
+bNumConfigurations       : 0x01 (1 Configuration)
+
+    ------------------ Configuration Descriptor -------------------
+bLength                  : 0x09 (9 bytes)
+bDescriptorType          : 0x02 (Configuration Descriptor)
+wTotalLength             : 0x0029 (41 bytes)
+bNumInterfaces           : 0x01 (1 Interface)
+bConfigurationValue      : 0x01 (Configuration 1)
+iConfiguration           : 0x00 (No String Descriptor)
+bmAttributes             : 0x80
+ D7: Bus Powered         : 0x01 (yes)
+ D6: Self Powered        : 0x00 (no)
+ D5: Remote Wakeup       : 0x00 (no)
+ D4..0: Reserved, set 0  : 0x00
+MaxPower                 : 0xFA (500 mA)
+
+        ---------------- Interface Descriptor -----------------
+bLength                  : 0x09 (9 bytes)
+bDescriptorType          : 0x04 (Interface Descriptor)
+bInterfaceNumber         : 0x00 (Interface 0)
+bAlternateSetting        : 0x00
+bNumEndpoints            : 0x02 (2 Endpoints)
+bInterfaceClass          : 0x03 (HID - Human Interface Device)
+bInterfaceSubClass       : 0x00 (None)
+bInterfaceProtocol       : 0x00 (None)
+iInterface               : 0x00 (No String Descriptor)
+
+        ------------------- HID Descriptor --------------------
+bLength                  : 0x09 (9 bytes)
+bDescriptorType          : 0x21 (HID Descriptor)
+bcdHID                   : 0x0110 (HID Version 1.10)
+bCountryCode             : 0x00 (00 = not localized)
+bNumDescriptors          : 0x01
+Descriptor 1:
+bDescriptorType          : 0x22 (Class=Report)
+wDescriptorLength        : 0x0089 (137 bytes)
+Error reading descriptor : ERROR_GEN_FAILURE (due to a obscure limitation of the Win32 USB API, see F1 Help)
+
+        ----------------- Endpoint Descriptor -----------------
+bLength                  : 0x07 (7 bytes)
+bDescriptorType          : 0x05 (Endpoint Descriptor)
+bEndpointAddress         : 0x81 (Direction=IN EndpointID=1)
+bmAttributes             : 0x03 (TransferType=Interrupt)
+wMaxPacketSize           : 0x0040 (64 bytes)
+bInterval                : 0x0A (10 ms)
+
+        ----------------- Endpoint Descriptor -----------------
+bLength                  : 0x07 (7 bytes)
+bDescriptorType          : 0x05 (Endpoint Descriptor)
+bEndpointAddress         : 0x02 (Direction=OUT EndpointID=2)
+bmAttributes             : 0x03 (TransferType=Interrupt)
+wMaxPacketSize           : 0x0040 (64 bytes)
+bInterval                : 0x0A (10 ms)
+
+      -------------------- String Descriptors -------------------
+             ------ String Descriptor 0 ------
+bLength                  : 0x04 (4 bytes)
+bDescriptorType          : 0x03 (String Descriptor)
+Language ID[0]           : 0x0409 (English - United States)
+             ------ String Descriptor 1 ------
+bLength                  : 0x50 (80 bytes)
+bDescriptorType          : 0x03 (String Descriptor)
+Language 0x0409          : "Licensed by Sony Computer Entertainment"
+             ------ String Descriptor 2 ------
+bLength                  : 0x46 (70 bytes)
+bDescriptorType          : 0x03 (String Descriptor)
+Language 0x0409          : "Guitar Hero3 for PlayStation (R) 3"

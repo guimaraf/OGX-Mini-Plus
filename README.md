@@ -11,8 +11,8 @@ Firmware for the RP2040, capable of emulating gamepads for several game consoles
 ## Supported platforms
 
 - Original Xbox
+- Nintendo Wii (FakeMote Enabled)
 - Playstation 3
-- Playstation 4 (DS4)
 - Nintendo Switch (docked)
 - XInput (use [**UsbdSecPatch**](https://github.com/InvoxiPlayGames/UsbdSecPatch) for Xbox 360, or select the patch in J-Runner while flashing your NAND)
 - Playstation Classic
@@ -81,58 +81,15 @@ Note: There are some third party controllers that can change their VID/PID, thes
 
 Please visit [**this page**](https://bluepad32.readthedocs.io/en/latest/supported_gamepads/) for a more comprehensive list of supported controllers and Bluetooth pairing instructions.
 
-## Features new to v1.1.1 (by Fred)
+## What's New in v1.1.1 (by Fred)
 
-### Xbox 360 Rock Band Guitar Driver:
-- **Xbox 360 Guitar Emulation**: The PS3 Guitar can now be used with the Xbox 360 in Rock Band games. The device is recognized as a **Rock Band Guitar** (not Guitar Hero), so it only works with games that support Rock Band controllers.
-- **Limitation**: Guitar Hero 2 and 3 are **not supported** because they require Guitar Hero-specific controllers. However, Rock Band 2, 3, and later games work correctly.
-- **Known Issue**: The **tilt sensor** feature (raising the guitar) could not be emulated, so the tilt functionality is not available.
+- **Xbox 360 Rock Band Guitar** - PS3 Guitar now works on Xbox 360 for Rock Band games
+- **PS2→PS3 Adapter Support** - Neo brand adapter now recognized
+- **PS3 Driver Fixes** - Fixed input delays and stuck inputs
 
-### PS2→PS3 Adapter Support (Neo Brand):
-- **New Controller Support**: Added support for the **Neo brand PS2 to PS3 USB adapter**. The adapter allows you to use PS2 controllers on the PS3 and is now recognized by OGX-Mini.
-- **Vibration Disabled**: To prevent controller disconnections due to power draw issues, vibration feedback has been disabled for this adapter.
-- **Other Adapters**: Other PS2 USB adapters I tested were not recognized. Only the Neo brand adapter is confirmed to work.
-
-### Bug Fixes:
-- Fixed a regression in the PS3 controller driver that caused input delays and "stuck" inputs.
-
----
-
-## Features new to v1.1.0 (by Fred)
-
-### PS3 Driver Fixes:
-- Fixed a bug that prevented playing Guitar Hero 3 and Gran Turismo 6.
-- Fixed an issue where pressing the Home/Guide button on the controller would trigger multiple phantom inputs. The button now functions correctly.
-
-### New Drivers:
-
-- **PlayStation 4 (DS4) Driver**: Added a new driver that emulates the authentic Sony DualShock 4 (VID: 054C, PID: 09CC). This driver is natively recognized by the PlayStation 3, providing proper analog triggers (L2/R2) and Select button functionality. Activation: Start + Dpad Left + A.
-
-- **360 Guitar Driver (Native)**: Added a native Xbox 360 guitar driver (VID: 045E, PID: 028E) selectable via Start + Dpad Up + A. This allows the device to be recognized specifically as a guitar by the Xbox 360, enabling support for games that require authentic guitar controllers.
-## Build Information:
-
-This version was compiled and tested only for the Pi Pico, as it is the only board I currently have available for testing.
-
-## Known Issues
-
-The issue with phantom inputs has not yet been resolved. It occurs in some games such as God of War 3 (D-pad left and right analog stick up) and GTA 5 (D-pad up).
-
-## Features new to v1.0.0
-- Bluetooth functionality for the Pico W, Pico 2 W, and Pico+ESP32.
-- Web application (connectable via USB or Bluetooth) for configuring deadzones and buttons mappings, supports up to 8 saved profiles.
-- Pi Pico 2 and Pico 2 W (RP2350) support.
-- Reduced latency by about 3-4 ms, graphs showing comparisons are coming.
-- 4 channel functionality, connect 4 Picos and use one Xbox 360 wireless adapter to control all 4.
-- Delayed USB mount until a controller is plugged in, useful for internal installation (non-Bluetooth boards only).
-- Generic HID controller support.
-- Dualshock 3 emulation (minus gyros), rumble now works.
-- Steel Battalion controller emulation with a wireless Xbox 360 chatpad.
-- Xbox DVD dongle emulation. You must provide or dump your own dongle firmware, see the Tools directory.
-- Analog button support on OG Xbox and PS3.
-- RGB LED support for RP2040-Zero and Adafruit Feather boards.
+For complete release notes, see [.versions/ReleaseNotes.md](.versions/ReleaseNotes.md)
 
 ## Planned additions
-- More accurate report parser for unknown HID controllers
 - Hardware design for internal OG Xbox install
 - Hardware design for 4 channel RP2040-Zero adapter
 - Wired Xbox 360 chatpad support
@@ -159,21 +116,37 @@ Adding supported controllers
 If your third party controller isn't working, but the original version is listed above, send me the device's VID and PID and I'll add it so it's recognized properly.
 
 ## Build
+### RP2040
 
-For complete build instructions, requirements, and troubleshooting, see **[CompileHelp.md](CompileHelp.md)**.
+You can compile this for different boards with the CMake argument OGXM_BOARD while configuring the project.
 
-### Quick Start
+The options are:
+- PI_PICO
+- PI_PICO2
+- PI_PICOW
+- PI_PICO2W
+- RP2040_ZERO
+- ADAFRUIT_FEATHER
+- ESP32_BLUEPAD32_I2C- ESP32_BLUERETRO_I2C
+- EXTERNAL_4CH_I2C
 
-```bash
-git clone --recursive https://github.com/guimaraf/OGX-Mini-Plus.git
-cd OGX-Mini-Plus/Firmware/RP2040
-cmake -S . -B build_pico -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO
-cmake --build build_pico
+You can also set MAX_GAMEPADS which, if greater than one, will only support DInput (PS3) and Switch.
+
+You'll need git, python3, CMake, Ninja and the GCC ARM toolchain installed. CMake scripts will patch some files in Bluepad32 and BTStack and also make sure all git submodules (plus their submodules and dependencies) are downloaded. Here's an example on Windows:
+
+```
+git clone --recursive https://github.com/wiredopposite/OGX-Mini.git
+cd OGX-Mini/Firmware/RP2040
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICOW -DMAX_GAMEPADS=1
+cmake --build build
 ```
 
-Supported boards: `PI_PICO`, `PI_PICO2`, `PI_PICOW`, `PI_PICO2W`, `RP2040_ZERO`, `ADAFRUIT_FEATHER`
+Or just install the GCC ARM toolchain and use the CMake Tools extension in VSCode.
 
 ### ESP32
 
-Please see the Hardware directory for ESP32 setup instructions.
+Please see the Hardware directory for a diagram showing how to hookup the ESP32 to your RP2040.
 
+You will need ESP-IDF v5.1, esptool, python3, and git installed. If you use VSCode, you can install the ESP-IDF extension and configure the project for ESP-IDF v5.1, it'll download everything for you and then you just click the build button at the bottom of the window.
+
+When you build with ESP-IDF, Cmake will run a python script that copies the necessary BTStack files into the components directory, this is needed since BTStack isn't configured as an ESP-IDF component when you download it with git.

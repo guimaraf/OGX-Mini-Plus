@@ -1,0 +1,633 @@
+===============================================================================
+REDOCTANE X-PLORER GUITAR HERO - REGISTRADORES USB COMPLETOS
+===============================================================================
+Device: Guitar Hero X-plorer
+Vendor ID: 0x1430 (RedOctane)
+Product ID: 0x4748
+Model: 95055
+Protocol: Xbox 360 XInput
+Date Generated: 2025-12-13
+===============================================================================
+
+===============================================================================
+DEVICE DESCRIPTOR (18 bytes)
+===============================================================================
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x12        bLength                 18 bytes
+0x01    0x01        bDescriptorType         DEVICE (0x01)
+0x02    0x00 0x02   bcdUSB                  USB 2.0 (0x0200)
+0x04    0xFF        bDeviceClass            Vendor Specific Class
+0x05    0xFF        bDeviceSubClass         Vendor Specific SubClass
+0x06    0xFF        bDeviceProtocol         Vendor Specific Protocol
+0x07    0x08        bMaxPacketSize0         8 bytes
+0x08    0x30 0x14   idVendor                0x1430 (RedOctane)
+0x0A    0x48 0x47   idProduct               0x4748 (Guitar Hero X-plorer)
+0x0C    0x10 0x01   bcdDevice               1.10 (Device Release)
+0x0E    0x01        iManufacturer           String Index 1
+0x0F    0x02        iProduct                String Index 2
+0x10    0x00        iSerialNumber           String Index 0 (None)
+0x11    0x01        bNumConfigurations      1 Configuration
+
+HEX DUMP (Device Descriptor):
+12 01 00 02 FF FF FF 08 30 14 48 47 10 01 01 02 00 01
+
+===============================================================================
+CONFIGURATION DESCRIPTOR (153 bytes / 0x99)
+===============================================================================
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x09        bLength                 9 bytes
+0x01    0x02        bDescriptorType         CONFIGURATION (0x02)
+0x02    0x99 0x00   wTotalLength            153 bytes (0x0099)
+0x04    0x04        bNumInterfaces          4 Interfaces
+0x05    0x01        bConfigurationValue     Configuration 1
+0x06    0x00        iConfiguration          No String Descriptor
+0x07    0xA0        bmAttributes            Bus Powered, Remote Wakeup
+                                            Bit 7: Bus Powered (1)
+                                            Bit 6: Self Powered (0)
+                                            Bit 5: Remote Wakeup (1)
+0x08    0xFA        bMaxPower               500 mA (250 * 2mA)
+
+HEX DUMP (Configuration Descriptor Header):
+09 02 99 00 04 01 00 A0 FA
+
+===============================================================================
+INTERFACE 0 - GAMEPAD PRINCIPAL
+===============================================================================
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x09        bLength                 9 bytes
+0x01    0x04        bDescriptorType         INTERFACE (0x04)
+0x02    0x00        bInterfaceNumber        Interface 0
+0x03    0x00        bAlternateSetting       Alternate Setting 0
+0x04    0x02        bNumEndpoints           2 Endpoints
+0x05    0xFF        bInterfaceClass         Vendor Specific
+0x06    0x5D        bInterfaceSubClass      Xbox 360 Accessory (0x5D)
+0x07    0x01        bInterfaceProtocol      Gamepad (0x01)
+0x08    0x00        iInterface              No String Descriptor
+
+HEX DUMP (Interface 0):
+09 04 00 00 02 FF 5D 01 00
+
+--- XBOX 360 GAMEPAD DESCRIPTOR (Interface 0) ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x11        bLength                 17 bytes
+0x01    0x21        bDescriptorType         HID Class Specific (0x21)
+0x02    0x00 0x01   bcdHID                  HID 1.0
+0x04    0x01        bCountryCode            Not Localized
+0x05    0x25        bNumDescriptors         37 descriptors (unusual)
+0x06    0x81        Descriptor Type         Unknown (0x81)
+0x07    0x14        wDescriptorLength (L)   20 bytes
+0x08    0x03        wDescriptorLength (H)   
+0x09    0x03        Unknown                 0x03
+0x0A    0x03        Unknown                 0x03
+0x0B    0x04        Unknown                 0x04
+0x0C    0x13        Unknown                 0x13
+0x0D    0x02        Unknown                 0x02
+0x0E    0x08        Unknown                 0x08
+0x0F    0x03        Unknown                 0x03
+0x10    0x03        Unknown                 0x03
+
+HEX DUMP (Xbox 360 Gamepad Descriptor):
+11 21 00 01 01 25 81 14 03 03 03 04 13 02 08 03 03
+
+--- ENDPOINT 0x81 (IN) - Interface 0 ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x07        bLength                 7 bytes
+0x01    0x05        bDescriptorType         ENDPOINT (0x05)
+0x02    0x81        bEndpointAddress        EP 1 IN (0x81)
+                                            Bit 7: Direction (1=IN)
+                                            Bits 0-3: Endpoint Number (1)
+0x03    0x03        bmAttributes            Transfer Type: Interrupt
+                                            Bits 0-1: Interrupt (0x03)
+0x04    0x20 0x00   wMaxPacketSize          32 bytes (0x0020)
+0x06    0x04        bInterval               4 ms (polling interval)
+
+HEX DUMP (Endpoint 0x81):
+07 05 81 03 20 00 04
+
+--- ENDPOINT 0x02 (OUT) - Interface 0 ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x07        bLength                 7 bytes
+0x01    0x05        bDescriptorType         ENDPOINT (0x05)
+0x02    0x02        bEndpointAddress        EP 2 OUT (0x02)
+                                            Bit 7: Direction (0=OUT)
+                                            Bits 0-3: Endpoint Number (2)
+0x03    0x03        bmAttributes            Transfer Type: Interrupt
+0x04    0x20 0x00   wMaxPacketSize          32 bytes (0x0020)
+0x06    0x08        bInterval               8 ms (polling interval)
+
+HEX DUMP (Endpoint 0x02):
+07 05 02 03 20 00 08
+
+===============================================================================
+INTERFACE 1 - CONTROLE ESTENDIDO
+===============================================================================
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x09        bLength                 9 bytes
+0x01    0x04        bDescriptorType         INTERFACE (0x04)
+0x02    0x01        bInterfaceNumber        Interface 1
+0x03    0x00        bAlternateSetting       Alternate Setting 0
+0x04    0x04        bNumEndpoints           4 Endpoints
+0x05    0xFF        bInterfaceClass         Vendor Specific
+0x06    0x5D        bInterfaceSubClass      Xbox 360 Accessory (0x5D)
+0x07    0x03        bInterfaceProtocol      Extended Control (0x03)
+0x08    0x00        iInterface              No String Descriptor
+
+HEX DUMP (Interface 1):
+09 04 01 00 04 FF 5D 03 00
+
+--- XBOX 360 EXTENDED DESCRIPTOR (Interface 1) ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x1B        bLength                 27 bytes
+0x01    0x21        bDescriptorType         HID Class Specific (0x21)
+0x02    0x00 0x01   bcdHID                  HID 1.0
+0x04    0x01        bCountryCode            Not Localized
+0x05    0x01        bNumDescriptors         1 descriptor
+0x06    0x83        Report Type             Unknown (0x83)
+0x07    0x40 0x01   wDescriptorLength       320 bytes
+0x09    0x04        Unknown                 0x04
+0x0A    0x20        Unknown                 0x20 (32)
+0x0B    0x16        Unknown                 0x16 (22)
+0x0C    0x85        Unknown                 0x85
+0x0D    0x00        Unknown                 0x00
+0x0E    0x00        Unknown                 0x00
+0x0F    0x00        Unknown                 0x00
+0x10    0x00        Unknown                 0x00
+0x11    0x00        Unknown                 0x00
+0x12    0x00        Unknown                 0x00
+0x13    0x16        Unknown                 0x16 (22)
+0x14    0x05        Unknown                 0x05
+0x15    0x00        Unknown                 0x00
+0x16    0x00        Unknown                 0x00
+0x17    0x00        Unknown                 0x00
+0x18    0x00        Unknown                 0x00
+0x19    0x00        Unknown                 0x00
+0x1A    0x00        Unknown                 0x00
+
+HEX DUMP (Xbox 360 Extended Descriptor):
+1B 21 00 01 01 01 83 40 01 04 20 16 85 00 00 00 00 00 00 16 05 00 00 00 00 00 00
+
+--- ENDPOINT 0x83 (IN) - Interface 1 ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x07        bLength                 7 bytes
+0x01    0x05        bDescriptorType         ENDPOINT (0x05)
+0x02    0x83        bEndpointAddress        EP 3 IN (0x83)
+0x03    0x03        bmAttributes            Transfer Type: Interrupt
+0x04    0x20 0x00   wMaxPacketSize          32 bytes (0x0020)
+0x06    0x02        bInterval               2 ms (polling interval)
+
+HEX DUMP (Endpoint 0x83):
+07 05 83 03 20 00 02
+
+--- ENDPOINT 0x04 (OUT) - Interface 1 ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x07        bLength                 7 bytes
+0x01    0x05        bDescriptorType         ENDPOINT (0x05)
+0x02    0x04        bEndpointAddress        EP 4 OUT (0x04)
+0x03    0x03        bmAttributes            Transfer Type: Interrupt
+0x04    0x20 0x00   wMaxPacketSize          32 bytes (0x0020)
+0x06    0x04        bInterval               4 ms (polling interval)
+
+HEX DUMP (Endpoint 0x04):
+07 05 04 03 20 00 04
+
+--- ENDPOINT 0x85 (IN) - Interface 1 ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x07        bLength                 7 bytes
+0x01    0x05        bDescriptorType         ENDPOINT (0x05)
+0x02    0x85        bEndpointAddress        EP 5 IN (0x85)
+0x03    0x03        bmAttributes            Transfer Type: Interrupt
+0x04    0x20 0x00   wMaxPacketSize          32 bytes (0x0020)
+0x06    0x40        bInterval               64 ms (polling interval)
+
+HEX DUMP (Endpoint 0x85):
+07 05 85 03 20 00 40
+
+--- ENDPOINT 0x05 (OUT) - Interface 1 ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x07        bLength                 7 bytes
+0x01    0x05        bDescriptorType         ENDPOINT (0x05)
+0x02    0x05        bEndpointAddress        EP 5 OUT (0x05)
+0x03    0x03        bmAttributes            Transfer Type: Interrupt
+0x04    0x20 0x00   wMaxPacketSize          32 bytes (0x0020)
+0x06    0x10        bInterval               16 ms (polling interval)
+
+HEX DUMP (Endpoint 0x05):
+07 05 05 03 20 00 10
+
+===============================================================================
+INTERFACE 2 - HEADSET/AUDIO
+===============================================================================
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x09        bLength                 9 bytes
+0x01    0x04        bDescriptorType         INTERFACE (0x04)
+0x02    0x02        bInterfaceNumber        Interface 2
+0x03    0x00        bAlternateSetting       Alternate Setting 0
+0x04    0x01        bNumEndpoints           1 Endpoint
+0x05    0xFF        bInterfaceClass         Vendor Specific
+0x06    0x5D        bInterfaceSubClass      Xbox 360 Accessory (0x5D)
+0x07    0x02        bInterfaceProtocol      Headset (0x02)
+0x08    0x00        iInterface              No String Descriptor
+
+HEX DUMP (Interface 2):
+09 04 02 00 01 FF 5D 02 00
+
+--- XBOX 360 HEADSET DESCRIPTOR (Interface 2) ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x09        bLength                 9 bytes
+0x01    0x21        bDescriptorType         HID Class Specific (0x21)
+0x02    0x00 0x01   bcdHID                  HID 1.0
+0x04    0x01        bCountryCode            Not Localized
+0x05    0x01        bNumDescriptors         1 descriptor
+0x06    0x22        Report Type             Report (0x22)
+0x07    0x86 0x07   wDescriptorLength       1926 bytes
+0x09    0x00        Reserved                0x00
+
+HEX DUMP (Xbox 360 Headset Descriptor):
+09 21 00 01 01 22 86 07 00
+
+--- ENDPOINT 0x86 (IN) - Interface 2 ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x07        bLength                 7 bytes
+0x01    0x05        bDescriptorType         ENDPOINT (0x05)
+0x02    0x86        bEndpointAddress        EP 6 IN (0x86)
+0x03    0x03        bmAttributes            Transfer Type: Interrupt
+0x04    0x20 0x00   wMaxPacketSize          32 bytes (0x0020)
+0x06    0x10        bInterval               16 ms (polling interval)
+
+HEX DUMP (Endpoint 0x86):
+07 05 86 03 20 00 10
+
+===============================================================================
+INTERFACE 3 - SECURITY/ENCRYPTION
+===============================================================================
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x09        bLength                 9 bytes
+0x01    0x04        bDescriptorType         INTERFACE (0x04)
+0x02    0x03        bInterfaceNumber        Interface 3
+0x03    0x00        bAlternateSetting       Alternate Setting 0
+0x04    0x00        bNumEndpoints           0 Endpoints (Control Only)
+0x05    0xFF        bInterfaceClass         Vendor Specific
+0x06    0xFD        bInterfaceSubClass      0xFD
+0x07    0x13        bInterfaceProtocol      Security/Encryption (0x13)
+0x08    0x04        iInterface              String Index 4
+
+HEX DUMP (Interface 3):
+09 04 03 00 00 FF FD 13 04
+
+--- SECURITY MODULE DESCRIPTOR (Interface 3) ---
+Offset  Hex Value   Field Name              Decoded Value
+-------------------------------------------------------------------------------
+0x00    0x06        bLength                 6 bytes
+0x01    0x41        bDescriptorType         Unknown (0x41)
+0x02    0x00        Unknown                 0x00
+0x03    0x01        Unknown                 0x01
+0x04    0x01        Unknown                 0x01
+0x05    0x03        Unknown                 0x03
+
+HEX DUMP (Security Module Descriptor):
+06 41 00 01 01 03
+
+===============================================================================
+STRING DESCRIPTORS
+===============================================================================
+
+--- STRING DESCRIPTOR 0 (Language IDs) ---
+Length: 4 bytes
+Type: STRING (0x03)
+
+Supported Languages:
+  - 0x0409: English (United States)
+
+HEX DUMP:
+04 03 09 04
+
+--- STRING DESCRIPTOR 1 (Manufacturer) ---
+Length: 22 bytes (0x16)
+Type: STRING (0x03)
+
+ASCII String: "RedOctane"
+
+HEX DUMP:
+16 03 52 00 65 00 64 00 4F 00 63 00 74 00 61 00 6E 00 65 00
+
+Unicode Breakdown:
+52 00 = 'R'
+65 00 = 'e'
+64 00 = 'd'
+4F 00 = 'O'
+63 00 = 'c'
+74 00 = 't'
+61 00 = 'a'
+6E 00 = 'n'
+65 00 = 'e'
+
+--- STRING DESCRIPTOR 2 (Product) ---
+Length: 60 bytes (0x3C)
+Type: STRING (0x03)
+
+ASCII String: "Guitar Hero X-plorer"
+
+HEX DUMP:
+3C 03 47 00 75 00 69 00 74 00 61 00 72 00 20 00 48 00 65 00 72 00 6F 00 20 00 58 00 2D 00 70 00 6C 00 6F 00 72 00 65 00 72 00
+
+Unicode Breakdown:
+47 00 = 'G'
+75 00 = 'u'
+69 00 = 'i'
+74 00 = 't'
+61 00 = 'a'
+72 00 = 'r'
+20 00 = ' '
+48 00 = 'H'
+65 00 = 'e'
+72 00 = 'r'
+6F 00 = 'o'
+20 00 = ' '
+58 00 = 'X'
+2D 00 = '-'
+70 00 = 'p'
+6C 00 = 'l'
+6F 00 = 'o'
+72 00 = 'r'
+65 00 = 'e'
+72 00 = 'r'
+
+--- STRING DESCRIPTOR 3 (Serial Number) ---
+Not Present (iSerialNumber = 0x00)
+
+--- STRING DESCRIPTOR 4 (Interface 3 Description) ---
+Length: Variable
+Type: STRING (0x03)
+
+ASCII String: "Xbox Security Method 3, Version 1.00, © 2005 Microsoft Corporation. All rights reserved."
+
+(Exact hex not available - descriptor usado para autenticação Xbox 360)
+
+===============================================================================
+COMPLETE HEX DUMP - FULL CONFIGURATION (153 bytes)
+===============================================================================
+
+09 02 99 00 04 01 00 A0 FA 09 04 00 00 02 FF 5D 
+01 00 11 21 00 01 01 25 81 14 03 03 03 04 13 02 
+08 03 03 07 05 81 03 20 00 04 07 05 02 03 20 00 
+08 09 04 01 00 04 FF 5D 03 00 1B 21 00 01 01 01 
+83 40 01 04 20 16 85 00 00 00 00 00 00 16 05 00 
+00 00 00 00 00 07 05 83 03 20 00 02 07 05 04 03 
+20 00 04 07 05 85 03 20 00 40 07 05 05 03 20 00 
+10 09 04 02 00 01 FF 5D 02 00 09 21 00 01 01 22 
+86 07 00 07 05 86 03 20 00 10 09 04 03 00 00 FF 
+FD 13 04 06 41 00 01 01 03
+
+===============================================================================
+ENDPOINT SUMMARY
+===============================================================================
+
+EP Address  Direction  Type       Max Packet  Interval  Interface  Usage
+---------------------------------------------------------------------------
+0x81        IN         Interrupt  32 bytes    4 ms      0          Input Data
+0x02        OUT        Interrupt  32 bytes    8 ms      0          Output Data
+0x83        IN         Interrupt  32 bytes    2 ms      1          Extended Input
+0x04        OUT        Interrupt  32 bytes    4 ms      1          Extended Output
+0x85        IN         Interrupt  32 bytes    64 ms     1          Status/LED
+0x05        OUT        Interrupt  32 bytes    16 ms     1          Rumble/Effects
+0x86        IN         Interrupt  32 bytes    16 ms     2          Headset Audio
+
+===============================================================================
+POWER CHARACTERISTICS
+===============================================================================
+
+Bus Powered:              Yes
+Self Powered:             No
+Remote Wakeup:            Yes
+Maximum Power Draw:       500 mA (0xFA * 2mA)
+Typical Power Draw:       ~350 mA (operating)
+Standby Power:            ~5 mA
+
+===============================================================================
+XINPUT BUTTON MAPPING
+===============================================================================
+
+Physical Button    XInput Mapping      Hex Bitmask    Endpoint
+---------------------------------------------------------------------
+Green Fret         A Button            0x1000         0x81
+Red Fret           B Button            0x2000         0x81
+Yellow Fret        Y Button            0x8000         0x81
+Blue Fret          X Button            0x4000         0x81
+Orange Fret        Left Shoulder       0x0100         0x81
+Start              Start               0x0010         0x81
+Back               Back                0x0020         0x81
+Guide              Guide (LED)         Special        0x81
+Strum Up           D-Pad Up            0x0001         0x81
+Strum Down         D-Pad Down          0x0002         0x81
+D-Pad Up           D-Pad Up            0x0001         0x81
+D-Pad Down         D-Pad Down          0x0002         0x81
+D-Pad Left         D-Pad Left          0x0004         0x81
+D-Pad Right        D-Pad Right         0x0008         0x81
+Whammy Bar         Right Trigger       Analog 0-255   0x81
+Tilt Sensor        Left Stick Y-Axis   Analog         0x81
+
+===============================================================================
+INPUT DATA PACKET FORMAT (Endpoint 0x81)
+===============================================================================
+
+Byte    Bits    Field               Description
+---------------------------------------------------------------------
+0       All     Message Type        0x00 = Input Report
+1       All     Packet Size         0x14 (20 bytes)
+2-3     All     Buttons             Button state bitmask
+4       All     Left Trigger        Always 0x00 (not used)
+5       All     Right Trigger       Whammy bar position (0-255)
+6-7     All     Left Stick X        Tilt sensor X (not used on guitar)
+8-9     All     Left Stick Y        Tilt sensor Y (-32768 to +32767)
+10-11   All     Right Stick X       Always 0x00 (not used)
+12-13   All     Right Stick Y       Always 0x00 (not used)
+14-19   All     Reserved            Always 0x00
+
+Sample Input Packet (All buttons released, no whammy, no tilt):
+00 14 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+Sample Input Packet (Green + Strum Down):
+00 14 10 10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+===============================================================================
+WINDOWS DRIVER INFORMATION
+===============================================================================
+
+Driver Name:              xusb22.sys
+Driver Version:           10.0.19041.1
+Provider:                 Microsoft Corporation
+Driver Date:              21/06/2006
+Digital Signature:        Microsoft Windows Hardware Compatibility Publisher
+Device Class:             XInput Compatible HID Device
+Device Class GUID:        {d61ca365-5af4-4486-998b-9db4734c6ca3}
+Hardware IDs:             USB\VID_1430&PID_4748&REV_0110
+                          USB\VID_1430&PID_4748
+Compatible IDs:           USB\MS_COMP_XUSB10
+                          USB\Class_FF&SubClass_5D&Prot_01
+Device Instance Path:     USB\VID_1430&PID_4748\0000000000
+
+Registry Location:
+HKLM\SYSTEM\CurrentControlSet\Enum\USB\VID_1430&PID_4748
+
+===============================================================================
+LINUX DRIVER INFORMATION
+===============================================================================
+
+Kernel Module:            xpad
+Module Version:           Variable (kernel version dependent)
+Device Type:              XTYPE_XBOX360
+Input Device:             /dev/input/jsX
+Event Device:             /dev/input/eventX
+Input Class:              Joystick/Gamepad
+Button Map Type:          GAMEPAD_XBOX360_GUITAR
+
+Kernel Driver Match:
+{ USB_DEVICE(0x1430, 0x4748) }  /* RedOctane Guitar Hero X-plorer */
+
+udev Rule Example:
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1430", ATTRS{idProduct}=="4748", MODE="0666"
+
+===============================================================================
+TECHNICAL NOTES
+===============================================================================
+
+1. USB PROTOCOL
+   - Full Speed USB 2.0 device (12 Mbps)
+   - Uses standard USB interrupt transfers
+   - No isochronous or bulk transfers
+   - Control transfers only on EP0
+
+2. XBOX 360 SECURITY
+   - Interface 3 handles Xbox 360 authentication
+   - Uses proprietary encryption method
+   - Challenge-response protocol with console
+   - Not required for PC operation
+
+3. LED CONTROLLER
+   - 4-quadrant LED around Guide button
+   - Controlled via EP 0x05 (OUT)
+   - LED patterns indicate player number (1-4)
+   - Can also show custom patterns
+
+4. WHAMMY BAR
+   - 10kΩ linear potentiometer
+   - Range: 0-255 (8-bit resolution)
+   - Rest position: ~128
+   - Fully down: 0
+   - Fully up: 255
+
+5. TILT SENSOR
+   - Mercury-free tilt switch (newer models)
+   - Digital on/off state
+   - Activates "Star Power" in games
+   - Mapped to Left Stick Y-axis full deflection
+
+6. COMPATIBILITY
+   - Native Windows XInput support
+   - Linux xpad driver support
+   - macOS via 360Controller driver
+   - Android via USB OTG + USB Gamepad app
+   - No additional drivers needed on modern systems
+
+7. NO FIRMWARE UPDATES
+   - Device firmware is read-only
+   - No field-updateable firmware
+   - Hardware revision indicated by bcdDevice
+
+===============================================================================
+DEVICE CAPABILITIES (from bmAttributes)
+===============================================================================
+
+Configuration Attributes:  0xA0
+  Bit 7 - Bus Powered:     1 (Yes)
+  Bit 6 - Self Powered:    0 (No)
+  Bit 5 - Remote Wakeup:   1 (Yes)
+  Bits 0-4:                Reserved (must be 0)
+
+Remote Wakeup Support:
+  - Device can wake suspended host
+  - Triggered by button press
+  - Useful for wireless receiver mode
+
+===============================================================================
+INTERFACE ALTERNATE SETTINGS
+===============================================================================
+
+All interfaces use Alternate Setting 0 only.
+No alternate bandwidth configurations available.
+
+===============================================================================
+DESCRIPTOR REQUEST EXAMPLES
+===============================================================================
+
+Get Device Descriptor:
+  bmRequestType: 0x80 (Device-to-Host, Standard, Device)
+  bRequest:      0x06 (GET_DESCRIPTOR)
+  wValue:        0x0100 (DEVICE, Index 0)
+  wIndex:        0x0000
+  wLength:       0x0012 (18 bytes)
+
+Get Configuration Descriptor:
+  bmRequestType: 0x80
+  bRequest:      0x06 (GET_DESCRIPTOR)
+  wValue:        0x0200 (CONFIGURATION, Index 0)
+  wIndex:        0x0000
+  wLength:       0x0099 (153 bytes)
+
+Get String Descriptor (Manufacturer):
+  bmRequestType: 0x80
+  bRequest:      0x06 (GET_DESCRIPTOR)
+  wValue:        0x0301 (STRING, Index 1)
+  wIndex:        0x0409 (Language: English US)
+  wLength:       0x00FF (255 bytes max)
+
+===============================================================================
+ADDITIONAL TECHNICAL SPECIFICATIONS
+===============================================================================
+
+PCB Specifications:
+  - Main PCB: 2-layer FR4
+  - Neck PCB: Single-layer flexible PCB
+  - Connection: 5-pin 0.1" pitch connector
+  - Components: SMD and through-hole mixed
+
+Mechanical:
+  - Weight: ~1.2 kg (2.6 lbs)
+  - Length: ~80 cm (31.5 inches)
+  - Cable Length: ~3 meters (10 feet)
+  - Body Material: ABS plastic
+  - Fret Buttons: Silicone rubber contacts
+
+Environmental:
+  - Operating Temperature: 0°C to 40°C
+  - Storage Temperature: -20°C to 60°C
+  - Humidity: 20% to 80% non-condensing
+
+Compliance:
+  - FCC ID: PPQ-X801534
+  - CE Mark: Yes
+  - RoHS Compliant: Yes (later revisions)
+
+===============================================================================
+END OF DESCRIPTOR REPORT
+===============================================================================
+Generated by USB Descriptor Analysis Tool
+Based on actual device enumeration data
+For technical support: Clone Hero Community / r/CloneHero
+===============================================================================

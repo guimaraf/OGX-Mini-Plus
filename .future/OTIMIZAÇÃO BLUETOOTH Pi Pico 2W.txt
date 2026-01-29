@@ -1,0 +1,75 @@
+=== OTIMIZAÇÃO BLUETOOTH – PROJETO OGX-MINI (Raspberry Pi Pico 2W) ===
+
+Resumo de técnicas para melhorar desempenho Bluetooth:
+
+1. LINGUAGEM E PILHA
+✔️ Use o SDK C/C++ oficial em vez de MicroPython para BLE de alto desempenho.
+✔️ C/C++ oferece mais controle sobre interrupções, eventos e otimização de memória.
+
+2. MAXIMIZAR THROUGHPUT BLE
+✔️ Aumentar o MTU/payload de dados quando possível.
+✔️ Habilitar Data Length Extension para enviar pacotes maiores.
+⚠️ Throughput real pode ser limitado por intervalos de conexão e limitações de pilha.
+
+3. AJUSTE DE PARÂMETROS DE CONEXÃO BLE
+📌 Ajustar os parâmetros:
+- Connection Interval (menor = menor latência, mais trocas de dados)
+- Slave Latency
+- Supervision Timeout
+Esses parâmetros impactam desempenho e latência de BLE.
+
+4. GERENCIAR BUFFERS E ENVIO
+✔️ Enviar dados apenas quando a pilha indicar que está pronto (ex.: callback CAN_SEND_NOW).
+✔️ Evite congestionamento e jitter ao checar estado de envio.
+
+5. REDUZIR OVERHEAD
+👉 Agrupar/empacotar dados em buffers maiores em vez de enviar muitos pacotes pequenos.
+👉 Evitar operações bloqueantes no loop principal — prefira interrupções/eventos.
+
+6. OTIMIZAR COLETA DE DADOS (ADC / PIO / DMA)
+✔️ Use DMA para ler ADC sem ocupar a CPU principal.
+✔️ Use PIO para operações de I/O de alta taxa.
+Esses métodos liberam a CPU para que o BLE funcione sem atrasos.
+
+7. AJUSTAR POTÊNCIA DE TRANSMISSÃO / QUALIDADE DO LINK
+📡 Ajustar dinamicamente Power TX ou monitorar RSSI pode ajudar em ambientes variáveis.
+Isso mantém melhor estabilidade e throughput de conexão.
+
+8. DESATIVAR WI-FI SE NÃO FOR USADO
+🔌 Não inicialize a pilha Wi-Fi no firmware para reduzir overhead de rádio.
+Isso libera recursos para o Bluetooth.
+
+=== RESUMO DAS RECOMENDAÇÕES ===
+
+| Categoria             | O que priorizar ________________________________ |
+|----------------------|--------------------------------------------------|
+| Linguagem & Pilha     | SDK C/C++ > MicroPython                           |
+| BLE Throughput        | MTU maior, intervalos menores                     |
+| Buffers               | Acumular dados, pacotes maiores                   |
+| Eventos BLE           | Enviar quando pilha indicar                       |
+| Coleta de dados       | DMA / PIO para reduzir carga de CPU               |
+| Wi-Fi                 | Desativar quando não usado                        |
+| Qualidade de link     | Ajustar TX e monitorar RSSI                       |
+
+=== PONTOS IMPORTANTES ===
+
+✔️ Bluetooth no Pico 2W é via chip externo (CYW43439) conectado por SPI — isso significa:
+   - A pilha de BLE consome CPU.
+   - Bluetooth é limitado pelo hardware e firmware atuais.
+
+✔️ Bluetooth 5.2 está presente, mas capacidades completas podem
+   não estar disponíveis dependendo do suporte na biblioteca/SDK.
+
+✔️ Otimizar tarefas paralelas (ADC + BLE) melhora estabilidade
+   de amostra e menor jitter.
+
+=== DICAS ADICIONAIS ===
+
+✔️ Use interrupções e eventos em vez de “polling” fixo.
+✔️ Buffer circular (ring buffer) pode ajudar a organizar dados
+   antes de envio BLE.
+✔️ Teste diferentes parâmetros de BLE em dispositivos
+   centrais (ex.: mobile vs PC) para encontrar melhor
+   performance de conexão.
+
+---
