@@ -94,3 +94,12 @@ This document lists all libraries and dependencies used in the project, their ex
 2. **TinyUSB version constraint** - Must use exactly `0.17.0`. Version `0.18.0+` has breaking API changes.
 
 3. **Pico SDK version constraint** - Must use `2.1.1`. Version `2.2.0` includes TinyUSB 0.18.0 which is incompatible.
+
+4. **Clear PICO_SDK_PATH environment variable** - If you have `PICO_SDK_PATH` set in your system, clear it before building to ensure the project uses the correct SDK version:
+
+   ```powershell
+   # PowerShell (temporary, current session only)
+   $env:PICO_SDK_PATH = ""
+   
+   # Or permanently remove from Windows environment variables
+   ```
