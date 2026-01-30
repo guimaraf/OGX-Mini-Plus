@@ -71,17 +71,10 @@ void XInputGuitar360Device::process(const uint8_t idx, Gamepad &gamepad) {
     // XInput Guitar uses RX for Whammy.
     in_report_.joystick_lx = gp_in.joystick_lx;
 
-    // Tilt sensor: Convert PS3 accelerometer X to Xbox 360 Left Stick Y
-    // PS3 guitar tilt: accel_x < 400 = tilted up (from user testing: 388 when
-    // tilted) Xbox 360 guitar: Left Stick Y = INT16_MAX (32767) when tilted
-    // This triggers Star Power/Overdrive in Rock Band and Guitar Hero games
-    constexpr int16_t TILT_THRESHOLD = 400;
-    if (gp_in.accel_x < TILT_THRESHOLD && gp_in.accel_x > 0) {
-      in_report_.joystick_ly =
-          INT16_MAX; // Tilt activated - full positive deflection
-    } else {
-      in_report_.joystick_ly = 0; // No tilt - center position
-    }
+    // Tilt sensor: Not implemented
+    // PS3 guitar tilt emulation was attempted but didn't work
+    // Xbox 360 guitar uses Left Stick Y for tilt detection
+    in_report_.joystick_ly = 0; // No tilt - center position
 
     // Whammy bar fix: Apply deadzone to filter out resting state
     // The PS3 guitar whammy bar may send non-zero values even at rest.
