@@ -1,4 +1,4 @@
-# OGX-Mini
+# OGX-Mini Plus
 
 v1.1.1
 
