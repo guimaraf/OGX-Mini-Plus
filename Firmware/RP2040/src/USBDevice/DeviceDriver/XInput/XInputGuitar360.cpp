@@ -52,16 +52,21 @@ void XInputGuitar360Device::process(const uint8_t idx, Gamepad &gamepad) {
     // Btn 4 -> Y (Blue input)
     // Btn 5 -> LB (Orange input)
 
+    // PS3 Guitar button mapping (verified by hardware testing)
+    // PS3 sends: A=Red, B=Green, X=Blue, Y=Yellow, LB=Orange
+    // Xbox expects: A=Green, B=Red, X=Blue, Y=Yellow, LB=Orange
     if (gp_in.buttons & Gamepad::BUTTON_A)
-      in_report_.buttons[1] |= XInputGuitar360::Buttons1::A; // Green -> A
+      in_report_.buttons[1] |=
+          XInputGuitar360::Buttons1::B; // PS3 A (Red) -> Xbox B (Red)
     if (gp_in.buttons & Gamepad::BUTTON_B)
-      in_report_.buttons[1] |= XInputGuitar360::Buttons1::B; // Red -> B
+      in_report_.buttons[1] |=
+          XInputGuitar360::Buttons1::A; // PS3 B (Green) -> Xbox A (Green)
     if (gp_in.buttons & Gamepad::BUTTON_X)
       in_report_.buttons[1] |=
-          XInputGuitar360::Buttons1::Y; // Yellow (In: X) -> Out: Y
+          XInputGuitar360::Buttons1::X; // PS3 X (Yellow) -> Xbox X (Blue)
     if (gp_in.buttons & Gamepad::BUTTON_Y)
       in_report_.buttons[1] |=
-          XInputGuitar360::Buttons1::X; // Blue (In: Y) -> Out: X
+          XInputGuitar360::Buttons1::Y; // PS3 Y (Blue) -> Xbox Y (Yellow)
     if (gp_in.buttons & Gamepad::BUTTON_LB)
       in_report_.buttons[1] |= XInputGuitar360::Buttons1::LB; // Orange -> LB
 
