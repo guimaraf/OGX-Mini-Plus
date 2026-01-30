@@ -103,12 +103,9 @@ public:
     int16_t joystick_rx;
     int16_t joystick_ry;
     uint8_t analog[10];
-    int16_t accel_x; // PS3 guitar tilt sensor (accelerometer X-axis, ~512
-                     // center, <400 = tilted)
 
     PadIn() {
       std::memset(this, 0, sizeof(PadIn));
-      accel_x = 512; // Default: no tilt (center value for 10-bit accelerometer)
     }
   };
 
