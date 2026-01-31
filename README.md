@@ -138,6 +138,8 @@ You'll need git, python3, CMake, Ninja and the GCC ARM toolchain installed. CMak
 git clone --recursive https://github.com/guimaraf/OGX-Mini-Plus.git
 cd OGX-Mini-plus/Firmware/RP2040
 
+The compilation directory must already be created. By default, I created build_pico and build_pico2w, which are the two boards I have available. If you need to compile for another board, first create the compilation directory for that board.
+
 # Pi Pico
 cmake -S . -B build_pico -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO
 cmake --build build_pico
