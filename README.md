@@ -142,9 +142,37 @@ cd OGX-Mini-plus/Firmware/RP2040
 cmake -S . -B build_pico -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO
 cmake --build build_pico
 
+# Pi Pico 2
+cmake -S . -B build_pico2 -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO2
+cmake --build build_pico2
+
+# Pi Pico W (Bluetooth)
+cmake -S . -B build_picow -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICOW
+cmake --build build_picow
+
 # Pi Pico 2 W (Bluetooth)
 cmake -S . -B build_pico2w -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO2W
 cmake --build build_pico2w
+
+# RP2040-Zero
+cmake -S . -B build_rp2040_zero -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=RP2040_ZERO
+cmake --build build_rp2040_zero
+
+# Adafruit Feather
+cmake -S . -B build_adafruit -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=ADAFRUIT_FEATHER
+cmake --build build_adafruit
+
+# ESP32 Bluepad32 I2C
+cmake -S . -B build_esp32_bp32 -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=ESP32_BLUEPAD32_I2C
+cmake --build build_esp32_bp32
+
+# ESP32 BlueRetro I2C
+cmake -S . -B build_esp32_blueretro -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=ESP32_BLUERETRO_I2C
+cmake --build build_esp32_blueretro
+
+# External 4-Channel I2C
+cmake -S . -B build_4ch -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=EXTERNAL_4CH_I2C
+cmake --build build_4ch
 ```
 
 Or just install the GCC ARM toolchain and use the CMake Tools extension in VSCode.
