@@ -5,11 +5,13 @@
 #include "class/hid/hid_host.h"
 
 #include "USBHost/HostDriver/SwitchPro/SwitchPro.h"
+#include "Descriptors/SwitchWired.h"
 
 void SwitchProHost::initialize(Gamepad& gamepad, uint8_t address, uint8_t instance, const uint8_t* report_desc, uint16_t desc_len) 
 {
     std::memset(&out_report_, 0, sizeof(out_report_));
     init_switch_host(gamepad, address, instance);
+    tuh_hid_receive_report(address, instance);
 }
 
 uint8_t SwitchProHost::get_output_sequence_counter()
@@ -115,7 +117,6 @@ void SwitchProHost::init_switch_host(Gamepad& gamepad, uint8_t address, uint8_t 
             if (tuh_hid_send_report(address, instance, 0, &out_report_, report_size))
             {
                 init_state_ = InitState::DONE;
-                tuh_hid_receive_report(address, instance);
             }
             break;
         default:
@@ -130,6 +131,102 @@ void SwitchProHost::process_report(Gamepad& gamepad, uint8_t address, uint8_t in
     if (init_state_ != InitState::DONE)
     {
         init_switch_host(gamepad, address, instance);
+        
+        init_timeout_count_++;
+        if (init_timeout_count_ > 50) {
+            OGXM_LOG("SwitchProHost: Timeout reached waiting for handshake. Bypassing initialization.\n");
+            init_state_ = InitState::DONE;
+        }
+        tuh_hid_receive_report(address, instance);
+        return;
+    }
+
+    if (len == sizeof(SwitchWired::InReport) || len == 8) 
+    {
+        const SwitchWired::InReport* wired_report = reinterpret_cast<const SwitchWired::InReport*>(report);
+
+        Gamepad::PadIn gp_in;   
+
+        switch (wired_report->dpad)
+        {
+            case SwitchWired::DPad::UP:         gp_in.dpad |= gamepad.MAP_DPAD_UP; break;
+            case SwitchWired::DPad::DOWN:       gp_in.dpad |= gamepad.MAP_DPAD_DOWN; break;
+            case SwitchWired::DPad::LEFT:       gp_in.dpad |= gamepad.MAP_DPAD_LEFT; break;
+            case SwitchWired::DPad::RIGHT:      gp_in.dpad |= gamepad.MAP_DPAD_RIGHT; break;
+            case SwitchWired::DPad::UP_RIGHT:   gp_in.dpad |= gamepad.MAP_DPAD_UP_RIGHT; break;
+            case SwitchWired::DPad::DOWN_RIGHT: gp_in.dpad |= gamepad.MAP_DPAD_DOWN_RIGHT; break;
+            case SwitchWired::DPad::DOWN_LEFT:  gp_in.dpad |= gamepad.MAP_DPAD_DOWN_LEFT; break;
+            case SwitchWired::DPad::UP_LEFT:    gp_in.dpad |= gamepad.MAP_DPAD_UP_LEFT; break;
+            default: break;
+        }
+
+        if (wired_report->buttons & SwitchWired::Buttons::Y)       gp_in.buttons |= gamepad.MAP_BUTTON_X;
+        if (wired_report->buttons & SwitchWired::Buttons::B)       gp_in.buttons |= gamepad.MAP_BUTTON_A;
+        if (wired_report->buttons & SwitchWired::Buttons::A)       gp_in.buttons |= gamepad.MAP_BUTTON_B;
+        if (wired_report->buttons & SwitchWired::Buttons::X)       gp_in.buttons |= gamepad.MAP_BUTTON_Y;
+        if (wired_report->buttons & SwitchWired::Buttons::L)       gp_in.buttons |= gamepad.MAP_BUTTON_LB;
+        if (wired_report->buttons & SwitchWired::Buttons::R)       gp_in.buttons |= gamepad.MAP_BUTTON_RB;
+        if (wired_report->buttons & SwitchWired::Buttons::MINUS)   gp_in.buttons |= gamepad.MAP_BUTTON_BACK;
+        if (wired_report->buttons & SwitchWired::Buttons::PLUS)    gp_in.buttons |= gamepad.MAP_BUTTON_START;
+        if (wired_report->buttons & SwitchWired::Buttons::HOME)    gp_in.buttons |= gamepad.MAP_BUTTON_SYS;
+        if (wired_report->buttons & SwitchWired::Buttons::CAPTURE) gp_in.buttons |= gamepad.MAP_BUTTON_MISC;   
+        if (wired_report->buttons & SwitchWired::Buttons::L3)      gp_in.buttons |= gamepad.MAP_BUTTON_L3;
+        if (wired_report->buttons & SwitchWired::Buttons::R3)      gp_in.buttons |= gamepad.MAP_BUTTON_R3;
+
+        gp_in.trigger_l = (wired_report->buttons & SwitchWired::Buttons::ZL) ? Range::MAX<uint8_t> : Range::MIN<uint8_t>;
+        gp_in.trigger_r = (wired_report->buttons & SwitchWired::Buttons::ZR) ? Range::MAX<uint8_t> : Range::MIN<uint8_t>;
+
+        std::tie(gp_in.joystick_lx, gp_in.joystick_ly) = gamepad.scale_joystick_l(wired_report->joystick_lx, wired_report->joystick_ly);
+        std::tie(gp_in.joystick_rx, gp_in.joystick_ry) = gamepad.scale_joystick_r(wired_report->joystick_rx, wired_report->joystick_ry);
+
+        gamepad.set_pad_in(gp_in);
+        tuh_hid_receive_report(address, instance);
+        return;
+    }
+
+
+    else if (report[0] == 0x3F)
+    {
+        Gamepad::PadIn gp_in;
+
+        if (report[1] & 0x01) gp_in.buttons |= gamepad.MAP_BUTTON_X; 
+        if (report[1] & 0x02) gp_in.buttons |= gamepad.MAP_BUTTON_Y; 
+        if (report[1] & 0x04) gp_in.buttons |= gamepad.MAP_BUTTON_A; 
+        if (report[1] & 0x08) gp_in.buttons |= gamepad.MAP_BUTTON_B; 
+        if (report[1] & 0x40) gp_in.buttons |= gamepad.MAP_BUTTON_RB; 
+        if (report[1] & 0x80) gp_in.trigger_r = Range::MAX<uint8_t>; 
+
+        if (report[2] & 0x01) gp_in.buttons |= gamepad.MAP_BUTTON_BACK;
+        if (report[2] & 0x02) gp_in.buttons |= gamepad.MAP_BUTTON_START;
+        if (report[2] & 0x04) gp_in.buttons |= gamepad.MAP_BUTTON_R3;
+        if (report[2] & 0x08) gp_in.buttons |= gamepad.MAP_BUTTON_L3;
+        if (report[2] & 0x10) gp_in.buttons |= gamepad.MAP_BUTTON_SYS;
+        if (report[2] & 0x20) gp_in.buttons |= gamepad.MAP_BUTTON_MISC;
+        if (report[2] & 0x40) gp_in.buttons |= gamepad.MAP_BUTTON_LB;
+        if (report[2] & 0x80) gp_in.trigger_l = Range::MAX<uint8_t>;
+
+        switch (report[3]) {
+            case 0: gp_in.dpad |= gamepad.MAP_DPAD_UP; break;
+            case 1: gp_in.dpad |= gamepad.MAP_DPAD_UP_RIGHT; break;
+            case 2: gp_in.dpad |= gamepad.MAP_DPAD_RIGHT; break;
+            case 3: gp_in.dpad |= gamepad.MAP_DPAD_DOWN_RIGHT; break;
+            case 4: gp_in.dpad |= gamepad.MAP_DPAD_DOWN; break;
+            case 5: gp_in.dpad |= gamepad.MAP_DPAD_DOWN_LEFT; break;
+            case 6: gp_in.dpad |= gamepad.MAP_DPAD_LEFT; break;
+            case 7: gp_in.dpad |= gamepad.MAP_DPAD_UP_LEFT; break;
+            default: break;
+        }
+
+        uint16_t joy_lx = report[4] | ((report[5] & 0x0F) << 8);
+        uint16_t joy_ly = (report[5] >> 4) | (report[6] << 4);
+        uint16_t joy_rx = report[7] | ((report[8] & 0x0F) << 8);
+        uint16_t joy_ry = (report[8] >> 4) | (report[9] << 4);
+
+        std::tie(gp_in.joystick_lx, gp_in.joystick_ly) = gamepad.scale_joystick_l(normalize_axis(joy_lx), normalize_axis(joy_ly), true);
+        std::tie(gp_in.joystick_rx, gp_in.joystick_ry) = gamepad.scale_joystick_r(normalize_axis(joy_rx), normalize_axis(joy_ry), true);
+
+        gamepad.set_pad_in(gp_in);
+        tuh_hid_receive_report(address, instance);
         return;
     }
 

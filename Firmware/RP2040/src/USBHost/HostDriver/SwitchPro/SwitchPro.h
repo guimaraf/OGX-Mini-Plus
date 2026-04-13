@@ -31,6 +31,7 @@ private:
 
     InitState init_state_{InitState::HANDSHAKE};
     uint8_t sequence_counter_{0};
+    uint32_t init_timeout_count_{0};
 
     SwitchPro::InReport prev_in_report_{};
     SwitchPro::OutReport out_report_{};

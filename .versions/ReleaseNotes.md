@@ -1,3 +1,10 @@
+## Features new to v1.1.3 (by Fred)
+
+### Bug Fixes:
+- **Switch Pro Clone Controller Support**: Fixed an issue where generic Nintendo Switch Pro controllers (such as Ípega and GameSir in Switch mode) would fail to mount and get stuck charging. Implemented a dynamic USB fallback system and a Bluetooth initialization bypass to allow 3rd-party "fake" Switch controllers to function correctly both wired (via TinyUSB) and wireless (via Bluepad32).
+
+---
+
 ## Features new to v1.1.2 (by Fred)
 
 ### Bug Fixes:
