@@ -247,6 +247,14 @@ static void controller_data_cb(uni_hid_device_t* device, uni_controller_t* contr
 
     gp_in.trigger_l = gamepad->scale_trigger_l<10>(static_cast<uint16_t>(uni_gp->brake));
     gp_in.trigger_r = gamepad->scale_trigger_r<10>(static_cast<uint16_t>(uni_gp->throttle));
+
+    if (device->controller_type == CONTROLLER_TYPE_SwitchProController ||
+        device->controller_type == CONTROLLER_TYPE_SwitchJoyConLeft ||
+        device->controller_type == CONTROLLER_TYPE_SwitchJoyConRight) 
+    {
+        if (uni_gp->buttons & BUTTON_TRIGGER_L) gp_in.trigger_l = 255;
+        if (uni_gp->buttons & BUTTON_TRIGGER_R) gp_in.trigger_r = 255;
+    }
     
     std::tie(gp_in.joystick_lx, gp_in.joystick_ly) = gamepad->scale_joystick_l<10>(uni_gp->axis_x, uni_gp->axis_y);
     std::tie(gp_in.joystick_rx, gp_in.joystick_ry) = gamepad->scale_joystick_r<10>(uni_gp->axis_rx, uni_gp->axis_ry);

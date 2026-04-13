@@ -1,6 +1,6 @@
 # OGX-Mini Plus
 
-v1.1.1
+v1.1.2
 
 ![alt text](images/OGX-Mini-github.jpg)
 
@@ -81,8 +81,9 @@ Note: There are some third party controllers that can change their VID/PID, thes
 
 Please visit [**this page**](https://bluepad32.readthedocs.io/en/latest/supported_gamepads/) for a more comprehensive list of supported controllers and Bluetooth pairing instructions.
 
-## What's New in v1.1.1 (by Fred)
+## What's New in v1.1.2 (by Fred)
 
+- **Switch Pro Bluetooth Triggers** - Fixed ZL and ZR triggers not working over Bluetooth
 - **Xbox 360 Rock Band Guitar** - PS3 Guitar now works on Xbox 360 for Rock Band games
 - **PS2→PS3 Adapter Support** - Neo brand adapter now recognized
 - **PS3 Driver Fixes** - Fixed input delays and stuck inputs

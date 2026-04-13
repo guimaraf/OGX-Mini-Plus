@@ -1,3 +1,10 @@
+## Features new to v1.1.2 (by Fred)
+
+### Bug Fixes:
+- **Switch Pro Bluetooth Triggers**: Fixed an issue where the ZL and ZR triggers on the Nintendo Switch Pro controller were not functioning when connected via Bluetooth (especially on the Pi Pico 2W). The triggers now properly report their values, restoring compatibility with output drivers.
+
+---
+
 ## Features new to v1.1.1 (by Fred)
 
 ### Xbox 360 Rock Band Guitar Driver:
