@@ -1103,6 +1103,8 @@ bool SwitchProHost::parse_switch_full_report(Gamepad& gamepad, const uint8_t* re
     }
 
     Gamepad::PadIn gp_in;
+    const uint8_t l3_mask = clone_init_path_active_ ? SwitchPro::Buttons1::R3 : SwitchPro::Buttons1::L3;
+    const uint8_t r3_mask = clone_init_path_active_ ? SwitchPro::Buttons1::L3 : SwitchPro::Buttons1::R3;
 
     if (in_report->buttons[0] & SwitchPro::Buttons0::Y)  gp_in.buttons |= gamepad.MAP_BUTTON_X;
     if (in_report->buttons[0] & SwitchPro::Buttons0::B)  gp_in.buttons |= gamepad.MAP_BUTTON_A;
@@ -1110,8 +1112,8 @@ bool SwitchProHost::parse_switch_full_report(Gamepad& gamepad, const uint8_t* re
     if (in_report->buttons[0] & SwitchPro::Buttons0::X)  gp_in.buttons |= gamepad.MAP_BUTTON_Y;
     if (in_report->buttons[2] & SwitchPro::Buttons2::L)  gp_in.buttons |= gamepad.MAP_BUTTON_LB;
     if (in_report->buttons[0] & SwitchPro::Buttons0::R)  gp_in.buttons |= gamepad.MAP_BUTTON_RB;
-    if (in_report->buttons[1] & SwitchPro::Buttons1::L3) gp_in.buttons |= gamepad.MAP_BUTTON_L3;
-    if (in_report->buttons[1] & SwitchPro::Buttons1::R3) gp_in.buttons |= gamepad.MAP_BUTTON_R3;
+    if (in_report->buttons[1] & l3_mask) gp_in.buttons |= gamepad.MAP_BUTTON_L3;
+    if (in_report->buttons[1] & r3_mask) gp_in.buttons |= gamepad.MAP_BUTTON_R3;
     if (in_report->buttons[1] & SwitchPro::Buttons1::MINUS)   gp_in.buttons |= gamepad.MAP_BUTTON_BACK;
     if (in_report->buttons[1] & SwitchPro::Buttons1::PLUS)    gp_in.buttons |= gamepad.MAP_BUTTON_START;
     if (in_report->buttons[1] & SwitchPro::Buttons1::HOME)    gp_in.buttons |= gamepad.MAP_BUTTON_SYS;

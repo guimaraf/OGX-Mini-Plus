@@ -2,7 +2,10 @@ param(
     [string]$Port = "COM3",
     [int]$BaudRate = 115200,
     [int]$CaptureMs = 1200,
-    [int]$SettleMs = 150
+    [int]$SettleMs = 150,
+    [ValidateSet("Full", "L3R3", "RightStick")]
+    [string]$TestProfile = "Full",
+    [int]$RepeatCount = 3
 )
 
 $scriptRoot = $PSScriptRoot
@@ -44,35 +47,83 @@ $dpadNames = @{
     0x0A = "Down+Right"
 }
 
-$steps = @(
-    @{ Name = "Neutral"; Instruction = "Release all controls" },
-    @{ Name = "A"; Instruction = "Press and hold A" },
-    @{ Name = "B"; Instruction = "Press and hold B" },
-    @{ Name = "X"; Instruction = "Press and hold X" },
-    @{ Name = "Y"; Instruction = "Press and hold Y" },
-    @{ Name = "LB"; Instruction = "Press and hold LB" },
-    @{ Name = "RB"; Instruction = "Press and hold RB" },
-    @{ Name = "ZL"; Instruction = "Press and hold ZL" },
-    @{ Name = "ZR"; Instruction = "Press and hold ZR" },
-    @{ Name = "Minus"; Instruction = "Press and hold Minus" },
-    @{ Name = "Plus"; Instruction = "Press and hold Plus" },
-    @{ Name = "Home"; Instruction = "Press and hold Home" },
-    @{ Name = "Capture"; Instruction = "Press and hold Capture" },
-    @{ Name = "L3"; Instruction = "Press and hold L3" },
-    @{ Name = "R3"; Instruction = "Press and hold R3" },
-    @{ Name = "Dpad Up"; Instruction = "Press and hold Dpad Up" },
-    @{ Name = "Dpad Down"; Instruction = "Press and hold Dpad Down" },
-    @{ Name = "Dpad Left"; Instruction = "Press and hold Dpad Left" },
-    @{ Name = "Dpad Right"; Instruction = "Press and hold Dpad Right" },
-    @{ Name = "Left Stick Left"; Instruction = "Move and hold left stick to the left" },
-    @{ Name = "Left Stick Right"; Instruction = "Move and hold left stick to the right" },
-    @{ Name = "Left Stick Up"; Instruction = "Move and hold left stick up" },
-    @{ Name = "Left Stick Down"; Instruction = "Move and hold left stick down" },
-    @{ Name = "Right Stick Left"; Instruction = "Move and hold right stick to the left" },
-    @{ Name = "Right Stick Right"; Instruction = "Move and hold right stick to the right" },
-    @{ Name = "Right Stick Up"; Instruction = "Move and hold right stick up" },
-    @{ Name = "Right Stick Down"; Instruction = "Move and hold right stick down" }
-)
+function Get-CaptureSteps {
+    param(
+        [string]$Profile,
+        [int]$RepeatCount
+    )
+
+    switch ($Profile) {
+        "L3R3" {
+            $steps = New-Object System.Collections.Generic.List[object]
+            $steps.Add([pscustomobject]@{ Name = "Neutral"; Instruction = "Release all controls" })
+
+            for ($i = 1; $i -le $RepeatCount; $i++) {
+                $steps.Add([pscustomobject]@{
+                    Name = ("L3 #{0}" -f $i)
+                    Instruction = ("Press and hold L3 for capture #{0}" -f $i)
+                })
+            }
+
+            for ($i = 1; $i -le $RepeatCount; $i++) {
+                $steps.Add([pscustomobject]@{
+                    Name = ("R3 #{0}" -f $i)
+                    Instruction = ("Press and hold R3 for capture #{0}" -f $i)
+                })
+            }
+
+            return $steps.ToArray()
+        }
+
+        "RightStick" {
+            return @(
+                [pscustomobject]@{ Name = "Neutral"; Instruction = "Release all controls" },
+                [pscustomobject]@{ Name = "Right Stick Neutral"; Instruction = "Release the right stick and keep it centered" },
+                [pscustomobject]@{ Name = "Right Stick Left"; Instruction = "Move and hold right stick to the left" },
+                [pscustomobject]@{ Name = "Right Stick Right"; Instruction = "Move and hold right stick to the right" },
+                [pscustomobject]@{ Name = "Right Stick Up"; Instruction = "Move and hold right stick up" },
+                [pscustomobject]@{ Name = "Right Stick Down"; Instruction = "Move and hold right stick down" },
+                [pscustomobject]@{ Name = "Right Stick Down Left"; Instruction = "Move and hold right stick down-left" },
+                [pscustomobject]@{ Name = "Right Stick Down Right"; Instruction = "Move and hold right stick down-right" },
+                [pscustomobject]@{ Name = "Right Stick Recenter"; Instruction = "Release the right stick and keep it centered" }
+            )
+        }
+
+        default {
+            return @(
+                [pscustomobject]@{ Name = "Neutral"; Instruction = "Release all controls" },
+                [pscustomobject]@{ Name = "A"; Instruction = "Press and hold A" },
+                [pscustomobject]@{ Name = "B"; Instruction = "Press and hold B" },
+                [pscustomobject]@{ Name = "X"; Instruction = "Press and hold X" },
+                [pscustomobject]@{ Name = "Y"; Instruction = "Press and hold Y" },
+                [pscustomobject]@{ Name = "LB"; Instruction = "Press and hold LB" },
+                [pscustomobject]@{ Name = "RB"; Instruction = "Press and hold RB" },
+                [pscustomobject]@{ Name = "ZL"; Instruction = "Press and hold ZL" },
+                [pscustomobject]@{ Name = "ZR"; Instruction = "Press and hold ZR" },
+                [pscustomobject]@{ Name = "Minus"; Instruction = "Press and hold Minus" },
+                [pscustomobject]@{ Name = "Plus"; Instruction = "Press and hold Plus" },
+                [pscustomobject]@{ Name = "Home"; Instruction = "Press and hold Home" },
+                [pscustomobject]@{ Name = "Capture"; Instruction = "Press and hold Capture" },
+                [pscustomobject]@{ Name = "L3"; Instruction = "Press and hold L3" },
+                [pscustomobject]@{ Name = "R3"; Instruction = "Press and hold R3" },
+                [pscustomobject]@{ Name = "Dpad Up"; Instruction = "Press and hold Dpad Up" },
+                [pscustomobject]@{ Name = "Dpad Down"; Instruction = "Press and hold Dpad Down" },
+                [pscustomobject]@{ Name = "Dpad Left"; Instruction = "Press and hold Dpad Left" },
+                [pscustomobject]@{ Name = "Dpad Right"; Instruction = "Press and hold Dpad Right" },
+                [pscustomobject]@{ Name = "Left Stick Left"; Instruction = "Move and hold left stick to the left" },
+                [pscustomobject]@{ Name = "Left Stick Right"; Instruction = "Move and hold left stick to the right" },
+                [pscustomobject]@{ Name = "Left Stick Up"; Instruction = "Move and hold left stick up" },
+                [pscustomobject]@{ Name = "Left Stick Down"; Instruction = "Move and hold left stick down" },
+                [pscustomobject]@{ Name = "Right Stick Left"; Instruction = "Move and hold right stick to the left" },
+                [pscustomobject]@{ Name = "Right Stick Right"; Instruction = "Move and hold right stick to the right" },
+                [pscustomobject]@{ Name = "Right Stick Up"; Instruction = "Move and hold right stick up" },
+                [pscustomobject]@{ Name = "Right Stick Down"; Instruction = "Move and hold right stick down" }
+            )
+        }
+    }
+}
+
+$steps = @(Get-CaptureSteps -Profile $TestProfile -RepeatCount $RepeatCount)
 
 function Format-HexBytes {
     param([byte[]]$Data)
@@ -92,9 +143,9 @@ function Format-Buttons {
     }
 
     $names = New-Object System.Collections.Generic.List[string]
-    foreach ($mask in $buttonNames.Keys) {
+    foreach ($mask in ($buttonNames.Keys | Sort-Object { [int]$_ })) {
         if (($Buttons -band [UInt16]$mask) -ne 0) {
-            $names.Add([string]$buttonNames[[UInt16]$mask])
+            $names.Add([string]$buttonNames[[int]$mask])
         }
     }
 
@@ -108,8 +159,8 @@ function Format-Buttons {
 function Format-Dpad {
     param([byte]$Dpad)
 
-    if ($dpadNames.ContainsKey([byte]$Dpad)) {
-        return [string]$dpadNames[[byte]$Dpad]
+    if ($dpadNames.ContainsKey([int]$Dpad)) {
+        return [string]$dpadNames[[int]$Dpad]
     }
 
     return ("Unknown(0x{0:X2})" -f $Dpad)
@@ -393,6 +444,10 @@ try {
     $serial.Open()
 
     Write-Host ("Port {0} aberto. Capture por etapa: {1} ms." -f $Port, $CaptureMs)
+    Write-Host ("Perfil de teste: {0}" -f $TestProfile)
+    if ($TestProfile -eq "L3R3") {
+        Write-Host ("Repeticoes por botao: {0}" -f $RepeatCount)
+    }
     Write-Host "Segure o controle indicado durante cada etapa ate a captura terminar."
     Write-Host ""
 
@@ -460,6 +515,10 @@ $builder = New-Object System.Text.StringBuilder
 [void]$builder.AppendLine(("Baud rate: {0}" -f $BaudRate))
 [void]$builder.AppendLine(("Capture per step: {0} ms" -f $CaptureMs))
 [void]$builder.AppendLine(("Settle before capture: {0} ms" -f $SettleMs))
+[void]$builder.AppendLine(("Test profile: {0}" -f $TestProfile))
+if ($TestProfile -eq "L3R3") {
+    [void]$builder.AppendLine(("Repeat count: {0}" -f $RepeatCount))
+}
 [void]$builder.AppendLine()
 
 $neutral = $results | Where-Object { $_.StepName -eq "Neutral" } | Select-Object -First 1

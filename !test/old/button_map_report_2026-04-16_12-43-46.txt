@@ -1,0 +1,146 @@
+OGX Mini Plus button map capture
+Timestamp: 2026-04-16 12:44:22
+Port: COM3
+Baud rate: 115200
+Capture per step: 1200 ms
+Settle before capture: 150 ms
+Test profile: L3R3
+Repeat count: 3
+
+Quick summary
+L3 #1: buttons=0x0020 [R3] dpad=0x00 [None] trigL=0 trigR=0 LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+L3 #2: buttons=0x0020 [R3] dpad=0x00 [None] trigL=0 trigR=0 LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+L3 #3: buttons=0x0020 [R3] dpad=0x00 [None] trigL=0 trigR=0 LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+R3 #1: buttons=0x0010 [L3] dpad=0x00 [None] trigL=0 trigR=0 LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+R3 #2: buttons=0x0010 [L3] dpad=0x00 [None] trigL=0 trigR=0 LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+R3 #3: buttons=0x0010 [L3] dpad=0x00 [None] trigL=0 trigR=0 LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+
+Detailed steps
+Step: Neutral
+Instruction: Release all controls
+Raw bytes: 8192
+Frames: total=128 log=67 pad=61
+Buttons seen: 0x0000 [None]
+Dpad seen: 0x00 [None]
+Trigger L seen: 0
+Trigger R seen: 0
+Dominant buttons: 0x0000 [None]
+Dominant dpad: 0x00 [None]
+Dominant triggers: L=0 R=0
+Axis ranges: LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+Delta vs neutral: buttons=0x0000 [None] dpad=0x00 [None] trigL=0 trigR=0
+Sample payloads:
+  count=21 data=00 00 00 00 00 16 00 EA FF 16 00 EA FF 00 00 00 00 00 00 00 00 00 00
+  count=16 data=00 00 00 00 00 2C 00 D4 FF 2C 00 D4 FF 00 00 00 00 00 00 00 00 00 00
+  count=14 data=00 00 00 00 00 58 00 A8 FF 58 00 A8 FF 00 00 00 00 00 00 00 00 00 00
+
+Step: L3 #1
+Instruction: Press and hold L3 for capture #1
+Raw bytes: 8192
+Frames: total=128 log=79 pad=49
+Buttons seen: 0x0000 [None], 0x0020 [R3]
+Dpad seen: 0x00 [None]
+Trigger L seen: 0
+Trigger R seen: 0
+Dominant buttons: 0x0020 [R3]
+Dominant dpad: 0x00 [None]
+Dominant triggers: L=0 R=0
+Axis ranges: LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+Delta vs neutral: buttons=0x0020 [R3] dpad=0x00 [None] trigL=0 trigR=0
+Sample payloads:
+  count=14 data=00 20 00 00 00 16 00 EA FF 16 00 EA FF 00 00 00 00 00 00 00 00 00 00
+  count=14 data=00 20 00 00 00 2C 00 D4 FF 2C 00 D4 FF 00 00 00 00 00 00 00 00 00 00
+  count=10 data=00 20 00 00 00 58 00 A8 FF 58 00 A8 FF 00 00 00 00 00 00 00 00 00 00
+
+Step: L3 #2
+Instruction: Press and hold L3 for capture #2
+Raw bytes: 8192
+Frames: total=128 log=71 pad=57
+Buttons seen: 0x0000 [None], 0x0020 [R3]
+Dpad seen: 0x00 [None]
+Trigger L seen: 0
+Trigger R seen: 0
+Dominant buttons: 0x0020 [R3]
+Dominant dpad: 0x00 [None]
+Dominant triggers: L=0 R=0
+Axis ranges: LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+Delta vs neutral: buttons=0x0020 [R3] dpad=0x00 [None] trigL=0 trigR=0
+Sample payloads:
+  count=20 data=00 20 00 00 00 16 00 EA FF 16 00 EA FF 00 00 00 00 00 00 00 00 00 00
+  count=13 data=00 20 00 00 00 2C 00 D4 FF 2C 00 D4 FF 00 00 00 00 00 00 00 00 00 00
+  count=11 data=00 20 00 00 00 58 00 A8 FF 58 00 A8 FF 00 00 00 00 00 00 00 00 00 00
+
+Step: L3 #3
+Instruction: Press and hold L3 for capture #3
+Raw bytes: 8192
+Frames: total=128 log=77 pad=51
+Buttons seen: 0x0020 [R3]
+Dpad seen: 0x00 [None]
+Trigger L seen: 0
+Trigger R seen: 0
+Dominant buttons: 0x0020 [R3]
+Dominant dpad: 0x00 [None]
+Dominant triggers: L=0 R=0
+Axis ranges: LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+Delta vs neutral: buttons=0x0020 [R3] dpad=0x00 [None] trigL=0 trigR=0
+Sample payloads:
+  count=19 data=00 20 00 00 00 16 00 EA FF 16 00 EA FF 00 00 00 00 00 00 00 00 00 00
+  count=11 data=00 20 00 00 00 2C 00 D4 FF 2C 00 D4 FF 00 00 00 00 00 00 00 00 00 00
+  count=11 data=00 20 00 00 00 42 00 BE FF 42 00 BE FF 00 00 00 00 00 00 00 00 00 00
+
+Step: R3 #1
+Instruction: Press and hold R3 for capture #1
+Raw bytes: 8192
+Frames: total=128 log=75 pad=53
+Buttons seen: 0x0000 [None], 0x0010 [L3]
+Dpad seen: 0x00 [None]
+Trigger L seen: 0
+Trigger R seen: 0
+Dominant buttons: 0x0010 [L3]
+Dominant dpad: 0x00 [None]
+Dominant triggers: L=0 R=0
+Axis ranges: LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+Delta vs neutral: buttons=0x0010 [L3] dpad=0x00 [None] trigL=0 trigR=0
+Sample payloads:
+  count=17 data=00 10 00 00 00 58 00 A8 FF 58 00 A8 FF 00 00 00 00 00 00 00 00 00 00
+  count=11 data=00 10 00 00 00 2C 00 D4 FF 2C 00 D4 FF 00 00 00 00 00 00 00 00 00 00
+  count=11 data=00 10 00 00 00 42 00 BE FF 42 00 BE FF 00 00 00 00 00 00 00 00 00 00
+
+Step: R3 #2
+Instruction: Press and hold R3 for capture #2
+Raw bytes: 8192
+Frames: total=128 log=74 pad=54
+Buttons seen: 0x0010 [L3]
+Dpad seen: 0x00 [None]
+Trigger L seen: 0
+Trigger R seen: 0
+Dominant buttons: 0x0010 [L3]
+Dominant dpad: 0x00 [None]
+Dominant triggers: L=0 R=0
+Axis ranges: LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+Delta vs neutral: buttons=0x0010 [L3] dpad=0x00 [None] trigL=0 trigR=0
+Sample payloads:
+  count=18 data=00 10 00 00 00 58 00 A8 FF 58 00 A8 FF 00 00 00 00 00 00 00 00 00 00
+  count=14 data=00 10 00 00 00 16 00 EA FF 16 00 EA FF 00 00 00 00 00 00 00 00 00 00
+  count=11 data=00 10 00 00 00 2C 00 D4 FF 2C 00 D4 FF 00 00 00 00 00 00 00 00 00 00
+
+Step: R3 #3
+Instruction: Press and hold R3 for capture #3
+Raw bytes: 8192
+Frames: total=128 log=73 pad=55
+Buttons seen: 0x0010 [L3]
+Dpad seen: 0x00 [None]
+Trigger L seen: 0
+Trigger R seen: 0
+Dominant buttons: 0x0010 [L3]
+Dominant dpad: 0x00 [None]
+Dominant triggers: L=0 R=0
+Axis ranges: LX=22..88 LY=-88..-22 RX=22..88 RY=-88..-22
+Delta vs neutral: buttons=0x0010 [L3] dpad=0x00 [None] trigL=0 trigR=0
+Sample payloads:
+  count=18 data=00 10 00 00 00 58 00 A8 FF 58 00 A8 FF 00 00 00 00 00 00 00 00 00 00
+  count=15 data=00 10 00 00 00 16 00 EA FF 16 00 EA FF 00 00 00 00 00 00 00 00 00 00
+  count=11 data=00 10 00 00 00 2C 00 D4 FF 2C 00 D4 FF 00 00 00 00 00 00 00 00 00 00
+
+Raw capture file: F:\GitRevised\OGX-Mini-Plus\!test\button_map_raw_2026-04-16_12-43-46.txt
+Packet capture file: F:\GitRevised\OGX-Mini-Plus\!test\button_map_packets_2026-04-16_12-43-46.txt
