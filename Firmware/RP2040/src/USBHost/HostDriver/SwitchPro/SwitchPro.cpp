@@ -127,6 +127,8 @@ void SwitchProHost::reset_state()
     ready_keepalive_budget_ = 0;
     clone_full_report_ready_at_ms_ = 0;
     clone_ready_mode_retry_at_ms_ = 0;
+    get_report_probe_started_at_ms_ = 0;
+    get_report_probe_timeout_count_ = 0;
     control_fallback_state_ = ControlFallbackState::IDLE;
     get_report_probe_state_ = GetReportProbeState::IDLE;
     std::memset(&prev_in_report_, 0, sizeof(prev_in_report_));
@@ -434,6 +436,7 @@ void SwitchProHost::advance_after_led()
 void SwitchProHost::advance_after_home_led()
 {
     init_timeout_count_ = 0;
+    ready_keepalive_budget_ = READY_KEEPALIVE_BURST;
     if (clone_init_path_active_ && !input_stream_seen_ && !clone_ready_mode_retry_attempted_)
     {
         clone_ready_mode_retry_pending_ = true;
@@ -529,6 +532,41 @@ bool SwitchProHost::queue_control_fallback_step(uint8_t address, uint8_t instanc
     }
 }
 
+bool SwitchProHost::queue_get_report_probe_step(uint8_t address, uint8_t instance)
+{
+    uint8_t report_id = 0;
+    uint16_t report_len = 64;
+
+    switch (get_report_probe_state_)
+    {
+        case GetReportProbeState::INPUT_0x30:
+            report_id = SwitchPro::REPORT::INPUT_IMU_DATA;
+            report_len = static_cast<uint16_t>(sizeof(SwitchPro::InReport));
+            break;
+
+        case GetReportProbeState::INPUT_0x81:
+            report_id = 0x81;
+            report_len = 64;
+            break;
+
+        case GetReportProbeState::INPUT_0x21:
+            report_id = SwitchPro::REPORT::INPUT_SUBCMD_REPLY;
+            report_len = 64;
+            break;
+
+        default:
+            return false;
+    }
+
+    if (!send_control_get_report(address, instance, report_id, HID_REPORT_TYPE_INPUT, report_len))
+    {
+        return false;
+    }
+
+    get_report_probe_started_at_ms_ = board_api::ms_since_boot();
+    return true;
+}
+
 void SwitchProHost::maybe_start_control_fallback(uint8_t address, uint8_t instance, const char* reason)
 {
     if (input_stream_seen_ || control_fallback_attempted_ || control_fallback_active_ || !is_ready())
@@ -576,17 +614,19 @@ void SwitchProHost::maybe_start_get_report_probe(uint8_t address, uint8_t instan
         return;
     }
 
+    const bool prioritize_clone_reports = clone_init_path_active_ && saw_vendor_status_report_;
     get_report_probe_attempted_ = true;
     get_report_probe_active_ = true;
-    get_report_probe_state_ = GetReportProbeState::INPUT_0x30;
+    get_report_probe_state_ = prioritize_clone_reports ? GetReportProbeState::INPUT_0x81
+                                                       : GetReportProbeState::INPUT_0x30;
     OGXM_LOG("SwitchProHost[%u]: starting get-report probe state=%s reason=%s\n",
              idx_, get_report_probe_state_name(get_report_probe_state_),
              (reason != nullptr) ? reason : "n/a");
 
-    if (!send_control_get_report(address, instance, SwitchPro::REPORT::INPUT_IMU_DATA,
-                                 HID_REPORT_TYPE_INPUT, sizeof(SwitchPro::InReport)))
+    if (!queue_get_report_probe_step(address, instance))
     {
         get_report_probe_active_ = false;
+        get_report_probe_started_at_ms_ = 0;
         get_report_probe_state_ = GetReportProbeState::FAILED;
         OGXM_LOG("SwitchProHost[%u]: get-report probe failed to queue initial step\n", idx_);
     }
@@ -624,16 +664,19 @@ void SwitchProHost::advance_control_fallback(uint8_t address, uint8_t instance, 
         case ControlFallbackState::SET_FULL_REPORT:
             control_fallback_state_ = ControlFallbackState::DONE;
             control_fallback_active_ = false;
+            ready_keepalive_budget_ = READY_KEEPALIVE_BURST;
             OGXM_LOG("SwitchProHost[%u]: control fallback finished after MODE set-report\n", idx_);
             if (saw_vendor_status_report_)
             {
-                OGXM_LOG("SwitchProHost[%u]: deferring automatic get-report probe after 0x81 vendor-status observation\n",
+                OGXM_LOG("SwitchProHost[%u]: starting automatic get-report probe after 0x81 vendor-status observation\n",
                          idx_);
+                maybe_start_get_report_probe(address, instance, "post-control-fallback-after-0x81");
             }
             else
             {
-                OGXM_LOG("SwitchProHost[%u]: automatic get-report probe deferred pending more clone observations\n",
+                OGXM_LOG("SwitchProHost[%u]: starting automatic get-report probe without additional clone observations\n",
                          idx_);
+                maybe_start_get_report_probe(address, instance, "post-control-fallback-no-vendor-status");
             }
             return;
         default:
@@ -660,10 +703,12 @@ void SwitchProHost::advance_get_report_probe(uint8_t address, uint8_t instance, 
         return;
     }
 
+    const bool prioritize_clone_reports = clone_init_path_active_ && saw_vendor_status_report_;
     const uint8_t b0 = (len > 0) ? control_get_report_buffer_[0] : 0;
     const uint8_t b1 = (len > 1) ? control_get_report_buffer_[1] : 0;
     const uint8_t b2 = (len > 2) ? control_get_report_buffer_[2] : 0;
     const uint8_t b3 = (len > 3) ? control_get_report_buffer_[3] : 0;
+    get_report_probe_started_at_ms_ = 0;
 
     OGXM_LOG("SwitchProHost[%u]: get-report complete state=%s report=0x%02X type=%u len=%u success=%u bytes=%02X %02X %02X %02X\n",
              idx_, get_report_probe_state_name(get_report_probe_state_), report_id, report_type, len,
@@ -673,7 +718,7 @@ void SwitchProHost::advance_get_report_probe(uint8_t address, uint8_t instance, 
     {
         case GetReportProbeState::INPUT_0x30:
             get_report_probe_state_ = GetReportProbeState::INPUT_0x81;
-            if (!send_control_get_report(address, instance, 0x81, HID_REPORT_TYPE_INPUT, 64))
+            if (!queue_get_report_probe_step(address, instance))
             {
                 get_report_probe_active_ = false;
                 get_report_probe_state_ = GetReportProbeState::FAILED;
@@ -684,8 +729,7 @@ void SwitchProHost::advance_get_report_probe(uint8_t address, uint8_t instance, 
 
         case GetReportProbeState::INPUT_0x81:
             get_report_probe_state_ = GetReportProbeState::INPUT_0x21;
-            if (!send_control_get_report(address, instance, SwitchPro::REPORT::INPUT_SUBCMD_REPLY,
-                                         HID_REPORT_TYPE_INPUT, 64))
+            if (!queue_get_report_probe_step(address, instance))
             {
                 get_report_probe_active_ = false;
                 get_report_probe_state_ = GetReportProbeState::FAILED;
@@ -695,6 +739,15 @@ void SwitchProHost::advance_get_report_probe(uint8_t address, uint8_t instance, 
             return;
 
         case GetReportProbeState::INPUT_0x21:
+            if (prioritize_clone_reports)
+            {
+                get_report_probe_state_ = GetReportProbeState::DONE;
+                get_report_probe_active_ = false;
+                OGXM_LOG("SwitchProHost[%u]: clone-prioritized get-report probe finished without interrupt input stream\n",
+                         idx_);
+                return;
+            }
+
             get_report_probe_state_ = GetReportProbeState::DONE;
             get_report_probe_active_ = false;
             OGXM_LOG("SwitchProHost[%u]: get-report probe finished without interrupt input stream\n", idx_);
@@ -1165,6 +1218,67 @@ bool SwitchProHost::send_feedback(Gamepad& gamepad, uint8_t address, uint8_t ins
                 maybe_start_control_fallback(address, instance, "clone-post-ready-mode-retry-no-input");
                 return false;
             }
+        }
+
+        if (get_report_probe_active_ &&
+            get_report_probe_started_at_ms_ != 0 &&
+            (board_api::ms_since_boot() - get_report_probe_started_at_ms_) >= GET_REPORT_PROBE_TIMEOUT_MS)
+        {
+            ++get_report_probe_timeout_count_;
+            OGXM_LOG("SwitchProHost[%u]: get-report probe timeout state=%s count=%u\n",
+                     idx_, get_report_probe_state_name(get_report_probe_state_), get_report_probe_timeout_count_);
+            get_report_probe_started_at_ms_ = 0;
+
+            if (get_report_probe_state_ == GetReportProbeState::INPUT_0x30)
+            {
+                get_report_probe_state_ = GetReportProbeState::INPUT_0x81;
+                if (queue_get_report_probe_step(address, instance))
+                {
+                    return false;
+                }
+            }
+            else if (clone_init_path_active_ &&
+                     saw_vendor_status_report_ &&
+                     get_report_probe_state_ == GetReportProbeState::INPUT_0x81)
+            {
+                get_report_probe_state_ = GetReportProbeState::INPUT_0x21;
+                if (queue_get_report_probe_step(address, instance))
+                {
+                    return false;
+                }
+            }
+
+            get_report_probe_active_ = false;
+            get_report_probe_state_ = GetReportProbeState::FAILED;
+            ready_keepalive_budget_ = READY_KEEPALIVE_BURST;
+
+            if (get_report_probe_timeout_count_ < MAX_GET_REPORT_PROBE_TIMEOUTS)
+            {
+                get_report_probe_attempted_ = false;
+                OGXM_LOG("SwitchProHost[%u]: get-report probe timed out, allowing retry\n", idx_);
+            }
+            else
+            {
+                OGXM_LOG("SwitchProHost[%u]: get-report probe timed out, retries exhausted\n", idx_);
+            }
+            return false;
+        }
+
+        if (ready_keepalive_budget_ > 0 &&
+            !control_fallback_active_ &&
+            !get_report_probe_active_)
+        {
+            --ready_keepalive_budget_;
+            send_keepalive_rumble(address, instance, "awaiting-input-stream");
+            return false;
+        }
+
+        if (control_fallback_attempted_ &&
+            !get_report_probe_attempted_ &&
+            !get_report_probe_active_)
+        {
+            maybe_start_get_report_probe(address, instance, "send-feedback-no-input-after-fallback");
+            return false;
         }
 
         const Gamepad::PadOut dropped_out = gamepad.get_pad_out();

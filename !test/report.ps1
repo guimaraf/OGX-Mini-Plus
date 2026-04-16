@@ -1,5 +1,5 @@
 $port = "COM3"
-$durationSeconds = 10
+$durationSeconds = 15
 
 $p = New-Object System.IO.Ports.SerialPort $port,115200,'None',8,'One'
 $p.ReadTimeout = 200

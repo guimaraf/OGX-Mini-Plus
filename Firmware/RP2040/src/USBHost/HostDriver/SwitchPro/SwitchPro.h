@@ -73,8 +73,10 @@ private:
     static constexpr uint32_t INIT_TIMEOUT_OPTIONAL = 16;
     static constexpr uint32_t CLONE_FULL_REPORT_SETTLE_DELAY_MS = 75;
     static constexpr uint32_t CLONE_READY_MODE_RETRY_DELAY_MS = 120;
+    static constexpr uint32_t GET_REPORT_PROBE_TIMEOUT_MS = 180;
     static constexpr uint8_t MAX_DEBUG_INPUT_REPORT_LOGS = 24;
     static constexpr uint8_t MAX_VENDOR_STATUS_REPORT_LOGS = 12;
+    static constexpr uint8_t MAX_GET_REPORT_PROBE_TIMEOUTS = 3;
     static constexpr uint8_t READY_KEEPALIVE_BURST = 8;
     static constexpr uint8_t CLONE_VENDOR_STATUS_SIGNATURE[8] = {
         0x81, 0x01, 0x00, 0x03, 0x42, 0x06, 0xF6, 0xC4
@@ -102,6 +104,8 @@ private:
     uint8_t ready_keepalive_budget_{0};
     uint32_t clone_full_report_ready_at_ms_{0};
     uint32_t clone_ready_mode_retry_at_ms_{0};
+    uint32_t get_report_probe_started_at_ms_{0};
+    uint8_t get_report_probe_timeout_count_{0};
     ControlFallbackState control_fallback_state_{ControlFallbackState::IDLE};
     GetReportProbeState get_report_probe_state_{GetReportProbeState::IDLE};
 
@@ -134,6 +138,7 @@ private:
     void advance_get_report_probe(uint8_t address, uint8_t instance, bool success,
                                   uint8_t report_id, uint8_t report_type, uint16_t len);
     bool queue_control_fallback_step(uint8_t address, uint8_t instance);
+    bool queue_get_report_probe_step(uint8_t address, uint8_t instance);
 
     bool send_hid_command(uint8_t address, uint8_t instance, uint8_t command);
     bool send_subcommand(uint8_t address, uint8_t instance, uint8_t sub_command,
