@@ -27,6 +27,17 @@ namespace
 
 namespace SwitchProCloneRecovery
 {
+    uint32_t debug_flags()
+    {
+        return read_flags();
+    }
+
+    void reset_all()
+    {
+        watchdog_hw->scratch[0] = 0;
+        watchdog_hw->scratch[1] = 0;
+    }
+
     void mark_clone_profile_detected()
     {
         write_flags(read_flags() | FLAG_PROFILE_DETECTED);

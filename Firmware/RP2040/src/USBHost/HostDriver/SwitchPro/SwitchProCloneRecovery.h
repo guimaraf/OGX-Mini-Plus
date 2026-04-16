@@ -1,8 +1,13 @@
 #ifndef _SWITCH_PRO_CLONE_RECOVERY_H_
 #define _SWITCH_PRO_CLONE_RECOVERY_H_
 
+#include <cstdint>
+
 namespace SwitchProCloneRecovery
 {
+    uint32_t debug_flags();
+    void reset_all();
+
     void mark_clone_profile_detected();
     bool clone_profile_detected();
 

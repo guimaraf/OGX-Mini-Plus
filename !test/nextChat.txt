@@ -1,0 +1,103 @@
+Relatório Para O Próximo Chat
+
+Projeto: F:\GitRevised\OGX-Mini-Plus
+
+Objetivo atual do suporte clone:
+
+suporte ao controle clone de Nintendo Switch
+wake/enumeração/hot-plug já saiu da fase crítica
+foco agora está em validar e refinar os inputs capturados
+Estado Atual
+
+O que já está funcionando:
+
+o clone acorda de forma consistente
+hot-plug USB está funcional
+reconnect USB voltou a funcionar
+boot da placa e reconnect não ficam mais presos no estado “parcial”
+o stream de input 0x30 está chegando
+botões, dpad, triggers e analógicos já aparecem nos pacotes capturados
+o problema de boot inconsistente foi resolvido limpando flags residuais de SwitchProCloneRecovery no boot
+Evidência prática recente:
+
+report1-PostFlash.txt > 300 kb
+report2-BootPlaca.txt > 300 kb
+report3-USBReconect.txt > 300 kb
+Isso indicou que o ciclo completo voltou a ficar consistente após flash, boot normal e reconexão USB.
+
+Problema Resolvido Hoje
+
+Havia um estado residual no recovery que fazia a primeira captura pós-flash ser “completa”, mas boots/reconnects seguintes ficarem encurtados.
+A correção foi:
+
+adicionar limpeza total dos flags de SwitchProCloneRecovery
+logar os flags no boot
+limpar os flags no startup quando viessem residuais
+Arquivos relevantes dessa correção:
+
+SwitchProCloneRecovery.h (line 1)
+SwitchProCloneRecovery.cpp (line 1)
+Standard.cpp (line 1)
+Captura E Ferramentas
+
+Scripts criados/melhorados:
+
+convertAscii.ps1 (line 1)
+captureButtonMap.ps1 (line 1)
+captureButtonMap.bat (line 1)
+Estado desses scripts:
+
+convertAscii.ps1 já separa log textual de payload/pacotes
+captureButtonMap.ps1 guia teste de botão por botão
+hoje também foi corrigido o captureButtonMap.ps1 para:
+rotular corretamente os nomes dos botões
+rotular corretamente o dpad
+preferir estado não neutro no cálculo de dominant, para evitar relatórios enganando quando existem frames neutros na janela
+A sintaxe do captureButtonMap.ps1 foi validada e está ok.
+
+Leitura Dos Últimos Testes De Botões
+
+Arquivos analisados:
+
+button_map_packets_2026-04-16_02-28-16.txt
+button_map_raw_2026-04-16_02-28-16.txt
+button_map_report_2026-04-16_02-28-16.txt
+Conclusão:
+
+os inputs reais já estavam chegando corretamente
+o problema principal do relatório era apresentação errada no script
+A/B/X/Y, dpad, triggers e analógicos já mostraram atividade coerente
+alguns campos Dominant estavam falsamente neutros por causa da lógica anterior do script, agora corrigida
+O Que Falta Fazer
+
+Próxima etapa recomendada:
+
+rodar nova bateria com o captureButtonMap.ps1 já corrigido
+gerar novo:
+button_map_report_*.txt
+button_map_packets_*.txt
+Depois disso, validar:
+
+tabela final de botões
+dpad
+ZL/ZR
+centros e extremos dos analógicos
+se existe algum botão ainda sem correspondência correta no PadIn
+Se a nova captura vier limpa e coerente, o próximo passo deixa de ser captura e passa a ser acabamento do suporte clone.
+
+Arquivos Mais Importantes Agora
+
+captureButtonMap.ps1 (line 1)
+convertAscii.ps1 (line 1)
+packet_output.txt (line 1)
+Gamepad.h (line 1)
+SwitchPro.cpp (line 1)
+Frase Sugerida Para O Próximo Chat
+
+“Quero continuar a validação do suporte ao controle clone de Nintendo Switch. Wake/enumeração/hot-plug já estão consistentes. Agora quero focar só na validação final do mapeamento dos inputs capturados no PadIn, usando o captureButtonMap.ps1 já corrigido. Ignore build.”
+
+Se quiser uma versão mais completa para colar:
+
+“Projeto em F:\\GitRevised\\OGX-Mini-Plus. O suporte ao clone de Nintendo Switch já avançou bastante: wake, enumeração, hot-plug, boot e reconnect USB estão consistentes. O problema de estado residual no boot foi resolvido limpando flags do SwitchProCloneRecovery. Também corrigi o captureButtonMap.ps1, porque o relatório estava rotulando botões e dpad errado e deixando estados neutros vencerem no campo dominant. Agora quero analisar a próxima bateria de testes para validar definitivamente o mapeamento de botões, dpad, triggers e analógicos no PadIn. Não fazer build.”
+
+Bom ponto de parada. Amanhã o contexto já volta bem delimitado.

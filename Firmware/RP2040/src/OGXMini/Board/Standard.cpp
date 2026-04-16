@@ -149,6 +149,14 @@ void standard::host_mounted(bool host_mounted) {
 void standard::initialize() {
     board_api::init_board();
 
+    const uint32_t recovery_flags = SwitchProCloneRecovery::debug_flags();
+    OGXM_LOG("Switch clone recovery flags on boot: 0x%08lX\n",
+             static_cast<unsigned long>(recovery_flags));
+    if (recovery_flags != 0) {
+        SwitchProCloneRecovery::reset_all();
+        OGXM_LOG("Switch clone recovery flags cleared on boot\n");
+    }
+
     UserSettings& user_settings = UserSettings::get_instance();
     user_settings.initialize_flash();
 
