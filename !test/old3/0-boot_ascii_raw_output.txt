@@ -1,0 +1,1425 @@
+OGXM: SwitchProHost[0]: report_sent_cb addr=1 inst=0 SwitchProHost[0]: recv addr=1 inst=0 len=64 id=0x21 staHost[0]: unparsed report len=64 id=0x21 state=SET_LED
+Oddr=1 inst=0 len=12 id=0x01 state=WAIT_LED
+OGXM: Switchcmd_reply ack=0x80 subcmd=0x30 success=1 state=WAIT_LEDddr=1 inst=0 subcmd=0x38 seq=4 len=14 ok=1
+OGXM: Switcht=0 len=64 id=0x30 state=WAIT_HOME_LED bytes=30 D8 80 0hProHost[0]: state WAIT_HOME_LED -> READY_FULL (home lelen=10 id=0x10 state=READY_FULL
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 byt00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 0c 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 00 80 
+01 80 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 04 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 byt00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 0e ff 
+ea ff 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 byt00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 01 80 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 04 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 fe a4 
+ea ff 16 00 ea ff 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 byt00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 00 80 
+a8 ff 58 00 a8 ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 04 00 00 00 ce 88 
+ea ff 16 00 ea ff 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 byt00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 00 80 
+52 89 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 ff 7f 
+ff 7f 58 00 a8 ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 00 80 
+ea ff 16 00 ea ff 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 byt00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 ee d9 
+ea ff 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 00 80 
+a8 ff 58 00 a8 ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 byt00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 58 00 
+a8 ff 58 00 a8 ff 00 00 00 0000 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: 40 80 64 01 00 00 01 00 17 00 00 00 00 00 16 00 
+ea ff 16 00 ea ff 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad input
+OGXM: Wrote 64 byt00 00 00 00 00 00 00 00 00 00 
+
+OGXM: Writing gamepad i

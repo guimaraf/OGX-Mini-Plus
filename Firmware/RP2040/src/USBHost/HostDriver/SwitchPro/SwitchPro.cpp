@@ -118,6 +118,7 @@ void SwitchProHost::reset_state()
     clone_full_report_delay_logged_ = false;
     clone_ready_mode_retry_pending_ = false;
     clone_ready_mode_retry_attempted_ = false;
+    clone_post_ready_reinit_attempted_ = false;
     control_fallback_attempted_ = false;
     control_fallback_active_ = false;
     get_report_probe_attempted_ = false;
@@ -437,13 +438,8 @@ void SwitchProHost::advance_after_home_led()
 {
     init_timeout_count_ = 0;
     ready_keepalive_budget_ = READY_KEEPALIVE_BURST;
-    if (clone_init_path_active_ && !input_stream_seen_ && !clone_ready_mode_retry_attempted_)
-    {
-        clone_ready_mode_retry_pending_ = true;
-        clone_ready_mode_retry_at_ms_ = board_api::ms_since_boot() + CLONE_READY_MODE_RETRY_DELAY_MS;
-        OGXM_LOG("SwitchProHost[%u]: clone path scheduled post-ready MODE 0x03 retry delay=%u ms\n",
-                 idx_, CLONE_READY_MODE_RETRY_DELAY_MS);
-    }
+    clone_ready_mode_retry_pending_ = false;
+    clone_ready_mode_retry_at_ms_ = 0;
     set_init_state(imu_enabled_ ? InitState::READY_FULL : InitState::READY_COMPAT_RUMBLE,
                    "home led acknowledged");
 }
@@ -512,6 +508,63 @@ void SwitchProHost::mark_input_stream_seen(uint8_t report_id)
     get_report_probe_active_ = false;
     OGXM_LOG("SwitchProHost[%u]: input stream detected report=0x%02X, stopping fallback probes\n",
              idx_, report_id);
+}
+
+bool SwitchProHost::maybe_send_clone_post_ready_mode_retry(uint8_t address, uint8_t instance, const char* reason)
+{
+    if (!is_ready() ||
+        input_stream_seen_ ||
+        !clone_init_path_active_ ||
+        clone_ready_mode_retry_attempted_ ||
+        control_fallback_active_)
+    {
+        return false;
+    }
+
+    const uint8_t full_report_mode[] = { SwitchPro::CMD::FULL_REPORT_MODE };
+    clone_ready_mode_retry_pending_ = false;
+    clone_ready_mode_retry_attempted_ = true;
+    clone_ready_mode_retry_at_ms_ = board_api::ms_since_boot() + CLONE_READY_MODE_RETRY_DELAY_MS;
+
+    OGXM_LOG("SwitchProHost[%u]: clone path sending immediate post-ready MODE 0x03 retry (%s), wait=%u ms\n",
+             idx_, (reason != nullptr) ? reason : "no reason", CLONE_READY_MODE_RETRY_DELAY_MS);
+
+    if (!send_subcommand(address, instance, SwitchPro::CMD::MODE,
+                         full_report_mode, sizeof(full_report_mode)))
+    {
+        clone_ready_mode_retry_attempted_ = false;
+        OGXM_LOG("SwitchProHost[%u]: clone path immediate post-ready MODE 0x03 retry failed to queue\n", idx_);
+        return false;
+    }
+
+    return true;
+}
+
+bool SwitchProHost::maybe_start_clone_post_ready_reinit(uint8_t address, uint8_t instance, const char* reason)
+{
+    if (!is_ready() ||
+        input_stream_seen_ ||
+        !clone_init_path_active_ ||
+        clone_post_ready_reinit_attempted_ ||
+        control_fallback_active_ ||
+        get_report_probe_active_)
+    {
+        return false;
+    }
+
+    const uint8_t saved_sequence_counter = sequence_counter_;
+    reset_state();
+    sequence_counter_ = saved_sequence_counter;
+    clone_init_path_active_ = true;
+    saw_vendor_status_report_ = true;
+    clone_post_ready_reinit_attempted_ = true;
+    clone_full_report_ready_at_ms_ = board_api::ms_since_boot() + CLONE_FULL_REPORT_SETTLE_DELAY_MS;
+    clone_full_report_delay_logged_ = false;
+
+    OGXM_LOG("SwitchProHost[%u]: clone path starting controlled post-ready reinit (%s)\n",
+             idx_, (reason != nullptr) ? reason : "no reason");
+    init_switch_host(address, instance);
+    return true;
 }
 
 bool SwitchProHost::queue_control_fallback_step(uint8_t address, uint8_t instance)
@@ -588,6 +641,16 @@ void SwitchProHost::maybe_start_control_fallback(uint8_t address, uint8_t instan
         OGXM_LOG("SwitchProHost[%u]: delaying control fallback while awaiting clone MODE 0x03 retry result\n",
                  idx_);
         return;
+    }
+
+    if (clone_init_path_active_ &&
+        clone_ready_mode_retry_attempted_ &&
+        !clone_post_ready_reinit_attempted_)
+    {
+        if (maybe_start_clone_post_ready_reinit(address, instance, reason))
+        {
+            return;
+        }
     }
 
     control_fallback_attempted_ = true;
@@ -1168,13 +1231,21 @@ void SwitchProHost::process_report(Gamepad& gamepad, uint8_t address, uint8_t in
     {
         init_switch_host(address, instance);
     }
-    else if (!input_stream_seen_ &&
-             !control_fallback_attempted_ &&
-             report != nullptr &&
-             len > 0 &&
-             report[0] == SwitchPro::REPORT::INPUT_SUBCMD_REPLY)
+    else if (!input_stream_seen_)
     {
-        maybe_start_control_fallback(address, instance, "ready-subcmd-reply-no-input");
+        if (maybe_send_clone_post_ready_mode_retry(address, instance, "ready-report-no-input"))
+        {
+            tuh_hid_receive_report(address, instance);
+            return;
+        }
+
+        if (!control_fallback_attempted_ &&
+            report != nullptr &&
+            len > 0 &&
+            report[0] == SwitchPro::REPORT::INPUT_SUBCMD_REPLY)
+        {
+            maybe_start_control_fallback(address, instance, "ready-subcmd-reply-no-input");
+        }
     }
 
     tuh_hid_receive_report(address, instance);
@@ -1192,6 +1263,11 @@ bool SwitchProHost::send_feedback(Gamepad& gamepad, uint8_t address, uint8_t ins
 
     if (!input_stream_seen_)
     {
+        if (maybe_send_clone_post_ready_mode_retry(address, instance, "send-feedback-no-input"))
+        {
+            return false;
+        }
+
         if (clone_init_path_active_)
         {
             const uint32_t now_ms = board_api::ms_since_boot();
@@ -1210,6 +1286,13 @@ bool SwitchProHost::send_feedback(Gamepad& gamepad, uint8_t address, uint8_t ins
                 }
 
                 OGXM_LOG("SwitchProHost[%u]: clone path waiting for post-ready MODE 0x03 retry window\n", idx_);
+                return false;
+            }
+
+            if (clone_ready_mode_retry_attempted_ &&
+                now_ms < clone_ready_mode_retry_at_ms_)
+            {
+                OGXM_LOG("SwitchProHost[%u]: waiting for immediate post-ready MODE 0x03 retry result\n", idx_);
                 return false;
             }
 
@@ -1351,6 +1434,19 @@ void SwitchProHost::report_sent_cb(Gamepad& gamepad, uint8_t address, uint8_t in
     if (!is_ready())
     {
         init_switch_host(address, instance);
+        return;
+    }
+
+    if (maybe_send_clone_post_ready_mode_retry(address, instance, "interrupt-out-complete-without-input"))
+    {
+        return;
+    }
+
+    if (clone_init_path_active_ &&
+        clone_ready_mode_retry_attempted_ &&
+        board_api::ms_since_boot() < clone_ready_mode_retry_at_ms_)
+    {
+        OGXM_LOG("SwitchProHost[%u]: report_sent_cb waiting for immediate post-ready MODE 0x03 retry result\n", idx_);
         return;
     }
 

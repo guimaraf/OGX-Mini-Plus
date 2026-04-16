@@ -95,6 +95,7 @@ private:
     bool clone_full_report_delay_logged_{false};
     bool clone_ready_mode_retry_pending_{false};
     bool clone_ready_mode_retry_attempted_{false};
+    bool clone_post_ready_reinit_attempted_{false};
     bool control_fallback_attempted_{false};
     bool control_fallback_active_{false};
     bool get_report_probe_attempted_{false};
@@ -131,6 +132,8 @@ private:
     void advance_after_home_led();
     void observe_vendor_status_report(uint8_t address, uint8_t instance, const uint8_t* report, uint16_t len);
     void mark_input_stream_seen(uint8_t report_id);
+    bool maybe_send_clone_post_ready_mode_retry(uint8_t address, uint8_t instance, const char* reason);
+    bool maybe_start_clone_post_ready_reinit(uint8_t address, uint8_t instance, const char* reason);
     void maybe_start_control_fallback(uint8_t address, uint8_t instance, const char* reason);
     void maybe_start_get_report_probe(uint8_t address, uint8_t instance, const char* reason);
     void advance_control_fallback(uint8_t address, uint8_t instance, bool success,

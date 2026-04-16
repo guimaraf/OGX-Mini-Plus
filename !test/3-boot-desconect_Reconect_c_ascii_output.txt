@@ -1,0 +1,137 @@
+OGXM: Board initialized
+OGXM: Switch clone recovery flags on boot: 0x00000003
+OGXM: Switch clone recovery flags cleared on boot
+OGXM: Initializing flash
+OGXM: Flash already initialized: 248
+OGXM: profile_analog_enabled_: 1
+OGXM: GamepadMapper: JoyL: Disabled, JoyR: Disabled, TrigL: Disabled, TrigR: Disabled
+OGXM: Driver type read from flash: WEBAPP
+OGXM: USB host already connected on boot, waiting for mount
+OGXM: SwitchProHost[0]: initialize addr=1 inst=0 desc_len=203
+OGXM: SwitchProHost[0]: reset_state -> HANDSHAKE
+OGXM: SwitchProHost[0]: send_hid_command addr=1 inst=0 cmd=0x02 ok=1
+OGXM: SwitchProHost[0]: state HANDSHAKE -> DISABLE_TIMEOUT (handshake queued)
+OGXM: SwitchProHost[0]: report_sent_cb addr=1 inst=0 len=2 id=0x80 state=DISABLE_TIMEOUT
+OGXM: SwitchProHost[0]: send_hid_command addr=1 inst=0 cmd=0x04 ok=1
+OGXM: SwitchProHost[0]: state DISABLE_TIMEOUT -> SET_FULL_REPORT (disable-timeout queued)
+OGXM: SwitchProHost[0]: recv addr=1 inst=0 len=64 id=0x81 state=SET_FULL_REPORT bytes=81 01 00 03
+OGXM: SwitchProHost[0]: activating ParallelClone init path (matched clone 0x81 vendor-status fingerprint)
+OGXM: SwitchProHost[0]: scheduling MODE 0x03 settle delay=75 ms after 0x81 vendor-status
+OGXM: SwitchProHost[0]: vendor_status_0x81 addr=1 inst=0 len=64 state=SET_FULL_REPORT bytes=81 01 00 03 42 06 F6 C4
+OGXM: SwitchProHost[0]: unparsed report len=64 id=0x81 state=SET_FULL_REPORT
+OGXM: SwitchProHost[0]: clone path delaying MODE 0x03 for settle window remaining=51 ms
+OGXM: SwitchProHost[0]: report_sent_cb addr=1 inst=0 len=2 id=0x80 state=SET_FULL_REPORT
+OGXM: SwitchProHost[0]: recv addr=1 inst=0 len=64 id=0x81 state=SET_FULL_REPORT bytes=81 02 00 00
+OGXM: SwitchProHost[0]: vendor_status_0x81 addr=1 inst=0 len=64 state=SET_FULL_REPORT bytes=81 02 00 00 00 00 00 00
+OGXM: SwitchProHost[0]: unparsed report len=64 id=0x81 state=SET_FULL_REPORT
+OGXM: SwitchProHost[0]: send_feedback while not ready, state=SET_FULL_REPORT
+OGXM: SwitchProHost[0]: input stream detected report=0x30, stopping fallback probes
+OGXM: SwitchProHost[0]: recv addr=1 inst=0 len=64 id=0x30 state=SET_FULL_REPORT bytes=30 70 80 00
+OGXM: Writing gamepad input
+OGXM: SwitchProHost[0]: send_subcommand addr=1 inst=0 subcmd=0x03 seq=0 len=12 ok=1
+OGXM: Wrote 64 bytes
+OGXM: SwitchProHost[0]: state SET_FULL_REPORT -> WAIT_FULL_REPORT (full-report mode queued)
+OGXM: SwitchProHost[0]: recv addr=1 ins_FULL_REPORT bytes=30 72 80 00
+OGXM: SwitchProHost[0]: ORT -> ENABLE_VIBRATION (full report acknowledged)
+OGXM: SwitchProHost[0]: send_subcommand addr=1 inst=0 subcm 64 bytes
+OGXM: SwitchProHost[0]: state ENABLE_VIBRATIOst[0]: subcmd_reply ack=0x80 subcmd=0x03 success=1 statXM: SwitchProHost[0]: unparsed report len=64 id=0x21 stchProHost[0]: send_feedback while not ready, state=WAITost[0]: recv addr=1 inst=0 len=64 id=0x21 state=WAIT_VIwitchProHost[0]: subcmd_reply ack=0x80 subcmd=0x48 succoHost[0]: state WAIT_VIBRATION -> ENABLE_IMU (vibration=64 id=0x21 state=WAIT_IMU bytes=21 8C 80 00
+OGXM: SwitchProHost[0]: recv addr=1 inst=0 len=64 id=0x30 state=WAIT_LED bytes=30 8E 80 00
+OGXM: SwitchProHost[0]: state len=14 ok=1
+OGXM: SwitchProHost[0]: state SET_HOME_LEDHOME_LED bytes=30 96 80 00
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
+OGXM: Writing gamepad input
+OGXM: Wrote 64 bytes
