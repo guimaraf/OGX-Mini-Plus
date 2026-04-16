@@ -1,0 +1,5 @@
+F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm-install/pioasm/pioasm.exe
+F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm-install/pioasm/pioasmTargets.cmake
+F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm-install/pioasm/pioasmTargets-release.cmake
+F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm-install/pioasm/pioasmConfig.cmake
+F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm-install/pioasm/pioasmConfigVersion.cmake

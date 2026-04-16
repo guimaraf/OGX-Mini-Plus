@@ -20,6 +20,11 @@ public:
     virtual void initialize(Gamepad& gamepad, uint8_t address, uint8_t instance, uint8_t const* report_desc, uint16_t desc_len) = 0;
     virtual void process_report(Gamepad& gamepad, uint8_t address, uint8_t instance, const uint8_t* report, uint16_t len) = 0;
     virtual bool send_feedback(Gamepad& gamepad, uint8_t address, uint8_t instance) = 0;
+    virtual void report_sent_cb(Gamepad& gamepad, uint8_t address, uint8_t instance, const uint8_t* report, uint16_t len) {};
+    virtual void get_report_complete_cb(Gamepad& gamepad, uint8_t address, uint8_t instance,
+                                        uint8_t report_id, uint8_t report_type, uint16_t len) {};
+    virtual void set_report_complete_cb(Gamepad& gamepad, uint8_t address, uint8_t instance,
+                                        uint8_t report_id, uint8_t report_type, uint16_t len) {};
 
     virtual void connect_cb(Gamepad& gamepad, uint8_t address, uint8_t instance) {}; //Wireless specific
     virtual void disconnect_cb(Gamepad& gamepad, uint8_t address, uint8_t instance) {}; //Wireless specific

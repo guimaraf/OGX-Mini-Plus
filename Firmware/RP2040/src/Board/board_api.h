@@ -14,6 +14,7 @@ namespace board_api {
     namespace usb {
         bool host_connected();
         void disconnect_all();
+        void recover_host_port();
     }
 }
 

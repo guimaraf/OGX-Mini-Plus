@@ -24,6 +24,7 @@ namespace board_api_rgb {
 namespace board_api_usbh {
     void init() __attribute__((weak));
     bool host_connected() __attribute__((weak));
+    void recover_host_port() __attribute__((weak));
 }
 
 #endif // BOARD_API_PRIVATE_H

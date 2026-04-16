@@ -85,6 +85,23 @@ bool WebAppDevice::write_packet(const Packet& packet)
     return true;
 }
 
+bool WebAppDevice::try_write_packet(const Packet& packet)
+{
+    if (!tud_cdc_connected() || tud_cdc_write_available() < sizeof(Packet))
+    {
+        return false;
+    }
+
+    const uint32_t written = tud_cdc_write(&packet, sizeof(Packet));
+    if (written != sizeof(Packet))
+    {
+        return false;
+    }
+
+    tud_cdc_write_flush();
+    return true;
+}
+
 bool WebAppDevice::read_packet(Packet& packet, bool block)
 {
     if (!read_serial(&packet, sizeof(Packet), block))
@@ -212,6 +229,29 @@ bool WebAppDevice::write_gamepad(uint8_t index, const Gamepad::PadIn& pad_in)
     return true;
 }
 
+bool WebAppDevice::write_log_packet()
+{
+    if (!ogxm_log::usb_log_available() || !tud_cdc_connected() || tud_cdc_write_available() < sizeof(Packet))
+    {
+        return false;
+    }
+
+    Packet packet_in;
+    packet_in.header.packet_id = PacketID::LOG_STREAM;
+    packet_in.header.max_gamepads = MAX_GAMEPADS;
+    packet_in.header.chunks_total = 1;
+    packet_in.header.chunk_idx = 0;
+
+    const size_t log_len = ogxm_log::read_usb_log(packet_in.data.data(), packet_in.data.size());
+    if (log_len == 0)
+    {
+        return false;
+    }
+
+    packet_in.header.chunk_len = static_cast<uint8_t>(log_len);
+    return try_write_packet(packet_in);
+}
+
 void WebAppDevice::write_error()
 {
     Packet packet_in;
@@ -230,6 +270,11 @@ void WebAppDevice::process(const uint8_t idx, Gamepad& gamepad)
     tud_cdc_write_flush();
     bool success = false;   
     static Packet packet_out;
+
+    if (idx == 0)
+    {
+        write_log_packet();
+    }
 
     if (tud_cdc_available())
     {

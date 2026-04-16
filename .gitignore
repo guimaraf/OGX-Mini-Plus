@@ -1,8 +1,7 @@
 # VSCode
 Firmware/.vscode
 
-tempRelatory.txt
-tempRelatorybr.txt
+!test/
 
 # Build directories (ignore contents, keep folders)
 Firmware/RP2040/build/

@@ -39,6 +39,18 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
     HostManager::get_instance().process_report(dev_addr, instance, report, len);
 }
 
+void tuh_hid_report_sent_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
+    HostManager::get_instance().report_sent_cb(dev_addr, instance, report, len);
+}
+
+void tuh_hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+    HostManager::get_instance().get_report_complete_cb(dev_addr, instance, report_id, report_type, len);
+}
+
+void tuh_hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+    HostManager::get_instance().set_report_complete_cb(dev_addr, instance, report_id, report_type, len);
+}
+
 //XINPUT
 
 void tuh_xinput::mount_cb(uint8_t dev_addr, uint8_t instance, const tuh_xinput::Interface* interface) {

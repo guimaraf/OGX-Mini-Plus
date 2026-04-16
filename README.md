@@ -1,190 +1,58 @@
 # OGX-Mini Plus
 
-v1.1.3
+![OGX-Mini Plus](images/OGX-Mini-github.jpg)
 
-![alt text](images/OGX-Mini-github.jpg)
+`OGX-Mini Plus` is an RP2040-based controller converter firmware focused on console compatibility, controller translation, and practical adapter use with Raspberry Pi Pico family boards, RP2040-Zero, Pico W / Pico 2 W, hybrid Pico + ESP32 setups, and external 4-channel configurations.
 
-Firmware for the RP2040, capable of emulating gamepads for several game consoles. The firmware comes in many flavors, supported on the Adafruit Feather USB Host board, Pi Pico, Pi Pico 2, Pi Pico W, Pi Pico 2 W, Waveshare RP2040-Zero, Pico/ESP32 hybrid, and a 4-Channel RP2040-Zero setup.
+This project is a hard fork of [wiredopposite/OGX-Mini](https://github.com/wiredopposite/OGX-Mini), created to extend support for additional devices, fix long-standing controller issues, and keep the build process self-contained with forked submodules and project-specific patches.
 
-[**Visit the web app here**](https://wiredopposite.github.io/OGX-Mini-WebApp/) to change your mappings and deadzone settings. To pair the OGX-Mini with the web app via USB, plug your controller in, then connect it to your PC, hold Start + Left Bumper + Right Bumper to enter web app mode. Click "Connect via USB" in the web app and select the OGX-Mini. You can also pair via Bluetooth, no extra steps are needed in that case.
+Current release information is tracked in [.versions/ReleaseNotes.md](.versions/ReleaseNotes.md).
 
-## Supported platforms
+## Quick Links
 
-- Original Xbox
-- Nintendo Wii (FakeMote Enabled)
-- Playstation 3
-- Nintendo Switch (docked)
-- XInput (use [**UsbdSecPatch**](https://github.com/InvoxiPlayGames/UsbdSecPatch) for Xbox 360, or select the patch in J-Runner while flashing your NAND)
-- Playstation Classic
-- DInput
+- [Controllers and compatibility](Controllers.md)
+- [Release notes and version history](.versions/ReleaseNotes.md)
+- [Compilation guide](CompileHelp.md)
+- [Hardware diagrams and board files](hardware/README.md)
+- [Web App](https://wiredopposite.github.io/OGX-Mini-WebApp/)
 
-## Changing platforms
+## What This Fork Adds
 
-By default the OGX-Mini will emulate an OG Xbox controller, you must hold a button combo for 3 seconds to change which platform you want to play on. Your chosen mode will persist after powering off the device.
+- Broader support for licensed and multi-system controllers
+- DualShock 3 host driver fixes
+- Native DualShock 4 host support
+- PS2 to USB adapter support improvements
+- Native Xbox 360 Rock Band guitar support using compatible PS3 guitars
+- Fixes for Nintendo Switch Pro trigger support over Bluetooth
+- Improved handling for third-party Switch Pro compatible controllers
+- USB rumble support for Switch Pro compatible controllers
 
-Start = Plus (Switch) = Options (Dualsense/DS4)
+## Documentation
 
-- XInput
-  - Start + Dpad Up
-- 360 Guitar (Native Xbox 360 Guitar) Hamonix Rock Band Guitar
-  - Start + Dpad Up + A
-- Original Xbox
-  - Start + Dpad Right
-- Original Xbox Steel Battalion
-  - Start + Dpad Right + Right Bumper
-- Original Xbox DVD Remote
-  - Start + Dpad Right + Left Bumper
-- Switch
-  - Start + Dpad Down
-- PlayStation 3
-  - Start + Dpad Left
-- PlayStation 4 (DS4)
-  - Start + Dpad Left + A
-- PlayStation Classic
-  - Start + A (Cross for PlayStation and B for Switch gamepads)
-- Web Application Mode
-  - Start + Left Bumper + Right Bumper
+- [Controllers.md](Controllers.md)
+  Platform support, controller compatibility, button combos, and usage notes.
 
-After a new mode is stored, the RP2040 will reset itself so you don't need to unplug it.
+- [.versions/ReleaseNotes.md](.versions/ReleaseNotes.md)
+  Release history for this fork, including major fixes and newly supported devices.
 
-## Supported devices
-### Wired controllers
-- Original Xbox Duke and S
-- Xbox 360, One, Series, and Elite
-- Dualshock 3 (PS3)
-- Dualshock 4 (PS4)
-- Dualsense (PS5)
-- Nintendo Switch Pro
-- Nintendo Switch wired
-- Nintendo 64 Generic USB
-- Playstation Classic
-- Generic DInput
-- Generic HID (mappings may need to be editted in the web app)
-
-Note: There are some third party controllers that can change their VID/PID, these might not work correctly.
-
-### Wireless adapters
-- Xbox 360 PC adapter (Microsoft or clones)
-- 8Bitdo v1 and v2 Bluetooth adapters (set to XInput mode)
-- Most wireless adapters that present themselves as Switch/XInput/PlayStation controllers should work
-
-### Wireless Bluetooth controllers (Pico W & ESP32)
-**Note:** Bluetooth functionality is in early testing, some may have quirks.
-- Xbox Series, One, and Elite 2
-- Dualshock 3
-- Dualshock 4
-- Dualsense
-- Switch Pro
-- Steam
-- Stadia
-- And more
-
-Please visit [**this page**](https://bluepad32.readthedocs.io/en/latest/supported_gamepads/) for a more comprehensive list of supported controllers and Bluetooth pairing instructions.
-
-## What's New in v1.1.3 (by Fred)
-
-- **Switch Pro Clones** - Fixed fake/3rd-party Switch controllers (USB & Bluetooth) failing to mount and getting stuck charging.
-- **Switch Pro Bluetooth Triggers** - Fixed ZL and ZR triggers not working over Bluetooth
-- **Xbox 360 Rock Band Guitar** - PS3 Guitar now works on Xbox 360 for Rock Band games
-- **PS2→PS3 Adapter Support** - Neo brand adapter now recognized
-- **PS3 Driver Fixes** - Fixed input delays and stuck inputs
-
-For complete release notes, see [.versions/ReleaseNotes.md](.versions/ReleaseNotes.md)
-
-## Planned additions
-- Hardware design for internal OG Xbox install
-- Hardware design for 4 channel RP2040-Zero adapter
-- Wired Xbox 360 chatpad support
-- Wired Xbox One chatpad support
-- Switch (as input) rumble support
-- OG Xbox communicator support (in some form)
-- Generic bluetooth dongle support
-- Button macros
-- Rumble settings (intensity, enabled/disable, etc.)
+- [CompileHelp.md](CompileHelp.md)
+  Required tool versions, submodule expectations, build commands, and troubleshooting for reproducible firmware builds.
 
 ## Hardware
 
-For Pi Pico, RP2040-Zero, 4 channel, and ESP32 configurations, please see the hardware folder for diagrams.
+For Pi Pico, RP2040-Zero, 4-channel, and ESP32 configurations, see the files in [hardware](hardware/README.md).
 
-I've designed a PCB for the RP2040-Zero so you can make a small form-factor adapter yourself. The gerber files, schematic, and BOM are in Hardware folder.
+This repository also includes RP2040-Zero hardware files for building a compact adapter.
 
 <img src="images/OGX-Mini-rpzero-int.jpg" alt="OGX-Mini Boards" width="400">
 
+## Support Notes
 
-If you would like a prebuilt unit, you can purchase one, with cable and Xbox adapter included, from my Etsy store.
+If a third-party controller is not working but the original version is supported, the most useful information to collect is:
 
-Adding supported controllers
+- USB VID/PID
+- Report descriptor data
+- Initialization behavior
+- Any differences between wired and Bluetooth modes
 
-If your third party controller isn't working, but the original version is listed above, send me the device's VID and PID and I'll add it so it's recognized properly.
-
-## Build
-### RP2040
-
-You can compile this for different boards with the CMake argument OGXM_BOARD while configuring the project.
-
-The options are:
-- PI_PICO
-- PI_PICO2
-- PI_PICOW
-- PI_PICO2W
-- RP2040_ZERO
-- ADAFRUIT_FEATHER
-- ESP32_BLUEPAD32_I2C- ESP32_BLUERETRO_I2C
-- EXTERNAL_4CH_I2C
-
-You can also set MAX_GAMEPADS which, if greater than one, will only support DInput (PS3) and Switch.
-
-You'll need git, python3, CMake, Ninja and the GCC ARM toolchain installed. CMake scripts will patch some files in Bluepad32 and BTStack and also make sure all git submodules (plus their submodules and dependencies) are downloaded. Here's an example on Windows:
-
-The compilation directory must already be created. By default, I created build_pico and build_pico2w, which are the two boards I have available. If you need to compile for another board, first create the compilation directory for that board.
-
-```
-git clone --recursive https://github.com/guimaraf/OGX-Mini-Plus.git
-cd OGX-Mini-plus/Firmware/RP2040
-
-# Pi Pico
-cmake -S . -B build_pico -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO
-cmake --build build_pico
-
-# Pi Pico 2
-cmake -S . -B build_pico2 -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO2
-cmake --build build_pico2
-
-# Pi Pico W (Bluetooth)
-cmake -S . -B build_picow -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICOW
-cmake --build build_picow
-
-# Pi Pico 2 W (Bluetooth)
-cmake -S . -B build_pico2w -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO2W
-cmake --build build_pico2w
-
-# RP2040-Zero
-cmake -S . -B build_rp2040_zero -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=RP2040_ZERO
-cmake --build build_rp2040_zero
-
-# Adafruit Feather
-cmake -S . -B build_adafruit -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=ADAFRUIT_FEATHER
-cmake --build build_adafruit
-
-# ESP32 Bluepad32 I2C
-cmake -S . -B build_esp32_bp32 -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=ESP32_BLUEPAD32_I2C
-cmake --build build_esp32_bp32
-
-# ESP32 BlueRetro I2C
-cmake -S . -B build_esp32_blueretro -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=ESP32_BLUERETRO_I2C
-cmake --build build_esp32_blueretro
-
-# External 4-Channel I2C
-cmake -S . -B build_4ch -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=EXTERNAL_4CH_I2C
-cmake --build build_4ch
-```
-
-Or just install the GCC ARM toolchain and use the CMake Tools extension in VSCode.
-
-### ESP32
-
-Please see the Hardware directory for a diagram showing how to hookup the ESP32 to your RP2040.
-
-You will need ESP-IDF v5.1, esptool, python3, and git installed. If you use VSCode, you can install the ESP-IDF extension and configure the project for ESP-IDF v5.1, it'll download everything for you and then you just click the build button at the bottom of the window.
-
-When you build with ESP-IDF, Cmake will run a python script that copies the necessary BTStack files into the components directory, this is needed since BTStack isn't configured as an ESP-IDF component when you download it with git.
+These dumps are often enough to add or refine support for new devices.

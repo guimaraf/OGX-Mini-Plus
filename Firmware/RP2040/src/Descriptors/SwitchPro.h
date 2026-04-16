@@ -8,18 +8,31 @@ namespace SwitchPro
     static constexpr uint8_t INFO_CONN_MASK = 0xAB;
     static constexpr uint8_t INFO_BATTERY_MASK = 0x0F;
 
+    namespace REPORT
+    {
+        static constexpr uint8_t INPUT_SUBCMD_REPLY = 0x21;
+        static constexpr uint8_t INPUT_IMU_DATA = 0x30;
+        static constexpr uint8_t INPUT_BUTTON_EVENT = 0x3F;
+
+        static constexpr uint8_t OUTPUT_SUBCMD = 0x01;
+        static constexpr uint8_t OUTPUT_RUMBLE_ONLY = 0x10;
+        static constexpr uint8_t OUTPUT_HID = 0x80;
+    }
+
     namespace CMD 
     {
-        static constexpr uint8_t HID = 0x80;
-        static constexpr uint8_t RUMBLE_ONLY = 0x10;
-        static constexpr uint8_t AND_RUMBLE = 0x01;
+        static constexpr uint8_t HID = REPORT::OUTPUT_HID;
+        static constexpr uint8_t RUMBLE_ONLY = REPORT::OUTPUT_RUMBLE_ONLY;
+        static constexpr uint8_t AND_RUMBLE = REPORT::OUTPUT_SUBCMD;
         static constexpr uint8_t LED = 0x30;
         static constexpr uint8_t LED_HOME = 0x38;
         static constexpr uint8_t GYRO = 0x40;
+        static constexpr uint8_t ENABLE_VIBRATION = 0x48;
         static constexpr uint8_t MODE = 0x03;
         static constexpr uint8_t FULL_REPORT_MODE = 0x30;
         static constexpr uint8_t HANDSHAKE = 0x02;
         static constexpr uint8_t DISABLE_TIMEOUT = 0x04;
+        static constexpr uint8_t ACK_SUCCESS = 0x80;
     }
 
     namespace Buttons0
@@ -53,6 +66,13 @@ namespace SwitchPro
     };
 
     #pragma pack(push, 1)
+    struct HidCommand
+    {
+        uint8_t report_id;
+        uint8_t command;
+    };
+    static_assert(sizeof(HidCommand) == 2, "HidCommand size is not correct");
+
     struct InReport
     {
         uint8_t report_id;
@@ -81,6 +101,20 @@ namespace SwitchPro
         uint16_t velocityZ;
     };
     static_assert(sizeof(InReport) == 25, "InReport size is not correct");
+
+    struct SubcommandReply
+    {
+        uint8_t report_id;
+        uint8_t timer;
+        uint8_t info;
+        uint8_t buttons[3];
+        uint8_t joysticks[6];
+        uint8_t vibrator;
+        uint8_t ack;
+        uint8_t sub_command;
+        uint8_t data[0];
+    };
+    static_assert(sizeof(SubcommandReply) == 15, "SubcommandReply size is not correct");
 
     struct OutReport
     {

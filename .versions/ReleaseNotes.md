@@ -1,70 +1,98 @@
-## Features new to v1.1.3 (by Fred)
+# Release Notes
 
-### Bug Fixes:
-- **Switch Pro Clone Controller Support**: Fixed an issue where generic Nintendo Switch Pro controllers (such as Ípega and GameSir in Switch mode) would fail to mount and get stuck charging. Implemented a dynamic USB fallback system and a Bluetooth initialization bypass to allow 3rd-party "fake" Switch controllers to function correctly both wired (via TinyUSB) and wireless (via Bluepad32).
+## Current Version
 
----
+- `v1.1.4`
 
-## Features new to v1.1.2 (by Fred)
+## v1.1.4
 
-### Bug Fixes:
-- **Switch Pro Bluetooth Triggers**: Fixed an issue where the ZL and ZR triggers on the Nintendo Switch Pro controller were not functioning when connected via Bluetooth (especially on the Pi Pico 2W). The triggers now properly report their values, restoring compatibility with output drivers.
+### Switch Pro USB Rumble
 
----
+- Added USB rumble support for Switch Pro compatible controllers
+- Refined the USB host initialization flow so compatible controllers can keep working without losing vibration support
+- Split rumble handling into dedicated driver files to make maintenance and debugging easier
 
-## Features new to v1.1.1 (by Fred)
+### Fork Maintenance
 
-### Xbox 360 Rock Band Guitar Driver:
-- **Xbox 360 Guitar Emulation**: The PS3 Guitar can now be used with the Xbox 360 in Rock Band games. The device is recognized as a **Rock Band Guitar** (not Guitar Hero), so it only works with games that support Rock Band controllers.
-- **Limitation**: Guitar Hero 2 and 3 are **not supported** because they require Guitar Hero-specific controllers. However, Rock Band 2, 3, and later games work correctly.
-- **Known Issue**: The **tilt sensor** feature (raising the guitar) could not be emulated, so the tilt functionality is not available.
-
-### PS2→PS3 Adapter Support (Neo Brand):
-- **New Controller Support**: Added support for the **Neo brand PS2 to PS3 USB adapter**. The adapter allows you to use PS2 controllers on the PS3 and is now recognized by OGX-Mini.
-- **Vibration Disabled**: To prevent controller disconnections due to power draw issues, vibration feedback has been disabled for this adapter.
-- **Other Adapters**: Other PS2 USB adapters I tested were not recognized. Only the Neo brand adapter is confirmed to work.
-
-### Bug Fixes:
-- Fixed a regression in the PS3 controller driver that caused input delays and "stuck" inputs.
+- Updated project versioning to `v1.1.4`
+- Kept the build output version in sync with the repository release version
 
 ---
 
-## Features new to v1.1.0 (by Fred)
+## v1.1.3
 
-### PS3 Driver Fixes:
-- Fixed a bug that prevented playing Guitar Hero 3 and Gran Turismo 6.
-- Fixed an issue where pressing the Home/Guide button on the controller would trigger multiple phantom inputs. The button now functions correctly.
+### Switch Pro Clone Support
 
-### New Drivers:
-
-- **PlayStation 4 (DS4) Driver**: Added a new driver that emulates the authentic Sony DualShock 4 (VID: 054C, PID: 09CC). This driver is natively recognized by the PlayStation 3, providing proper analog triggers (L2/R2) and Select button functionality. Activation: Start + Dpad Left + A.
-
-- **360 Guitar Driver (Native)**: Added a native Xbox 360 guitar driver (VID: 045E, PID: 028E) selectable via Start + Dpad Up + A. This allows the device to be recognized specifically as a guitar by the Xbox 360, enabling support for games that require authentic guitar controllers.
-## Build Information:
-
-This version was compiled and tested only for the Pi Pico, as it is the only board I currently have available for testing.
-
-## Known Issues
-
-The issue with phantom inputs has not yet been resolved. It occurs in some games such as God of War 3 (D-pad left and right analog stick up) and GTA 5 (D-pad up).
-
-## Features new to v1.0.0
-- Bluetooth functionality for the Pico W, Pico 2 W, and Pico+ESP32.
-- Web application (connectable via USB or Bluetooth) for configuring deadzones and buttons mappings, supports up to 8 saved profiles.
-- Pi Pico 2 and Pico 2 W (RP2350) support.
-- Reduced latency by about 3-4 ms, graphs showing comparisons are coming.
-- 4 channel functionality, connect 4 Picos and use one Xbox 360 wireless adapter to control all 4.
-- Delayed USB mount until a controller is plugged in, useful for internal installation (non-Bluetooth boards only).
-- Generic HID controller support.
-- Dualshock 3 emulation (minus gyros), rumble now works.
-- Steel Battalion controller emulation with a wireless Xbox 360 chatpad.
-- Xbox DVD dongle emulation. You must provide or dump your own dongle firmware, see the Tools directory.
-- Analog button support on OG Xbox and PS3.
-- RGB LED support for RP2040-Zero and Adafruit Feather boards.
+- Fixed generic and third-party Switch Pro compatible controllers failing to mount
+- Resolved cases where some controllers entered charging mode instead of becoming usable
+- Added compatibility handling for USB and Bluetooth paths to support licensed and multi-system variants
 
 ---
 
-## 🔗 Links
+## v1.1.2
 
-- [Web App for Configuration](https://wiredopposite.github.io/OGX-Mini-WebApp/)
-- [Original Project Repository](https://github.com/wiredopposite/OGX-Mini)
+### Switch Pro Bluetooth Triggers
+
+- Fixed `ZL` and `ZR` not working correctly over Bluetooth
+- Restored trigger compatibility on Switch Pro compatible controllers, especially on Pico 2 W builds
+
+---
+
+## v1.1.1
+
+### Xbox 360 Rock Band Guitar
+
+- Added Xbox 360 Rock Band guitar output support for compatible PS3 guitars
+- The guitar is identified as a Rock Band guitar, not a Guitar Hero guitar
+
+### PS2 to USB Adapter Support
+
+- Added support for the Neo brand PS2 to PS3 USB adapter
+- Kept vibration disabled on that adapter to avoid disconnects caused by power draw
+
+### PS3 Driver Fixes
+
+- Fixed input delay issues
+- Fixed stuck input regressions
+
+---
+
+## v1.1.0
+
+### New Drivers and Compatibility
+
+- Added DualShock 4 output support
+- Added native Xbox 360 guitar output mode
+- Fixed issues affecting Guitar Hero 3 and Gran Turismo 6
+- Improved Home / Guide button handling in the PS3 path
+
+### Build and Platform Notes
+
+- This version was compiled and tested primarily on Pi Pico hardware
+- Some phantom input issues were still known at the time of release
+
+---
+
+## v1.0.0
+
+- Added Bluetooth support for Pico W, Pico 2 W, and Pico plus ESP32 configurations
+- Added Web App support over USB and Bluetooth
+- Added Pi Pico 2 and Pico 2 W support
+- Reduced latency by roughly 3 to 4 ms
+- Added 4-channel support
+- Added delayed USB mount for internal installs on non-Bluetooth boards
+- Added generic HID support
+- Added DualShock 3 emulation with rumble
+- Added Steel Battalion support with Xbox 360 chatpad integration
+- Added Xbox DVD dongle emulation support
+- Added analog button support on Original Xbox and PS3
+- Added RGB LED support for RP2040-Zero and Adafruit Feather boards
+
+---
+
+## Links
+
+- [Original OGX-Mini project](https://github.com/wiredopposite/OGX-Mini)
+- [Project README](../README.md)
+- [Controllers and compatibility](../Controllers.md)
+- [Compilation guide](../CompileHelp.md)

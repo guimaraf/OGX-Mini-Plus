@@ -22,6 +22,12 @@ bool usb::host_connected() {
     return false;
 }
 
+void usb::recover_host_port() {
+    if (board_api_usbh::recover_host_port) {
+        board_api_usbh::recover_host_port();
+    }
+}
+
 //Only call this from core0
 void usb::disconnect_all() {
     OGXM_LOG("Disconnecting USB and resetting Core1\n");

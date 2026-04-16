@@ -94,6 +94,10 @@
 
 #endif
 
+#if !defined(CONFIG_OGXM_DEBUG) && defined(OGXM_DEBUG)
+    #define CONFIG_OGXM_DEBUG 1
+#endif
+
 #if defined(CONFIG_OGXM_DEBUG)
     //Pins and port are defined in CMakeLists.txt
     #define DEBUG_UART_PORT __CONCAT(uart,PICO_DEFAULT_UART)

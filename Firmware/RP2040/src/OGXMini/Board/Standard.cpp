@@ -9,6 +9,7 @@
 #include "pio_usb.h"
 
 #include "USBHost/HostManager.h"
+#include "USBHost/HostDriver/SwitchPro/SwitchProCloneRecovery.h"
 #include "USBDevice/DeviceManager.h"
 #include "TaskQueue/TaskQueue.h"
 #include "Gamepad/Gamepad.h"
@@ -16,8 +17,23 @@
 #include "Board/ogxm_log.h"
 
 constexpr uint32_t FEEDBACK_DELAY_MS = 200;
+constexpr uint32_t HOST_ATTACH_SETTLE_DELAY_MS = 300;
+constexpr uint32_t CLONE_ATTACH_RECOVERY_TIMEOUT_MS = 1200;
 
 Gamepad _gamepads[MAX_GAMEPADS];
+
+void wait_for_host_attach_settle() {
+    while (true) {
+        while (!board_api::usb::host_connected()) {
+            sleep_ms(10);
+        }
+
+        sleep_ms(HOST_ATTACH_SETTLE_DELAY_MS);
+        if (board_api::usb::host_connected()) {
+            return;
+        }
+    }
+}
 
 void core1_task() {
     HostManager& host_manager = HostManager::get_instance();
@@ -25,9 +41,7 @@ void core1_task() {
 
     //Pico-PIO-USB will not reliably detect a hot plug on some boards, 
     //monitor and init host stack after connection
-    while(!board_api::usb::host_connected()) {
-        sleep_ms(100);
-    }
+    wait_for_host_attach_settle();
 
     pio_usb_configuration_t pio_cfg = PIO_USB_CONFIG;
     tuh_configure(BOARD_TUH_RHPORT, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
@@ -40,7 +54,60 @@ void core1_task() {
         host_manager.send_feedback();
     });
 
+    bool last_host_connected = board_api::usb::host_connected();
+    uint32_t attach_started_ms = 0;
+    bool attach_recovery_scheduled = false;
+
+    if (last_host_connected) {
+        attach_started_ms = board_api::ms_since_boot();
+        OGXM_LOG("USB host already connected on boot, waiting for mount\n");
+    }
+
     while (true) {
+        const bool host_connected = board_api::usb::host_connected();
+        const bool any_mounted = host_manager.any_mounted();
+
+        if (host_connected && !last_host_connected) {
+            attach_started_ms = board_api::ms_since_boot();
+            attach_recovery_scheduled = false;
+            SwitchProCloneRecovery::clear_reboot_request();
+            if (SwitchProCloneRecovery::next_attach_recovery_armed()) {
+                SwitchProCloneRecovery::begin_attach_attempt();
+                OGXM_LOG("Switch clone recovery: host attach detected, waiting for mount\n");
+            } else {
+                OGXM_LOG("USB host attach detected, waiting for mount\n");
+            }
+        } else if (!host_connected) {
+            attach_started_ms = 0;
+            attach_recovery_scheduled = false;
+            SwitchProCloneRecovery::end_attach_attempt();
+        }
+
+        if (any_mounted) {
+            attach_started_ms = 0;
+            attach_recovery_scheduled = false;
+            SwitchProCloneRecovery::clear_next_attach_recovery();
+            SwitchProCloneRecovery::clear_reboot_request();
+        } else if (host_connected &&
+                   attach_started_ms != 0 &&
+                   (board_api::ms_since_boot() - attach_started_ms) >= CLONE_ATTACH_RECOVERY_TIMEOUT_MS &&
+                   !attach_recovery_scheduled &&
+                   SwitchProCloneRecovery::request_reboot_once()) {
+            attach_recovery_scheduled = true;
+            if (SwitchProCloneRecovery::next_attach_recovery_armed()) {
+                OGXM_LOG("Switch clone recovery: no mount after attach timeout, scheduling host recovery\n");
+            } else {
+                OGXM_LOG("USB host attach timeout without mount, scheduling host recovery\n");
+            }
+            TaskQueue::Core0::queue_task([]() {
+                board_api::usb::disconnect_all();
+                board_api::usb::recover_host_port();
+                board_api::reboot();
+            });
+            attach_started_ms = 0;
+        }
+
+        last_host_connected = host_connected;
         TaskQueue::Core1::process_tasks();
         tuh_task();
     }

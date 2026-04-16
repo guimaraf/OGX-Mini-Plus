@@ -157,6 +157,47 @@ public:
     }
   }
 
+  inline void report_sent_cb(uint8_t address, uint8_t instance,
+                             const uint8_t *report, uint16_t len) {
+    for (auto &device_slot : device_slots_) {
+      if (device_slot.address == address &&
+          device_slot.interfaces[instance].driver &&
+          device_slot.interfaces[instance].gamepad) {
+        device_slot.interfaces[instance].driver->report_sent_cb(
+            *device_slot.interfaces[instance].gamepad, address, instance,
+            report, len);
+      }
+    }
+  }
+
+  inline void set_report_complete_cb(uint8_t address, uint8_t instance,
+                                     uint8_t report_id, uint8_t report_type,
+                                     uint16_t len) {
+    for (auto &device_slot : device_slots_) {
+      if (device_slot.address == address &&
+          device_slot.interfaces[instance].driver &&
+          device_slot.interfaces[instance].gamepad) {
+        device_slot.interfaces[instance].driver->set_report_complete_cb(
+            *device_slot.interfaces[instance].gamepad, address, instance,
+            report_id, report_type, len);
+      }
+    }
+  }
+
+  inline void get_report_complete_cb(uint8_t address, uint8_t instance,
+                                     uint8_t report_id, uint8_t report_type,
+                                     uint16_t len) {
+    for (auto &device_slot : device_slots_) {
+      if (device_slot.address == address &&
+          device_slot.interfaces[instance].driver &&
+          device_slot.interfaces[instance].gamepad) {
+        device_slot.interfaces[instance].driver->get_report_complete_cb(
+            *device_slot.interfaces[instance].gamepad, address, instance,
+            report_id, report_type, len);
+      }
+    }
+  }
+
   inline void disconnect_cb(uint8_t address, uint8_t instance) {
     for (auto &device_slot : device_slots_) {
       if (device_slot.address == address &&
@@ -189,6 +230,13 @@ public:
                      uint8_t instance) {
     for (auto &device_slot : device_slots_) {
       if (device_slot.address == address) {
+        for (uint8_t i = 0; i < MAX_INTERFACES; ++i) {
+          if (device_slot.interfaces[i].driver &&
+              device_slot.interfaces[i].gamepad) {
+            device_slot.interfaces[i].driver->disconnect_cb(
+                *device_slot.interfaces[i].gamepad, address, i);
+          }
+        }
         device_slot.reset();
       }
     }
