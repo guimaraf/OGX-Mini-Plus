@@ -527,13 +527,18 @@ void SwitchProHost::advance_after_led()
     set_init_state(InitState::SET_HOME_LED, "player led acknowledged");
 }
 
-void SwitchProHost::advance_after_home_led()
+void SwitchProHost::advance_after_home_led(uint8_t address, uint8_t instance)
 {
     init_timeout_count_ = 0;
     ready_keepalive_budget_ = READY_KEEPALIVE_BURST;
     clone_ready_mode_retry_at_ms_ = 0;
     set_init_state(imu_enabled_ ? InitState::READY_FULL : InitState::READY_COMPAT_RUMBLE,
                    "home led acknowledged");
+
+    if (clone_init_path_active_ || saw_vendor_status_report_)
+    {
+        schedule_clone_init_reentry(address, instance, CLONE_READY_RECOVERY_KICK_DELAY_MS);
+    }
 }
 
 void SwitchProHost::observe_vendor_status_report(uint8_t address, uint8_t instance, const uint8_t* report, uint16_t len)
@@ -642,6 +647,8 @@ bool SwitchProHost::maybe_send_clone_post_ready_mode_retry(uint8_t address, uint
         OGXM_LOG("SwitchProHost[%u]: clone path immediate post-ready MODE 0x03 retry failed to queue\n", idx_);
         return false;
     }
+
+    schedule_clone_init_reentry(address, instance, CLONE_READY_MODE_RETRY_DELAY_MS);
 
     return true;
 }
@@ -817,7 +824,10 @@ void SwitchProHost::maybe_start_get_report_probe(uint8_t address, uint8_t instan
         get_report_probe_started_at_ms_ = 0;
         get_report_probe_state_ = GetReportProbeState::FAILED;
         OGXM_LOG("SwitchProHost[%u]: get-report probe failed to queue initial step\n", idx_);
+        return;
     }
+
+    schedule_clone_init_reentry(address, instance, GET_REPORT_PROBE_TIMEOUT_MS);
 }
 
 void SwitchProHost::advance_control_fallback(uint8_t address, uint8_t instance, bool success,
@@ -912,7 +922,9 @@ void SwitchProHost::advance_get_report_probe(uint8_t address, uint8_t instance, 
                 get_report_probe_state_ = GetReportProbeState::FAILED;
                 OGXM_LOG("SwitchProHost[%u]: get-report probe failed to queue next step=%s\n",
                          idx_, get_report_probe_state_name(get_report_probe_state_));
+                return;
             }
+            schedule_clone_init_reentry(address, instance, GET_REPORT_PROBE_TIMEOUT_MS);
             return;
 
         case GetReportProbeState::INPUT_0x81:
@@ -923,7 +935,9 @@ void SwitchProHost::advance_get_report_probe(uint8_t address, uint8_t instance, 
                 get_report_probe_state_ = GetReportProbeState::FAILED;
                 OGXM_LOG("SwitchProHost[%u]: get-report probe failed to queue next step=%s\n",
                          idx_, get_report_probe_state_name(get_report_probe_state_));
+                return;
             }
+            schedule_clone_init_reentry(address, instance, GET_REPORT_PROBE_TIMEOUT_MS);
             return;
 
         case GetReportProbeState::INPUT_0x21:
@@ -1030,6 +1044,7 @@ bool SwitchProHost::handle_get_report_probe_timeout(uint8_t address, uint8_t ins
         get_report_probe_state_ = GetReportProbeState::INPUT_0x81;
         if (queue_get_report_probe_step(address, instance))
         {
+            schedule_clone_init_reentry(address, instance, GET_REPORT_PROBE_TIMEOUT_MS);
             return true;
         }
     }
@@ -1039,6 +1054,7 @@ bool SwitchProHost::handle_get_report_probe_timeout(uint8_t address, uint8_t ins
         get_report_probe_state_ = GetReportProbeState::INPUT_0x21;
         if (queue_get_report_probe_step(address, instance))
         {
+            schedule_clone_init_reentry(address, instance, GET_REPORT_PROBE_TIMEOUT_MS);
             return true;
         }
     }
@@ -1196,7 +1212,7 @@ void SwitchProHost::update_init_state(uint8_t address, uint8_t instance, const u
                 {
                     if (success)
                     {
-                        advance_after_home_led();
+                        advance_after_home_led(address, instance);
                     }
                     else
                     {
@@ -1556,6 +1572,11 @@ void SwitchProHost::report_sent_cb(Gamepad& gamepad, uint8_t address, uint8_t in
     }
 
     if (maybe_advance_clone_post_ready_recovery(address, instance, "interrupt-out-complete-without-input"))
+    {
+        return;
+    }
+
+    if (handle_get_report_probe_timeout(address, instance))
     {
         return;
     }

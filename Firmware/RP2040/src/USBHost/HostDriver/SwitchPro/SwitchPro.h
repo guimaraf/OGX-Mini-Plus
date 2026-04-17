@@ -69,6 +69,7 @@ private:
     static constexpr uint32_t INIT_TIMEOUT_OPTIONAL = 16;
     static constexpr uint32_t CLONE_PRE_FULL_REPORT_HINT_WINDOW_MS = 20;
     static constexpr uint32_t CLONE_FULL_REPORT_SETTLE_DELAY_MS = 75;
+    static constexpr uint32_t CLONE_READY_RECOVERY_KICK_DELAY_MS = 16;
     static constexpr uint32_t CLONE_READY_MODE_RETRY_DELAY_MS = 120;
     static constexpr uint32_t GET_REPORT_PROBE_TIMEOUT_MS = 180;
     static constexpr uint8_t MAX_DEBUG_INPUT_REPORT_LOGS = 24;
@@ -135,7 +136,7 @@ private:
     void advance_after_vibration();
     void advance_after_imu();
     void advance_after_led();
-    void advance_after_home_led();
+    void advance_after_home_led(uint8_t address, uint8_t instance);
     void observe_vendor_status_report(uint8_t address, uint8_t instance, const uint8_t* report, uint16_t len);
     void mark_input_stream_seen(uint8_t report_id);
     bool maybe_send_clone_post_ready_mode_retry(uint8_t address, uint8_t instance, const char* reason);

@@ -19,6 +19,7 @@ Current release information is tracked in [.versions/ReleaseNotes.md](.versions/
 ## What This Fork Adds
 
 - Broader support for licensed and multi-system controllers
+- Pro Controller Clone support
 - DualShock 3 host driver fixes
 - Native DualShock 4 host support
 - PS2 to USB adapter support improvements

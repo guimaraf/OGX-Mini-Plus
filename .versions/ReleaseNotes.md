@@ -2,7 +2,22 @@
 
 ## Current Version
 
-- `v1.1.4`
+- `v1.1.5`
+
+## v1.1.5
+
+### Pro Controller Clone Support
+
+- Added support for a specific Nintendo Switch Pro Controller clone in Release builds
+- Fixed boot, late attach, and reconnect flows so the clone mounts correctly and keeps input working
+- Kept the recovery flow isolated to the clone-specific Switch Pro path to avoid broad host regressions
+
+### Fork Maintenance
+
+- Updated project versioning to `v1.1.5`
+- Kept the build output version in sync with the repository release version
+
+---
 
 ## v1.1.4
 
