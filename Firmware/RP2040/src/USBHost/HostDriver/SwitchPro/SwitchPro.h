@@ -50,10 +50,6 @@ private:
         HANDSHAKE,
         DISABLE_TIMEOUT,
         SET_FULL_REPORT,
-        ENABLE_VIBRATION,
-        ENABLE_IMU,
-        SET_LED,
-        SET_HOME_LED,
         DONE,
         FAILED,
     };
@@ -93,8 +89,8 @@ private:
     bool clone_init_path_active_{false};
     bool saw_vendor_status_report_{false};
     bool clone_full_report_delay_logged_{false};
-    bool clone_ready_mode_retry_pending_{false};
     bool clone_ready_mode_retry_attempted_{false};
+    bool clone_ready_mode_retry_wait_logged_{false};
     bool clone_post_ready_reinit_attempted_{false};
     bool control_fallback_attempted_{false};
     bool control_fallback_active_{false};
@@ -121,6 +117,10 @@ private:
     static const char* get_report_probe_state_name(GetReportProbeState state);
     void set_init_state(InitState state, const char* reason);
     void activate_parallel_clone_path(const char* reason);
+    bool is_clone_vendor_status_signature(const uint8_t* report, uint16_t len) const;
+    void schedule_clone_full_report_settle_delay(const char* reason);
+    bool should_prioritize_clone_reports() const;
+    bool waiting_for_clone_post_ready_mode_retry_result() const;
     void reset_state();
     void init_switch_host(uint8_t address, uint8_t instance);
     void update_init_state(uint8_t address, uint8_t instance, const uint8_t* report, uint16_t len);
@@ -133,9 +133,11 @@ private:
     void observe_vendor_status_report(uint8_t address, uint8_t instance, const uint8_t* report, uint16_t len);
     void mark_input_stream_seen(uint8_t report_id);
     bool maybe_send_clone_post_ready_mode_retry(uint8_t address, uint8_t instance, const char* reason);
+    bool maybe_advance_clone_post_ready_recovery(uint8_t address, uint8_t instance, const char* reason);
     bool maybe_start_clone_post_ready_reinit(uint8_t address, uint8_t instance, const char* reason);
     void maybe_start_control_fallback(uint8_t address, uint8_t instance, const char* reason);
     void maybe_start_get_report_probe(uint8_t address, uint8_t instance, const char* reason);
+    bool handle_get_report_probe_timeout(uint8_t address, uint8_t instance);
     void advance_control_fallback(uint8_t address, uint8_t instance, bool success,
                                   uint8_t report_id, uint8_t report_type, uint16_t len);
     void advance_get_report_probe(uint8_t address, uint8_t instance, bool success,

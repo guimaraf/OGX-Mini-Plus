@@ -1,0 +1,170 @@
+Clone Support Plan
+
+Projeto:
+F:\GitRevised\OGX-Mini-Plus
+
+Escopo atual:
+- suporte apenas para um clone especifico de Nintendo Switch Pro Controller
+- nao ha objetivo de generalizar suporte para outros clones
+- build sempre local
+- antes de mudar codigo, revisar o pedido e definir claramente o alvo
+
+
+Status Geral
+
+Fase 1: CONCLUIDA
+
+O suporte principal do clone foi fechado.
+O controle agora funciona no fluxo real do projeto e tambem em XInput.
+
+Ja resolvido:
+- wake do clone
+- enumeracao
+- hot-plug com a placa ja ligada
+- reconnect com a placa ja ligada
+- stream de input 0x30 consistente
+- mapeamento de botoes
+- dpad
+- triggers
+- analogicos
+- L3 e R3
+- montagem correta do driver no uso real
+- rumble funcional no uso real
+
+Validacao ja feita:
+- 0-boot_: sucesso consistente
+- 1-start_connect_: sucesso consistente
+- 2-boot-desconect_: comportamento esperado de desconexao
+- 3-boot-desconect_Reconect_: sucesso consistente
+- testes reais em XInput: driver monta corretamente, inputs corretos e rumble correto
+
+Resumo tecnico da correcao principal da Fase 1:
+- o clone podia chegar em READY_FULL sem comecar a emitir 0x30
+- retries leves e fallback/probe nao eram suficientes em todos os attaches
+- a correcao efetiva foi introduzir um controlled post-ready reinit especifico do clone no mesmo attach
+- esse reinit passou a destravar de forma consistente os cenarios de start_connect e reconnect
+
+Arquivos centrais da Fase 1:
+- SwitchPro.cpp
+- SwitchPro.h
+- SwitchProCloneRecovery.cpp
+- Standard.cpp
+- captureButtonMap.ps1
+
+
+Fase 2: CONCLUIDA
+
+Objetivo:
+endurecer apenas o caminho especifico do clone, com minimo impacto no caminho ja estavel dos controles bons
+
+Direcao da fase:
+- manter fingerprint e comportamento especificos desse clone
+- evitar contaminar o caminho do Pro original, licenciados e multi-inputs
+- tratar o clone como excecao controlada, nao como caso generico
+
+O que foi atacado:
+- ativacao do caminho clone
+- timings de settle e retry
+- retry pos-ready
+- controlled post-ready reinit
+- fallback e probe sem loops desnecessarios
+- transicoes de estado que ainda dependam de log excessivo para entendimento
+
+Resultado pratico:
+- manter o comportamento ja funcional
+- reduzir arestas e fragilidade da maquina de estados do clone
+- preservar o caminho estavel dos outros controles
+
+Status final da fase:
+- boot, start_connect, reconnect, input e rumble seguiram funcionais nos testes validados
+- o caminho do clone ficou mais contido e mais previsivel
+- ainda pode ocorrer retry/reinit em alguns attaches, mas sem impacto funcional observado
+
+Arquivos mais provaveis:
+- Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchPro.cpp
+- Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchPro.h
+- possivelmente Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchProCloneRecovery.cpp
+
+
+Fase 3: REGRESSAO CURTA DE ACEITE
+
+Executar depois da Fase 2.
+
+Objetivo:
+confirmar que o endurecimento nao quebrou o que ja esta pronto
+
+Bateria recomendada:
+- 0-boot_
+- 1-start_connect_
+- 2-boot-desconect_
+- 3-boot-desconect_Reconect_
+- validacao real em XInput
+
+Criterio de pronto:
+- boot continua consistente
+- start_connect continua consistente
+- reconnect continua consistente
+- input continua correto
+- rumble continua correto
+
+
+Fase 4: ACABAMENTO TECNICO
+
+Executar so depois da Fase 3.
+
+O que revisar:
+- logs excessivos
+- pequenos pontos onde o clone reutiliza logica generica sem necessidade
+- pequenas arestas de legibilidade e manutencao
+- scripts de validacao, apenas se ainda fizer sentido mexer neles
+
+Observacao:
+esta fase nao deve reabrir a compatibilidade principal, que ja foi fechada
+
+
+Fase 5: RUMBLE COMO ENDURECIMENTO OPCIONAL
+
+Importante:
+rumble ja funciona no fluxo real atual
+
+Entao esta fase nao e mais "implementar rumble".
+Agora ela so existe se houver interesse em revisar robustez ou acabamento do caminho de feedback.
+
+Se fizer sentido atacar:
+- validar se o clone continua aceitando feedback sem perder input
+- confirmar se o caminho atual de send_feedback() ja basta
+- so mexer nisso se aparecer risco real apos a Fase 2
+
+Arquivos provaveis:
+- Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchPro.cpp
+- Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchProRumble.h
+- Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchProRumble.cpp
+
+
+Prioridade Atual
+
+Sequencia recomendada:
+1. Fase 3
+2. Fase 4
+3. Fase 5 apenas se ainda houver motivo
+
+O que nao priorizar agora:
+- generalizar suporte para outros clones
+- refatoracao ampla do driver Switch Pro
+- mudar layout ABXY
+- gastar tempo demais em scripts se o firmware nao precisar disso
+
+
+Recado Para O Proximo Chat
+
+Contexto:
+- a Fase 1 ja foi concluida
+- a Fase 2 tambem ja foi concluida
+- o clone ja funciona no fluxo real e em XInput
+- boot, start_connect, reconnect, input e rumble estao funcionando
+- o caminho especifico do clone foi endurecido sem impacto funcional observado
+- ainda pode ocorrer retry/reinit em alguns attaches, mas sem impacto funcional observado
+- o foco agora passa a ser regressao curta de aceite e acabamento tecnico
+
+Frase sugerida:
+"Quero continuar o suporte ao meu clone especifico de Nintendo Switch Pro Controller. A Fase 1 e a Fase 2 ja foram concluidas: boot, hot-plug/start_connect, reconnect, input e rumble estao funcionando no fluxo real e no XInput. O caminho especifico do clone foi endurecido e ainda pode ocorrer retry/reinit em alguns attaches, mas sem impacto funcional observado. Agora quero seguir para a Fase 3 de regressao curta de aceite. Ignore build."
