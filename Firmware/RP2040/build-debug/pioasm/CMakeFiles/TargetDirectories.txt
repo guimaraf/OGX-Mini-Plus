@@ -1,7 +1,0 @@
-F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm/CMakeFiles/pioasm.dir
-F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm/CMakeFiles/edit_cache.dir
-F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm/CMakeFiles/rebuild_cache.dir
-F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm/CMakeFiles/list_install_components.dir
-F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm/CMakeFiles/install.dir
-F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm/CMakeFiles/install/local.dir
-F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm/CMakeFiles/install/strip.dir

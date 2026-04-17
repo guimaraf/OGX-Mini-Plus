@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"F:/GitRevised/OGX-Mini-Plus/Firmware/RP2040/build-debug/pioasm/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

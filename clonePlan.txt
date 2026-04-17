@@ -86,9 +86,10 @@ Arquivos mais provaveis:
 - possivelmente Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchProCloneRecovery.cpp
 
 
-Fase 3: REGRESSAO CURTA DE ACEITE
+Fase 3: ATENDIDA SATISFATORIAMENTE
 
-Executar depois da Fase 2.
+Observacao:
+nao houve necessidade tecnica de repetir a mesma bateria de testes, porque a build final da Fase 2 ja foi validada e analisada nesta mesma janela de trabalho
 
 Objetivo:
 confirmar que o endurecimento nao quebrou o que ja esta pronto
@@ -107,10 +108,13 @@ Criterio de pronto:
 - input continua correto
 - rumble continua correto
 
+Status final da fase:
+- a bateria principal ja foi executada no fechamento da Fase 2
+- os resultados em COM3 e em XInput foram considerados satisfatorios
+- a Fase 3 fica atendida com base nessa validacao ja concluida
 
-Fase 4: ACABAMENTO TECNICO
 
-Executar so depois da Fase 3.
+Fase 4: NAO NECESSARIA NO ESTADO ATUAL
 
 O que revisar:
 - logs excessivos
@@ -119,7 +123,10 @@ O que revisar:
 - scripts de validacao, apenas se ainda fizer sentido mexer neles
 
 Observacao:
-esta fase nao deve reabrir a compatibilidade principal, que ja foi fechada
+- esta fase nao deve reabrir a compatibilidade principal, que ja foi fechada
+- os logs permanecem uteis para analise futura de outros controles e host-drivers
+- na build de producao, OGXM_LOG nao gera custo de runtime relevante porque fica desabilitado
+- por isso, nao ha necessidade tecnica de limpeza adicional neste momento
 
 
 Fase 5: RUMBLE COMO ENDURECIMENTO OPCIONAL
@@ -144,9 +151,7 @@ Arquivos provaveis:
 Prioridade Atual
 
 Sequencia recomendada:
-1. Fase 3
-2. Fase 4
-3. Fase 5 apenas se ainda houver motivo
+1. Fase 5 apenas se ainda houver motivo
 
 O que nao priorizar agora:
 - generalizar suporte para outros clones
@@ -160,11 +165,11 @@ Recado Para O Proximo Chat
 Contexto:
 - a Fase 1 ja foi concluida
 - a Fase 2 tambem ja foi concluida
+- a Fase 3 foi atendida satisfatoriamente com base na bateria final da Fase 2
+- a Fase 4 nao e necessaria no estado atual
 - o clone ja funciona no fluxo real e em XInput
 - boot, start_connect, reconnect, input e rumble estao funcionando
 - o caminho especifico do clone foi endurecido sem impacto funcional observado
 - ainda pode ocorrer retry/reinit em alguns attaches, mas sem impacto funcional observado
-- o foco agora passa a ser regressao curta de aceite e acabamento tecnico
-
-Frase sugerida:
-"Quero continuar o suporte ao meu clone especifico de Nintendo Switch Pro Controller. A Fase 1 e a Fase 2 ja foram concluidas: boot, hot-plug/start_connect, reconnect, input e rumble estao funcionando no fluxo real e no XInput. O caminho especifico do clone foi endurecido e ainda pode ocorrer retry/reinit em alguns attaches, mas sem impacto funcional observado. Agora quero seguir para a Fase 3 de regressao curta de aceite. Ignore build."
+- os logs serao mantidos para analise futura e nao trazem prejuizo na build de producao
+- o foco agora passa a ser apenas rumble opcional, se surgir motivo real
