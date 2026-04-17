@@ -1,0 +1,488 @@
+Relatorio Completo do Caminho Funcional em Debug
+
+Objetivo deste arquivo:
+- registrar historicamente os ajustes que fizeram o clone especifico de Nintendo Switch Pro Controller funcionar no projeto em modo Debug
+- preservar a justificativa tecnica de cada ajuste
+- servir como base para futuras investigacoes, incluindo tentativas de convergencia para Release
+
+
+Escopo
+
+O suporte foi feito apenas para um clone especifico de Nintendo Switch Pro Controller.
+Nao houve intencao de generalizar para outros clones.
+
+O caminho funcional ficou concentrado principalmente em:
+- clonePlan.txt
+- Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchPro.h
+- Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchPro.cpp
+- Firmware/RP2040/src/USBHost/HostDriver/SwitchPro/SwitchProCloneRecovery.cpp
+- Firmware/RP2040/src/OGXMini/Board/Standard.cpp
+
+
+Problema original que motivou os ajustes
+
+O clone podia:
+- enumerar
+- chegar em READY_FULL
+- ate montar no fluxo real
+
+Mas nem sempre comecava a emitir o stream de input utilizavel, especialmente 0x30.
+
+O problema pratico era:
+- boot podia funcionar ou nao dependendo do attach
+- start_connect e reconnect tinham fragilidade
+- retries simples e fallback leve nao eram suficientes em todos os attaches
+
+Isso tambem foi resumido no plano:
+- clone podia chegar em READY_FULL sem comecar a emitir 0x30
+- retries leves e fallback/probe nao eram suficientes em todos os attaches
+- a correcao efetiva foi introduzir um controlled post-ready reinit especifico do clone no mesmo attach
+- esse reinit passou a destravar de forma consistente os cenarios de start_connect e reconnect
+
+
+1. Identificacao explicita do clone por fingerprint 0x81
+
+Foi criado um fingerprint especifico de vendor-status 0x81 para ativar o caminho especial do clone.
+
+Onde isso ficou:
+- assinatura do fingerprint em SwitchPro.h
+- deteccao em SwitchPro.cpp
+- ativacao do caminho do clone em SwitchPro.cpp
+
+Justificativa:
+- nao contaminar o caminho do Pro original
+- so ativar excecoes quando houver evidencia forte de que e esse clone
+- manter o suporte restrito ao alvo
+
+Efeito esperado:
+- o clone passa a seguir uma maquina de estados propria e mais agressiva
+- controles bons continuam no caminho normal
+
+
+2. Settle delay antes do MODE 0x03
+
+Foi introduzido um atraso controlado antes de enviar MODE 0x03 para esse clone.
+
+Onde isso ficou:
+- tempos definidos em SwitchPro.h
+- agendamento do settle delay em SwitchPro.cpp
+- uso dentro do estado SET_FULL_REPORT em SwitchPro.cpp
+- logica do 0x81 que arma esse delay em SwitchPro.cpp
+
+Justificativa:
+- o clone respondia ao 0x81, mas nem sempre aceitava a troca para full report imediatamente
+- esse atraso deu uma janela de assentamento antes do MODE 0x03
+
+Efeito esperado:
+- reduzir attaches em que o clone chega ao ready sem destravar o input stream
+- melhorar boot e start_connect
+
+
+3. Estado interno especifico para recuperacao do clone
+
+Foi adicionada uma serie de flags e timers para controlar o caminho do clone.
+
+Itens importantes adicionados ou consolidados:
+- clone_init_path_active_
+- saw_vendor_status_report_
+- clone_ready_mode_retry_attempted_
+- clone_ready_mode_retry_wait_logged_
+- clone_post_ready_reinit_attempted_
+- control_fallback_attempted_
+- control_fallback_active_
+- get_report_probe_attempted_
+- get_report_probe_active_
+- ready_keepalive_budget_
+- clone_full_report_ready_at_ms_
+- clone_ready_mode_retry_at_ms_
+- get_report_probe_started_at_ms_
+- get_report_probe_timeout_count_
+- control_fallback_state_
+- get_report_probe_state_
+
+Justificativa:
+- o clone precisava de uma orquestracao mais rigida do que o caminho padrao
+- sem esse estado explicito ficava dificil distinguir:
+  - clone reconhecido
+  - ready sem input
+  - fallback em andamento
+  - probe em andamento
+  - attach recovery entre conexoes
+
+Efeito esperado:
+- tornar a recuperacao repetivel
+- evitar loops caoticos
+- facilitar diagnostico via log
+
+
+4. Retry pos-ready de MODE 0x03
+
+Quando o clone chegava em ready mas ainda sem input stream, foi adicionado um retry imediato de MODE 0x03.
+
+Onde isso ficou:
+- helper maybe_send_clone_post_ready_mode_retry(...) em SwitchPro.cpp
+- janela de espera waiting_for_clone_post_ready_mode_retry_result() em SwitchPro.cpp
+
+Justificativa:
+- alguns attaches chegavam ao estado pronto, mas o stream 0x30 nao comecava
+- antes de partir para fallback pesado, tentava-se lembrar o clone de entrar em full report
+
+Efeito esperado:
+- resolver attaches marginais sem reinit completo
+- custo menor que fallback ou reboot
+
+
+5. Controlled post-ready reinit especifico do clone
+
+Esse foi o ajuste mais importante da Fase 1.
+
+Onde isso ficou:
+- helper maybe_start_clone_post_ready_reinit(...) em SwitchPro.cpp
+
+O que ele faz:
+- preserva o sequence counter
+- reseta o estado do driver
+- reativa o caminho do clone
+- marca que ja houve vendor-status
+- reabre a janela de settle
+- reinicia o init no mesmo attach
+
+Justificativa:
+- retry leve e fallback/probe nao eram suficientes em todos os attaches
+- o clone podia ficar meio pronto, mas sem liberar input
+- o reinit controlado no mesmo attach foi a correcao que fechou os cenarios de start_connect e reconnect
+
+Efeito esperado:
+- destravar o clone sem depender de desconectar/reconectar fisicamente
+- resolver attaches onde o clone entrou em estado ruim pos-ready
+
+Esse ponto foi explicitamente citado no plano:
+- a correcao efetiva foi introduzir um controlled post-ready reinit especifico do clone no mesmo attach
+
+
+6. Control fallback via SET_REPORT
+
+Quando o retry pos-ready nao bastava, entrava um fallback via SET_REPORT.
+
+Onde isso ficou:
+- maybe_start_control_fallback(...) em SwitchPro.cpp
+- queue_control_fallback_step(...) em SwitchPro.cpp
+- advance_control_fallback(...) em SwitchPro.cpp
+- set_report_complete_cb(...) em SwitchPro.cpp
+
+Sequencia:
+- handshake
+- disable timeout
+- set full report
+
+Justificativa:
+- alguns clones nao destravavam usando apenas o caminho interrupt normal
+- SET_REPORT foi usado como via de controle mais insistente
+
+Efeito esperado:
+- oferecer uma trilha de recuperacao mais forte sem reboot imediato
+- especialmente util quando havia subcmd reply, mas sem input real
+
+
+7. GET_REPORT probe
+
+Apos fallback, foi introduzido um probe por GET_REPORT.
+
+Onde isso ficou:
+- maybe_start_get_report_probe(...) em SwitchPro.cpp
+- queue_get_report_probe_step(...) em SwitchPro.cpp
+- advance_get_report_probe(...) em SwitchPro.cpp
+- handle_get_report_probe_timeout(...) em SwitchPro.cpp
+- get_report_complete_cb(...) em SwitchPro.cpp
+
+O probe podia consultar:
+- 0x30
+- 0x81
+- 0x21
+
+Justificativa:
+- depois do fallback, ainda podia ser necessario estimular ou observar reports especificos
+- o probe ajudava a diferenciar clone ainda sem stream de clone ja respondendo por outro caminho
+
+Efeito esperado:
+- obter sinal adicional do clone
+- tentar destravar o stream sem novo reset do attach
+
+
+8. Keepalive rumble antes do primeiro input
+
+Foi introduzido um keepalive neutro via rumble.
+
+Onde isso ficou:
+- implementacao em send_keepalive_rumble(...) em SwitchPro.cpp
+- orcamento inicial em advance_after_home_led() em SwitchPro.cpp
+- uso enquanto nao ha input em send_feedback() em SwitchPro.cpp
+
+Justificativa:
+- alguns clones ficam mais vivos quando continuam recebendo OUT neutro enquanto o stream ainda nao apareceu
+- isso ajuda a nao deixar o controle entrar em silencio morto entre ready e primeiro input
+
+Efeito esperado:
+- sustentar o attach enquanto o stream ainda nao foi visto
+- reduzir falsos negativos antes de acionar probe/fallback
+
+
+9. Marcacao explicita de input stream visto
+
+Foi criado um marcador para o momento em que o primeiro report util aparece.
+
+Onde isso ficou:
+- mark_input_stream_seen(...) em SwitchPro.cpp
+
+Quando isso acontece:
+- zera espera de retry
+- para fallback/probe
+- zera keepalive budget
+
+Justificativa:
+- depois que o stream comecou, toda a logica de recovery precisava sair do caminho
+- sem isso, o driver poderia continuar tentando corrigir algo que ja estava ok
+
+Efeito esperado:
+- estabilizacao limpa apos primeiro input util
+- menos ruido e menos risco de interferir no caminho estavel
+
+
+10. Avanco do init tambem por report_sent_cb
+
+O init deixou de depender apenas da chegada de IN report.
+
+Onde isso ficou:
+- report_sent_cb(...) em SwitchPro.cpp
+
+Comportamento:
+- se ainda nao estiver ready, o callback avanca o init chamando init_switch_host(...)
+- se ja estiver ready mas sem input, ele tambem pode acionar retry pos-ready, advance recovery e fallback
+
+Justificativa:
+- alguns pads compativeis ficam silenciosos ate que toda a sequencia inicial de OUT tenha sido transmitida
+- avancar o init em report_sent_cb evitou travar esperando um IN que nunca vinha naquele estagio
+
+Efeito esperado:
+- melhorar early init
+- ajudar no wake e nos primeiros attaches
+
+
+11. Recovery entre attaches via watchdog scratch
+
+Foi criada uma persistencia simples de flags entre attaches e reboots.
+
+Onde isso ficou:
+- SwitchProCloneRecovery.cpp
+
+Flags:
+- PROFILE_DETECTED
+- ATTACH_RECOVERY_ARMED
+- REBOOT_REQUESTED
+
+Justificativa:
+- em certos fluxos, especialmente disconnect/reconnect, era util lembrar que o clone ja tinha sido identificado
+- isso permitia armar uma recuperacao mais dirigida no proximo attach
+
+Efeito esperado:
+- reconnect mais consistente
+- attach recovery so quando necessario
+
+
+12. Armamento de recovery no disconnect
+
+Quando o clone ja tinha sido identificado, o disconnect armava recovery para o proximo attach.
+
+Onde isso ficou:
+- disconnect_cb(...) em SwitchPro.cpp
+- arm_next_attach_recovery() em SwitchProCloneRecovery.cpp
+
+Justificativa:
+- o reconnect do clone era uma das areas frageis
+- carregar essa informacao para o proximo attach evitava tratar o reconnect como attach completamente cego
+
+Efeito esperado:
+- reconnect com caminho mais previsivel
+
+
+13. Supervisao do host attach no Standard.cpp
+
+Foi adicionado monitoramento do attach do host e uma recuperacao por timeout.
+
+Onde isso ficou:
+- FEEDBACK_DELAY_MS, HOST_ATTACH_SETTLE_DELAY_MS e CLONE_ATTACH_RECOVERY_TIMEOUT_MS em Standard.cpp
+- wait_for_host_attach_settle() em Standard.cpp
+- logica principal do attach recovery dentro de core1_task() em Standard.cpp
+- limpeza das flags persistentes no boot em standard::initialize() em Standard.cpp
+
+O que isso faz:
+- espera um tempo de settle do host antes de iniciar
+- acompanha attach detectado
+- se nao houver mount dentro do timeout, agenda recuperacao do host e reboot
+- limpa flags persistentes quando necessario
+
+Justificativa:
+- a pilha PIO USB nem sempre detecta hot-plug de forma confiavel em certas placas
+- o clone tambem precisava de uma janela de attach mais estavel
+- isso ajudou em boot, start_connect e principalmente em cenarios frios de attach
+
+Efeito esperado:
+- evitar ficar preso em attach morto
+- tornar recovery automatico sem intervencao manual
+
+
+14. Compat fallback e timeouts do init
+
+O init padrao tambem recebeu tolerancia melhor para cair em modos compativeis.
+
+Onde isso ficou:
+- estados e flags em SwitchPro.h
+- tratamento de timeout em handle_timeout() em SwitchPro.cpp
+- observacao de reports compativeis em update_init_state() em SwitchPro.cpp
+
+Justificativa:
+- alguns clones emitem reports compativeis antes de entrar no full report
+- em vez de abortar cedo, o driver passou a seguir adiante com degradacao controlada
+
+Efeito esperado:
+- aumentar chance de attach util mesmo quando o full report nao vem de imediato
+- preservar input e, quando possivel, rumble
+
+
+15. Correcao de L3 e R3 especifica do clone
+
+No parse do full report ha troca condicional de mascara de L3 e R3 quando o caminho clone esta ativo.
+
+Onde isso ficou:
+- parse_switch_full_report(...) em SwitchPro.cpp
+
+Comportamento:
+- l3_mask usa R3 quando clone_init_path_active_ esta ativo
+- r3_mask usa L3 quando clone_init_path_active_ esta ativo
+
+Justificativa:
+- esse clone especifico tinha comportamento divergente na leitura desses bits
+- o ajuste foi mantido restrito ao caminho do clone
+
+Efeito esperado:
+- L3 e R3 corretos sem mexer no mapeamento dos controles bons
+
+
+16. Uso de logs ricos em Debug
+
+Os logs em Debug nao foram so observacionais; eles guiaram a identificacao dos pontos acima.
+
+Tipos de log usados:
+- transicoes de estado
+- vendor-status 0x81
+- retry
+- reinit
+- fallback
+- probe
+- input stream detected
+- send_feedback antes do stream
+- attach recovery e reboot recovery
+
+Justificativa:
+- o comportamento do clone nao era estatico
+- o diagnostico dependia de saber em qual ponto do fluxo ele parava em cada attach
+
+Observacao:
+- a Fase 4 foi marcada como nao necessaria no estado atual porque os logs permanecem uteis para analise futura
+- na build de producao, OGXM_LOG nao gera custo de runtime relevante porque fica desabilitado
+
+
+Resumo funcional do que efetivamente resolveu em Debug
+
+Os pontos que mais pesaram para o clone funcionar em Debug foram:
+- fingerprint especifico do clone por 0x81
+- settle delay antes do MODE 0x03
+- retry pos-ready de MODE 0x03
+- controlled post-ready reinit no mesmo attach
+- fallback via SET_REPORT
+- GET_REPORT probe
+- keepalive ate aparecer input
+- recovery entre attaches via watchdog e Standard.cpp
+- correcao de L3 e R3 no parse do clone
+
+
+Leitura util para futuras tentativas em Release
+
+O que parece mais importante preservar na analise de Release:
+- o problema central nunca foi mount puro; foi bring-up do stream de input
+- o clone pode chegar a ready e ainda assim nao comecar a emitir input util
+- o debug mostrou que o caminho que realmente fechou o problema foi o pacote:
+  - 0x81 fingerprint
+  - settle delay
+  - post-ready retry
+  - controlled post-ready reinit
+  - fallback e probe
+- qualquer tentativa de corrigir Release deve partir desse fluxo ja validado, nao de uma solucao generica de host global
+
+
+Pontos de observancia importantes
+
+1. O suporte e apenas para um clone especifico
+- nao generalizar para outros clones
+- manter qualquer excecao bem delimitada ao fingerprint e ao caminho do clone
+
+2. O clone pode parecer pronto antes de realmente estar pronto
+- chegar em READY_FULL nao significa necessariamente que o stream de input ja esta ativo
+- esse foi o nucleo da fragilidade observada
+
+3. O caminho funcional em Debug e uma orquestracao
+- nao foi um unico ajuste isolado
+- o resultado veio da combinacao de fingerprint, settle, retry, reinit, fallback, probe e recovery entre attaches
+
+4. O caminho do clone deve continuar contido
+- minimizar impacto no Pro original, licenciados e multi-inputs
+- tratar o clone como excecao controlada
+
+5. O rumble ja estava funcional
+- a Fase 5 ficou como endurecimento opcional
+- o rumble nao era mais problema basico de compatibilidade
+
+
+Status historico consolidado
+
+Fase 1:
+- concluida
+- suporte principal do clone fechado
+- wake, enumeracao, hot-plug, reconnect, input 0x30 consistente, mapeamento, driver e rumble funcionais
+
+Fase 2:
+- concluida
+- endurecimento do caminho do clone com minimo impacto nos controles bons
+- ainda pode ocorrer retry e reinit em alguns attaches, mas sem impacto funcional observado
+
+Fase 3:
+- atendida satisfatoriamente
+- a bateria final da Fase 2 ja serviu como validacao suficiente
+
+Fase 4:
+- nao necessaria no estado atual
+- logs mantidos para analise futura
+
+Fase 5:
+- rumble como endurecimento opcional
+
+
+Resumo curto para reaproveitamento futuro
+
+O clone especifico de Nintendo Switch Pro Controller nao foi resolvido em Debug por uma unica mudanca, e sim por uma maquina de recovery especifica no caminho do SwitchPro.
+
+Os pilares que fecharam o caso foram:
+- identificacao por fingerprint 0x81
+- settle delay antes do MODE 0x03
+- retry pos-ready de MODE 0x03
+- controlled post-ready reinit no mesmo attach
+- fallback via SET_REPORT
+- GET_REPORT probe
+- keepalive antes do primeiro input
+- persistencia de recovery entre attaches
+- ajuste de L3 e R3 no parse do clone
+
+Conclusao tecnica principal:
+- o clone nao falhava apenas por falta de mount
+- ele podia montar e ainda assim nao iniciar o stream de input
+- o que fechou o caso em Debug foi a orquestracao especifica do pos-ready do clone, nao uma alteracao global do host

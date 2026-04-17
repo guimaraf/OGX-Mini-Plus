@@ -67,6 +67,7 @@ private:
     static constexpr uint32_t INIT_RETRY_INTERVAL = 8;
     static constexpr uint32_t INIT_TIMEOUT_FULL_REPORT = 40;
     static constexpr uint32_t INIT_TIMEOUT_OPTIONAL = 16;
+    static constexpr uint32_t CLONE_PRE_FULL_REPORT_HINT_WINDOW_MS = 20;
     static constexpr uint32_t CLONE_FULL_REPORT_SETTLE_DELAY_MS = 75;
     static constexpr uint32_t CLONE_READY_MODE_RETRY_DELAY_MS = 120;
     static constexpr uint32_t GET_REPORT_PROBE_TIMEOUT_MS = 180;
@@ -88,6 +89,7 @@ private:
     bool using_compat_fallback_{false};
     bool clone_init_path_active_{false};
     bool saw_vendor_status_report_{false};
+    bool clone_pre_full_report_hint_window_attempted_{false};
     bool clone_full_report_delay_logged_{false};
     bool clone_ready_mode_retry_attempted_{false};
     bool clone_ready_mode_retry_wait_logged_{false};
@@ -99,9 +101,11 @@ private:
     uint8_t debug_input_report_logs_{0};
     uint8_t vendor_status_report_logs_{0};
     uint8_t ready_keepalive_budget_{0};
+    uint32_t clone_pre_full_report_hint_ready_at_ms_{0};
     uint32_t clone_full_report_ready_at_ms_{0};
     uint32_t clone_ready_mode_retry_at_ms_{0};
     uint32_t get_report_probe_started_at_ms_{0};
+    uint32_t clone_init_reentry_task_id_{0};
     uint8_t get_report_probe_timeout_count_{0};
     ControlFallbackState control_fallback_state_{ControlFallbackState::IDLE};
     GetReportProbeState get_report_probe_state_{GetReportProbeState::IDLE};
@@ -118,7 +122,9 @@ private:
     void set_init_state(InitState state, const char* reason);
     void activate_parallel_clone_path(const char* reason);
     bool is_clone_vendor_status_signature(const uint8_t* report, uint16_t len) const;
-    void schedule_clone_full_report_settle_delay(const char* reason);
+    void schedule_clone_full_report_settle_delay(uint8_t address, uint8_t instance, const char* reason);
+    void schedule_clone_init_reentry(uint8_t address, uint8_t instance, uint32_t delay_ms);
+    void cancel_clone_init_reentry();
     bool should_prioritize_clone_reports() const;
     bool waiting_for_clone_post_ready_mode_retry_result() const;
     void reset_state();

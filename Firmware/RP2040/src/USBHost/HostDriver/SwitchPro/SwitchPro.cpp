@@ -5,6 +5,8 @@
 
 #include "Board/board_api.h"
 #include "Descriptors/SwitchWired.h"
+#include "TaskQueue/TaskQueue.h"
+#include "USBHost/HostManager.h"
 #include "USBHost/HostDriver/SwitchPro/SwitchPro.h"
 #include "USBHost/HostDriver/SwitchPro/SwitchProCloneRecovery.h"
 #include "USBHost/HostDriver/SwitchPro/SwitchProRumble.h"
@@ -93,10 +95,38 @@ bool SwitchProHost::is_clone_vendor_status_signature(const uint8_t* report, uint
            std::memcmp(report, CLONE_VENDOR_STATUS_SIGNATURE, sizeof(CLONE_VENDOR_STATUS_SIGNATURE)) == 0;
 }
 
-void SwitchProHost::schedule_clone_full_report_settle_delay(const char* reason)
+void SwitchProHost::schedule_clone_init_reentry(uint8_t address, uint8_t instance, uint32_t delay_ms)
 {
+    if (clone_init_reentry_task_id_ == 0)
+    {
+        clone_init_reentry_task_id_ = TaskQueue::Core1::get_new_task_id();
+    }
+
+    TaskQueue::Core1::cancel_delayed_task(clone_init_reentry_task_id_);
+    const bool queued = TaskQueue::Core1::queue_delayed_task(
+        clone_init_reentry_task_id_, delay_ms, false,
+        [address, instance]() {
+            HostManager::get_instance().report_sent_cb(address, instance, nullptr, 0);
+        });
+
+    OGXM_LOG("SwitchProHost[%u]: scheduled clone init re-entry delay=%u ms queued=%u\n",
+             idx_, delay_ms, queued ? 1 : 0);
+}
+
+void SwitchProHost::cancel_clone_init_reentry()
+{
+    if (clone_init_reentry_task_id_ != 0)
+    {
+        TaskQueue::Core1::cancel_delayed_task(clone_init_reentry_task_id_);
+    }
+}
+
+void SwitchProHost::schedule_clone_full_report_settle_delay(uint8_t address, uint8_t instance, const char* reason)
+{
+    clone_pre_full_report_hint_ready_at_ms_ = 0;
     clone_full_report_ready_at_ms_ = board_api::ms_since_boot() + CLONE_FULL_REPORT_SETTLE_DELAY_MS;
     clone_full_report_delay_logged_ = false;
+    schedule_clone_init_reentry(address, instance, CLONE_FULL_REPORT_SETTLE_DELAY_MS);
     OGXM_LOG("SwitchProHost[%u]: scheduling MODE 0x03 settle delay=%u ms (%s)\n",
              idx_, CLONE_FULL_REPORT_SETTLE_DELAY_MS, (reason != nullptr) ? reason : "clone 0x81 hint");
 }
@@ -128,6 +158,7 @@ void SwitchProHost::initialize(Gamepad& gamepad, uint8_t address, uint8_t instan
 
 void SwitchProHost::reset_state()
 {
+    cancel_clone_init_reentry();
     init_state_ = InitState::HANDSHAKE;
     sequence_counter_ = 0;
     init_timeout_count_ = 0;
@@ -138,6 +169,7 @@ void SwitchProHost::reset_state()
     using_compat_fallback_ = false;
     clone_init_path_active_ = false;
     saw_vendor_status_report_ = false;
+    clone_pre_full_report_hint_window_attempted_ = false;
     clone_full_report_delay_logged_ = false;
     clone_ready_mode_retry_attempted_ = false;
     clone_ready_mode_retry_wait_logged_ = false;
@@ -149,6 +181,7 @@ void SwitchProHost::reset_state()
     debug_input_report_logs_ = 0;
     vendor_status_report_logs_ = 0;
     ready_keepalive_budget_ = 0;
+    clone_pre_full_report_hint_ready_at_ms_ = 0;
     clone_full_report_ready_at_ms_ = 0;
     clone_ready_mode_retry_at_ms_ = 0;
     get_report_probe_started_at_ms_ = 0;
@@ -334,9 +367,22 @@ void SwitchProHost::init_switch_host(uint8_t address, uint8_t instance)
             break;
 
         case InitState::SET_FULL_REPORT:
+        {
+            const uint32_t now_ms = board_api::ms_since_boot();
+            const bool recovery_hint_active = SwitchProCloneRecovery::next_attach_recovery_armed();
+
+            if (recovery_hint_active &&
+                !clone_init_path_active_ &&
+                clone_full_report_ready_at_ms_ == 0)
+            {
+                activate_parallel_clone_path("armed clone attach-recovery before first MODE 0x03");
+                saw_vendor_status_report_ = true;
+                schedule_clone_full_report_settle_delay(
+                    address, instance, "armed clone attach-recovery before first MODE 0x03");
+            }
+
             if (clone_full_report_ready_at_ms_ != 0)
             {
-                const uint32_t now_ms = board_api::ms_since_boot();
                 if (now_ms < clone_full_report_ready_at_ms_)
                 {
                     if (!clone_full_report_delay_logged_)
@@ -349,14 +395,38 @@ void SwitchProHost::init_switch_host(uint8_t address, uint8_t instance)
                 }
             }
 
+            if (clone_pre_full_report_hint_ready_at_ms_ != 0)
+            {
+                if (now_ms < clone_pre_full_report_hint_ready_at_ms_)
+                {
+                    break;
+                }
+
+                clone_pre_full_report_hint_ready_at_ms_ = 0;
+            }
+
+            if (!clone_init_path_active_ && !clone_pre_full_report_hint_window_attempted_)
+            {
+                clone_pre_full_report_hint_window_attempted_ = true;
+                clone_pre_full_report_hint_ready_at_ms_ =
+                    now_ms + CLONE_PRE_FULL_REPORT_HINT_WINDOW_MS;
+                schedule_clone_init_reentry(address, instance, CLONE_PRE_FULL_REPORT_HINT_WINDOW_MS);
+                OGXM_LOG("SwitchProHost[%u]: waiting %u ms for clone 0x81 hint before first MODE 0x03\n",
+                         idx_, CLONE_PRE_FULL_REPORT_HINT_WINDOW_MS);
+                break;
+            }
+
             if (send_subcommand(address, instance, SwitchPro::CMD::MODE, full_report_mode, sizeof(full_report_mode)))
             {
+                cancel_clone_init_reentry();
                 init_timeout_count_ = 0;
+                clone_pre_full_report_hint_ready_at_ms_ = 0;
                 clone_full_report_ready_at_ms_ = 0;
                 clone_full_report_delay_logged_ = false;
                 set_init_state(InitState::WAIT_FULL_REPORT, "full-report mode queued");
             }
             break;
+        }
 
         case InitState::ENABLE_VIBRATION:
             if (send_subcommand(address, instance, SwitchPro::CMD::ENABLE_VIBRATION, enable_vibration, sizeof(enable_vibration)))
@@ -496,7 +566,7 @@ void SwitchProHost::observe_vendor_status_report(uint8_t address, uint8_t instan
                                        : (recovery_hint_active
                                               ? "after armed clone attach-recovery 0x81 hint"
                                               : "after clone 0x81 vendor-status");
-        schedule_clone_full_report_settle_delay(delay_reason);
+        schedule_clone_full_report_settle_delay(address, instance, delay_reason);
     }
 
     if (vendor_status_report_logs_ >= MAX_VENDOR_STATUS_REPORT_LOGS)
@@ -532,6 +602,8 @@ void SwitchProHost::mark_input_stream_seen(uint8_t report_id)
     }
 
     input_stream_seen_ = true;
+    cancel_clone_init_reentry();
+    clone_pre_full_report_hint_ready_at_ms_ = 0;
     clone_ready_mode_retry_at_ms_ = 0;
     clone_ready_mode_retry_wait_logged_ = false;
     ready_keepalive_budget_ = 0;
@@ -621,8 +693,7 @@ bool SwitchProHost::maybe_start_clone_post_ready_reinit(uint8_t address, uint8_t
     clone_init_path_active_ = true;
     saw_vendor_status_report_ = true;
     clone_post_ready_reinit_attempted_ = true;
-    clone_full_report_ready_at_ms_ = board_api::ms_since_boot() + CLONE_FULL_REPORT_SETTLE_DELAY_MS;
-    clone_full_report_delay_logged_ = false;
+    schedule_clone_full_report_settle_delay(address, instance, "controlled post-ready reinit");
 
     OGXM_LOG("SwitchProHost[%u]: clone path starting controlled post-ready reinit (%s)\n",
              idx_, (reason != nullptr) ? reason : "no reason");
@@ -1452,6 +1523,8 @@ void SwitchProHost::disconnect_cb(Gamepad& gamepad, uint8_t address, uint8_t ins
     (void)gamepad;
     (void)address;
     (void)instance;
+
+    cancel_clone_init_reentry();
 
     if (SwitchProCloneRecovery::clone_profile_detected())
     {
