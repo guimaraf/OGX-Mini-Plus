@@ -2,7 +2,23 @@
 
 ## Current Version
 
-- `v1.1.5`
+- `v1.1.6`
+
+## v1.1.6
+
+### Bluetooth Original Controllers Baseline
+
+- Restored the secure Bluetooth baseline for original controllers on Pico W and Pico 2 W builds
+- Re-enabled the Bluepad32 GAP security configuration used before the Switch clone compatibility regression
+- Restored BTstack incoming L2CAP security validation instead of allowing incoming channels unconditionally
+- Confirmed Bluetooth support again for Xbox One S, Xbox Series, DualShock 4, DualSense, and additional tested third-party controllers
+
+### Fork Maintenance
+
+- Updated project versioning to `v1.1.6`
+- Documented the Phase 1 Bluetooth baseline recovery for project and external stack history
+
+---
 
 ## v1.1.5
 

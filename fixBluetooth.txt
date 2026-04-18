@@ -1,0 +1,244 @@
+Plano de Correcao do Bluetooth
+
+Projeto:
+F:\GitRevised\OGX-Mini-Plus
+
+Objetivo geral:
+- restaurar o funcionamento dos controles Bluetooth originais
+- preservar o suporte ao time Pro Controller em uma segunda etapa
+- fechar o trabalho com limpeza tecnica, verificacao de coerencia e reducao de risco
+
+Contexto importante:
+- o projeto principal e um hard fork
+- as bibliotecas externas relevantes tambem estao em forks proprios
+- mudancas estruturais de stack Bluetooth devem ser feitas primeiro nas bibliotecas externas corretas
+- ao final de cada fase, sera feito commit e envio para GitHub como ponto de restauracao
+- o usuario fara os testes reais de hardware entre as fases
+- nao fazer build automatico durante o trabalho
+
+Resumo da estrategia:
+- Fase 1: voltar o caminho Bluetooth para um estado seguro para controles originais
+- Fase 2: reintroduzir o suporte ao time Pro Controller com excecao controlada
+- Fase 3: revisar o conjunto final para remover arestas, redundancias e codigo morto
+
+==================================================
+FASE 1 - Restaurar controles originais
+==================================================
+
+Objetivo:
+- voltar o comportamento Bluetooth para priorizar seguranca e compatibilidade com controles originais
+- validar retorno de suporte para Xbox One/Series, DS4 e DualSense
+
+Escopo tecnico:
+- atuar primeiro nos forks das bibliotecas externas Bluetooth
+- remover o efeito global da reducao de seguranca introduzida para viabilizar Switch clone
+- restaurar a politica padrao de autenticacao e seguranca para o fluxo BR/EDR
+
+Arquivos mais provaveis desta fase:
+- fork Bluepad32:
+  Firmware/external/bluepad32/src/components/bluepad32/uni_property.c
+  Firmware/external/bluepad32/src/components/bluepad32/bt/uni_bt_bredr.c
+- fork BTstack:
+  Firmware/external/bluepad32/external/btstack/src/l2cap.c
+- integracao local, se necessario para alinhar configuracao:
+  Firmware/RP2040/src/sdkconfig.h
+
+Hipotese principal desta fase:
+- o suporte aos originais foi quebrado pela reducao global do GAP/L2CAP security level e pelo bypass global no caminho de incoming security
+
+Mudancas esperadas:
+- seguranca Bluetooth volta a ser alta por padrao
+- controles originais devem voltar a conectar
+- clone e possivelmente licenciados ou multi-inputs podem perder suporte temporariamente
+
+Resultado esperado:
+- controles originais Bluetooth voltam a funcionar
+- o projeto volta a ter baseline confiavel para seguir para a Fase 2
+
+Teste esperado do usuario ao fim da fase:
+- testar Xbox One ou Series original
+- testar DS4 original
+- testar DualSense original
+- confirmar se conectam, mantem conexao e entregam input
+- informar se houve regressao em pareamento, reconexao ou rumble
+
+Criterio para concluir a fase:
+- pelo menos os controles originais principais voltam a operar corretamente
+- qualquer perda temporaria no time Pro Controller e aceita nesta fase
+
+Checkpoint Git:
+- subir ao GitHub ao final da fase
+- registrar no historico que esta e a baseline "originais restaurados"
+
+==================================================
+FASE 2 - Reintroduzir time Pro Controller
+==================================================
+
+Objetivo:
+- recuperar suporte para Switch Pro original, licenciados, multi-inputs e clone
+- manter o funcionamento dos controles originais restaurado na Fase 1
+
+Direcao tecnica:
+- nao voltar para seguranca baixa global
+- introduzir excecao controlada apenas para casos Switch problematicos
+- usar heuristica, comportamento observado, fallback e possivel cache por endereco
+
+Principio desta fase:
+- seguranca alta continua sendo o caminho padrao
+- o caminho de seguranca baixa passa a ser excecao e nao regra
+
+Arquivos mais provaveis desta fase:
+- bibliotecas externas Bluetooth:
+  Firmware/external/bluepad32/src/components/bluepad32/bt/uni_bt_bredr.c
+  Firmware/external/bluepad32/src/components/bluepad32/uni_property.c
+  Firmware/external/bluepad32/src/components/bluepad32/parser/uni_hid_parser_switch.c
+  Firmware/external/bluepad32/external/btstack/src/l2cap.c
+- projeto principal:
+  Firmware/RP2040/src/Bluepad32/Bluepad32.cpp
+  Firmware/RP2040/src/sdkconfig.h
+- persistencia local, se necessario:
+  Firmware/RP2040/src/UserSettings/UserSettings.cpp
+  Firmware/RP2040/src/UserSettings/UserSettings.h
+  Firmware/RP2040/src/UserSettings/UserProfile.cpp
+  Firmware/RP2040/src/UserSettings/UserProfile.h
+
+Abordagem esperada:
+- detectar candidato a familia Switch sem confiar apenas em nome
+- tentar primeiro o caminho seguro
+- se falhar com padrao compativel com clone/licenciado/multi-input problematico, aplicar fallback controlado
+- se o fallback funcionar, opcionalmente salvar essa decisao por endereco Bluetooth
+
+Resultado esperado:
+- controles originais continuam funcionando
+- time Pro Controller volta a funcionar
+- a excecao de seguranca fica isolada e rastreavel
+
+Teste esperado do usuario ao fim da fase:
+- testar Switch Pro original
+- testar licenciados disponiveis
+- testar multi-inputs disponiveis
+- testar clone
+- repetir teste rapido nos controles originais para validar ausencia de regressao
+
+Criterio para concluir a fase:
+- originais continuam funcionando
+- o maior numero possivel do time Pro Controller volta a funcionar
+- a excecao tecnica nao rebaixa seguranca de todo o stack
+
+Checkpoint Git:
+- subir ao GitHub ao final da fase
+- registrar no historico que esta e a baseline "originais + time Pro Controller"
+
+==================================================
+FASE 3 - Revisao tecnica final
+==================================================
+
+Objetivo:
+- revisar o conjunto final para consistencia, manutencao e previsibilidade
+- remover codigos mortos, redundancias e pontos confusos deixados pelas fases anteriores
+
+Foco desta fase:
+- revisar logs temporarios
+- revisar condicionais duplicadas
+- revisar fallback que tenha ficado amplo demais
+- revisar pontos onde bibliotecas externas e projeto principal estejam dividindo responsabilidade de forma ruim
+- revisar comentarios para refletir o comportamento final
+
+Arquivos mais provaveis desta fase:
+- todos os alterados nas Fases 1 e 2
+- com foco especial em:
+  Firmware/external/bluepad32/src/components/bluepad32/bt/uni_bt_bredr.c
+  Firmware/external/bluepad32/external/btstack/src/l2cap.c
+  Firmware/RP2040/src/Bluepad32/Bluepad32.cpp
+  Firmware/RP2040/src/sdkconfig.h
+
+Resultado esperado:
+- codigo mais coerente
+- menos risco de regressao futura
+- logica mais clara entre comportamento padrao e excecoes Switch
+
+Teste esperado do usuario ao fim da fase:
+- nova rodada nos controles originais
+- nova rodada no time Pro Controller
+- foco em boot, pareamento, reconexao, input e rumble quando aplicavel
+
+Criterio para concluir a fase:
+- nao haver inconsistencias tecnicas relevantes abertas
+- comportamento final ficar estavel e compreensivel
+
+Checkpoint Git:
+- subir ao GitHub ao final da fase
+- registrar no historico a baseline final estabilizada
+
+==================================================
+Riscos e observacoes
+==================================================
+
+Riscos tecnicos conhecidos:
+- parte da identificacao de controle Bluetooth acontece tarde demais para uma classificacao perfeita antes da seguranca
+- clones e multi-inputs podem responder de forma parecida com controles legitimos em nome e fluxo parcial
+- a solucao mais robusta provavelmente dependera de fallback por comportamento e nao so de identificacao estatica
+
+Observacoes importantes:
+- USB nao e o foco desta correcao inicial
+- o trabalho principal esta no stack Bluetooth compartilhado
+- qualquer alteracao ampla em seguranca deve ser feita com muito cuidado para nao reabrir a regressao atual
+
+==================================================
+Sequencia operacional
+==================================================
+
+1. Executar Fase 1.
+2. Usuario recompila localmente e testa os controles originais.
+3. Usuario informa os resultados.
+4. Se aprovado, executar Fase 2.
+5. Usuario recompila localmente e testa o time Pro Controller e os originais.
+6. Usuario informa os resultados.
+7. Se aprovado, executar Fase 3.
+8. Usuario recompila localmente e faz validacao geral.
+
+==================================================
+Estado atual do documento
+==================================================
+
+Status:
+- plano inicial criado
+- Fase 1 concluida
+- Fase 1 documentada para release
+
+Recorte atual:
+- objetivo imediato da fase encerrado: restaurar a baseline segura para controles originais
+- mudancas aplicadas nesta etapa:
+  Firmware/RP2040/src/sdkconfig.h
+  Firmware/external/bluepad32/external/btstack/src/l2cap.c
+- mudanca aplicada no projeto:
+  reativar CONFIG_BLUEPAD32_GAP_SECURITY 1
+- mudanca aplicada na biblioteca externa:
+  remover bypass global do incoming security em l2cap.c
+- resultados validados pelo usuario:
+  DS4 Original:
+  sincronizou, input e vibracao funcionaram
+  Xbox One S Original:
+  sincronizou, input e vibracao funcionaram
+  Xbox Series Original:
+  sincronizou, input e vibracao funcionaram
+  DualSense Original:
+  sincronizou, input e vibracao funcionaram
+  INNE Zelda licenciado em modo Pro Controller:
+  sincronizou, input e vibracao funcionaram
+  INNE Basket multi sistema em modo DS4:
+  sincronizou, input e vibracao funcionaram
+  Pro Controller Clone:
+  nao sincronizou, como esperado nesta fase
+- conclusao da fase:
+  baseline segura restaurada com sucesso
+  controles originais Bluetooth voltaram a funcionar
+  clone perdeu suporte temporariamente, como previsto
+  observacao DS4 descartada do escopo do projeto por reproduzir em hardware externo
+- proximo passo:
+  iniciar Fase 2 para reintroduzir o time Pro Controller sem perder a baseline da Fase 1
+
+Uso deste arquivo:
+- servir como base de consulta durante o trabalho
+- ser atualizado a cada fase vencida
+- registrar decisoes tecnicas e checkpoint de historico
