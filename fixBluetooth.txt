@@ -205,6 +205,7 @@ Status:
 - plano inicial criado
 - Fase 1 concluida
 - Fase 1 documentada para release
+- Fase 1 encerrada com cadeia de submodulos alinhada
 
 Recorte atual:
 - objetivo imediato da fase encerrado: restaurar a baseline segura para controles originais
@@ -235,6 +236,12 @@ Recorte atual:
   controles originais Bluetooth voltaram a funcionar
   clone perdeu suporte temporariamente, como previsto
   observacao DS4 descartada do escopo do projeto por reproduzir em hardware externo
+- validacao final da fase:
+  repositório principal, bluepad32 e btstack publicados com os ponteiros corretos
+  submodulos alinhados para baixar revisoes especificas com as correcoes aplicadas
+  teste de clonagem recursiva executado com sucesso em uma pasta nova
+  compilacao concluida sem erros no ambiente limpo
+  testes de controles concluidos com o comportamento esperado da Fase 1
 - proximo passo:
   iniciar Fase 2 para reintroduzir o time Pro Controller sem perder a baseline da Fase 1
 
