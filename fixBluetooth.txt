@@ -129,6 +129,41 @@ Checkpoint Git:
 - subir ao GitHub ao final da fase
 - registrar no historico que esta e a baseline "originais + time Pro Controller"
 
+Status final da fase:
+- concluida
+
+Implementacao aplicada:
+- btstack:
+  excecao controlada para incoming HID BR/EDR de candidatos Switch, sem reduzir a seguranca global
+- bluepad32:
+  cache simples de candidatos Switch por endereco Bluetooth
+  classificacao alimentada por inquiry, nome remoto e dispositivos conhecidos que recebem nome mais tarde
+
+Arquivos alterados na fase:
+- Firmware/external/bluepad32/external/btstack/src/l2cap.c
+- Firmware/external/bluepad32/src/components/bluepad32/bt/uni_bt_bredr.c
+
+Resultados validados pelo usuario:
+- Pro Controller Clone:
+  sincronizou e funcionou corretamente em todos os recursos
+  observacao: sincronizacao um pouco mais lenta, aceita como comportamento esperado
+- INNE Zelda em modo Pro Controller:
+  funcionando perfeitamente
+- Machenike G5 Pro em modo NW BT:
+  funcionando corretamente
+- regressao em controles originais:
+  Xbox One S OK
+  Xbox Series OK
+  DS4 V2 OK
+  DualSense OK
+  INNE Basket em modo DS4 OK
+
+Validacao final da fase:
+- time Pro Controller restaurado sem quebrar a baseline segura da Fase 1
+- controles originais permaneceram funcionando corretamente
+- btstack, bluepad32 e projeto principal publicados e alinhados com os SHAs corretos
+- clonagem recursiva continua apta a baixar as revisoes corretas da Fase 2
+
 ==================================================
 FASE 3 - Revisao tecnica final
 ==================================================
@@ -170,6 +205,33 @@ Checkpoint Git:
 - subir ao GitHub ao final da fase
 - registrar no historico a baseline final estabilizada
 
+Status final da fase:
+- concluida
+
+Implementacao aplicada:
+- limpeza tecnica minima e segura no caminho de producao
+- remocao de redundancia no fluxo BR/EDR
+- alinhamento de comentarios e logs com a estrategia final adotada
+- preservacao explicita dos logs de debug e da instrumentacao Web usados para analise futura
+
+Arquivos alterados na fase:
+- Firmware/external/bluepad32/src/components/bluepad32/bt/uni_bt_bredr.c
+- Firmware/external/bluepad32/src/components/bluepad32/uni_property.c
+
+Resultados validados pelo usuario:
+- Pro Controller Clone OK
+- INNE Zelda em modo Pro Controller OK
+- Machenike G5 Pro em modo Pro Controller OK
+- Xbox One OK
+- Xbox Series OK
+- DS4 OK
+- DualSense OK
+
+Validacao final da fase:
+- nenhuma regressao percebida
+- limpeza aplicada nao alterou o comportamento validado da Fase 2
+- objetivo geral do trabalho concluido com sucesso
+
 ==================================================
 Riscos e observacoes
 ==================================================
@@ -206,44 +268,32 @@ Status:
 - Fase 1 concluida
 - Fase 1 documentada para release
 - Fase 1 encerrada com cadeia de submodulos alinhada
+- Fase 2 concluida
+- Fase 2 publicada com cadeia de submodulos alinhada
+- Fase 3 concluida
 
 Recorte atual:
-- objetivo imediato da fase encerrado: restaurar a baseline segura para controles originais
-- mudancas aplicadas nesta etapa:
-  Firmware/RP2040/src/sdkconfig.h
-  Firmware/external/bluepad32/external/btstack/src/l2cap.c
-- mudanca aplicada no projeto:
-  reativar CONFIG_BLUEPAD32_GAP_SECURITY 1
-- mudanca aplicada na biblioteca externa:
-  remover bypass global do incoming security em l2cap.c
-- resultados validados pelo usuario:
-  DS4 Original:
-  sincronizou, input e vibracao funcionaram
-  Xbox One S Original:
-  sincronizou, input e vibracao funcionaram
-  Xbox Series Original:
-  sincronizou, input e vibracao funcionaram
-  DualSense Original:
-  sincronizou, input e vibracao funcionaram
-  INNE Zelda licenciado em modo Pro Controller:
-  sincronizou, input e vibracao funcionaram
-  INNE Basket multi sistema em modo DS4:
-  sincronizou, input e vibracao funcionaram
-  Pro Controller Clone:
-  nao sincronizou, como esperado nesta fase
-- conclusao da fase:
-  baseline segura restaurada com sucesso
-  controles originais Bluetooth voltaram a funcionar
-  clone perdeu suporte temporariamente, como previsto
+- objetivo geral concluido com Fases 1, 2 e 3 encerradas
+- resumo consolidado das fases concluidas:
+  Fase 1:
+  baseline segura restaurada para controles originais
+  submodulos publicados com ponteiros corretos
+  teste de clonagem recursiva executado com sucesso em pasta nova
+  compilacao concluida sem erros em ambiente limpo
+  controles originais validados com o comportamento esperado
   observacao DS4 descartada do escopo do projeto por reproduzir em hardware externo
-- validacao final da fase:
-  repositório principal, bluepad32 e btstack publicados com os ponteiros corretos
-  submodulos alinhados para baixar revisoes especificas com as correcoes aplicadas
-  teste de clonagem recursiva executado com sucesso em uma pasta nova
-  compilacao concluida sem erros no ambiente limpo
-  testes de controles concluidos com o comportamento esperado da Fase 1
+  Fase 2:
+  excecao controlada para candidatos Switch implementada nas bibliotecas externas
+  clone, licenciados e multi-inputs em modo Pro Controller voltaram a funcionar
+  controles originais seguiram funcionando sem regressao
+  projeto principal, bluepad32 e btstack publicados e alinhados com os SHAs corretos
+  clonagem recursiva continua apta a baixar as revisoes corretas da Fase 2
+  Fase 3:
+  limpeza tecnica minima aplicada no caminho de producao
+  logs de debug e instrumentacao Web preservados por decisao de projeto
+  testes finais executados sem regressao percebida
 - proximo passo:
-  iniciar Fase 2 para reintroduzir o time Pro Controller sem perder a baseline da Fase 1
+  trabalho concluido
 
 Uso deste arquivo:
 - servir como base de consulta durante o trabalho
