@@ -38,3 +38,5 @@ compileProcess.txt
 # Ignore compiled Python
 *.pyc
 __pycache__/
+
+.future/
