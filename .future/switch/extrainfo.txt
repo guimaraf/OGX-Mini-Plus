@@ -1,0 +1,4 @@
+/sys/class/hidraw/hidraw1/device/uevent:DRIVER=nintendo
+/sys/class/hidraw/hidraw1/device/uevent:HID_ID=0003:0000057E:00002009
+/sys/class/hidraw/hidraw1/device/uevent:HID_NAME=Pro Controller
+/sys/class/hidraw/hidraw1/device/uevent:HID_PHYS=usb-0000:00:06.0-2/input

@@ -1,7 +1,7 @@
 # OGX-Mini Plus - Compilation Guide
 
-> **Project Version:** v1.1.1  
-> **Last Updated:** 2026-01-29
+> **Project Version:** v1.1.4  
+> **Last Updated:** 2026-04-12
 
 This document contains all the information needed to compile the OGX-Mini Plus firmware.
 

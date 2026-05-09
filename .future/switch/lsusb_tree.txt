@@ -1,0 +1,4 @@
+/:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=ohci-pci/12p, 12M
+    |__ Port 001: Dev 002, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+    |__ Port 002: Dev 003, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+/:  Bus 002.Port 001: Dev 001, Class=root_hub, Driver=ehci-pci/12p, 480M

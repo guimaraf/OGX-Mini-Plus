@@ -2,6 +2,7 @@
 #define BOARD_API_LOG_H
 
 #include <cstdint>
+#include <cstddef>
 
 #include "Board/Config.h"
 #if defined(CONFIG_OGXM_DEBUG)
@@ -23,6 +24,8 @@ namespace ogxm_log {
     void log(const char* fmt, ...);
     //Don't use this directly, use the OGXM_LOG_HEX macro
     void log_hex(const uint8_t* data, size_t size);
+    bool usb_log_available();
+    size_t read_usb_log(uint8_t* buffer, size_t size);
 
     template <typename T>
     std::string to_string(const T& value) {
@@ -42,6 +45,8 @@ namespace ogxm_log {
 
 namespace ogxm_log {
     void init() __attribute__((weak));
+    inline bool usb_log_available() { return false; }
+    inline size_t read_usb_log(uint8_t* buffer, size_t size) { (void)buffer; return size ? 0 : 0; }
 }
 
 #define OGXM_LOG(...)

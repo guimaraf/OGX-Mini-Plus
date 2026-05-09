@@ -38,7 +38,7 @@ private:
     InitState init_state_;
 
     static bool send_control_xfer(uint8_t dev_addr, const tusb_control_request_t* req, uint8_t* buffer, tuh_xfer_cb_t complete_cb, uintptr_t user_data);
-    static void get_report_complete_cb(tuh_xfer_s *xfer);
+    static void get_report_xfer_complete_cb(tuh_xfer_s *xfer);
 };
 
 #endif // _PS3_HOST_H_

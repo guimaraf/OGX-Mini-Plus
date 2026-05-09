@@ -2,10 +2,12 @@
 #if defined(CONFIG_OGXM_DEBUG)
 
 #include <cstdint>
+#include <array>
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 #include <pico/mutex.h>
 #include <hardware/uart.h>
 #include <hardware/gpio.h>
@@ -33,6 +35,53 @@ std::ostream& operator<<(std::ostream& os, DeviceDriverType type) {
 
 namespace ogxm_log {
 
+namespace {
+constexpr size_t USB_LOG_BUFFER_SIZE = 2048;
+
+std::array<uint8_t, USB_LOG_BUFFER_SIZE> usb_log_buffer{};
+size_t usb_log_head = 0;
+size_t usb_log_tail = 0;
+size_t usb_log_count = 0;
+mutex_t log_mutex;
+bool log_mutex_initialized = false;
+
+void ensure_log_mutex()
+{
+    if (!log_mutex_initialized)
+    {
+        mutex_init(&log_mutex);
+        log_mutex_initialized = true;
+    }
+}
+
+void push_usb_log_bytes(const uint8_t* data, size_t size)
+{
+    if (data == nullptr || size == 0)
+    {
+        return;
+    }
+
+    if (size >= USB_LOG_BUFFER_SIZE)
+    {
+        data += size - USB_LOG_BUFFER_SIZE;
+        size = USB_LOG_BUFFER_SIZE;
+    }
+
+    while ((usb_log_count + size) > USB_LOG_BUFFER_SIZE)
+    {
+        usb_log_tail = (usb_log_tail + 1) % USB_LOG_BUFFER_SIZE;
+        --usb_log_count;
+    }
+
+    for (size_t i = 0; i < size; ++i)
+    {
+        usb_log_buffer[usb_log_head] = data[i];
+        usb_log_head = (usb_log_head + 1) % USB_LOG_BUFFER_SIZE;
+    }
+    usb_log_count += size;
+}
+} // namespace
+
 void init() {
     uart_init(DEBUG_UART_PORT, PICO_DEFAULT_UART_BAUD_RATE);
     gpio_set_function(PICO_DEFAULT_UART_TX_PIN, GPIO_FUNC_UART);
@@ -40,17 +89,14 @@ void init() {
 }
 
 void log(const std::string& message) {
-    static mutex_t log_mutex;
-
-    if (!mutex_is_initialized(&log_mutex)) {
-        mutex_init(&log_mutex);
-    }
+    ensure_log_mutex();
 
     mutex_enter_blocking(&log_mutex);
 
     std::string formatted_msg = "OGXM: " + message;
 
     uart_puts(DEBUG_UART_PORT, formatted_msg.c_str());
+    push_usb_log_bytes(reinterpret_cast<const uint8_t*>(formatted_msg.data()), formatted_msg.size());
 
     mutex_exit(&log_mutex);
 }
@@ -82,6 +128,37 @@ void log_hex(const uint8_t* data, size_t size) {
     }
     hex_stream << "\n";
     log(hex_stream.str());
+}
+
+bool usb_log_available()
+{
+    ensure_log_mutex();
+    mutex_enter_blocking(&log_mutex);
+    const bool available = usb_log_count > 0;
+    mutex_exit(&log_mutex);
+    return available;
+}
+
+size_t read_usb_log(uint8_t* buffer, size_t size)
+{
+    if (buffer == nullptr || size == 0)
+    {
+        return 0;
+    }
+
+    ensure_log_mutex();
+    mutex_enter_blocking(&log_mutex);
+
+    const size_t bytes_to_read = std::min(size, usb_log_count);
+    for (size_t i = 0; i < bytes_to_read; ++i)
+    {
+        buffer[i] = usb_log_buffer[usb_log_tail];
+        usb_log_tail = (usb_log_tail + 1) % USB_LOG_BUFFER_SIZE;
+    }
+    usb_log_count -= bytes_to_read;
+
+    mutex_exit(&log_mutex);
+    return bytes_to_read;
 }
 
 } // namespace ogxm_log

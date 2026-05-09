@@ -38,7 +38,7 @@ void PS3Host::initialize(Gamepad& gamepad, uint8_t address, uint8_t instance, co
         .wLength = 17
     };
 
-    send_control_xfer(address, &init_request, init_state_.init_buffer.data(), get_report_complete_cb, reinterpret_cast<uintptr_t>(&init_state_));
+    send_control_xfer(address, &init_request, init_state_.init_buffer.data(), get_report_xfer_complete_cb, reinterpret_cast<uintptr_t>(&init_state_));
 
     tuh_hid_receive_report(address, instance);
 }
@@ -57,7 +57,7 @@ bool PS3Host::send_control_xfer(uint8_t dev_addr, const tusb_control_request_t* 
     return tuh_control_xfer(&transfer);
 }
 
-void PS3Host::get_report_complete_cb(tuh_xfer_s *xfer)
+void PS3Host::get_report_xfer_complete_cb(tuh_xfer_s *xfer)
 {
     InitState* init_state = reinterpret_cast<InitState*>(xfer->user_data);
     if (init_state == nullptr || init_state->stage == InitStage::DONE)
@@ -78,12 +78,12 @@ void PS3Host::get_report_complete_cb(tuh_xfer_s *xfer)
     {
         case InitStage::RESP1:
             init_state->stage = InitStage::RESP2;
-            send_control_xfer(init_state->dev_addr, &init_request, init_state->init_buffer.data(), get_report_complete_cb, xfer->user_data);
+            send_control_xfer(init_state->dev_addr, &init_request, init_state->init_buffer.data(), get_report_xfer_complete_cb, xfer->user_data);
             break;
         case InitStage::RESP2:
             init_state->stage = InitStage::RESP3;
             init_request.wLength = 8;
-            send_control_xfer(init_state->dev_addr, &init_request, init_state->init_buffer.data(), get_report_complete_cb, xfer->user_data);
+            send_control_xfer(init_state->dev_addr, &init_request, init_state->init_buffer.data(), get_report_xfer_complete_cb, xfer->user_data);
             break;
         case InitStage::RESP3:
             init_state->stage = InitStage::DONE;

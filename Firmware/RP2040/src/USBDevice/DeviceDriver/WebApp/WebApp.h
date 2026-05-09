@@ -31,6 +31,7 @@ private:
         SET_PROFILE = 0x61,
         SET_GP_IN = 0x80,
         SET_GP_OUT = 0x81,
+        LOG_STREAM = 0x90,
         RESP_ERROR = 0xFF
     };
     
@@ -63,8 +64,10 @@ private:
     bool read_profile(UserProfile& profile);
     bool read_serial(void* buffer, size_t len, bool block);
     bool read_packet(Packet& packet, bool block);
+    bool try_write_packet(const Packet& packet);
     bool write_serial(const void* buffer, size_t len);
     bool write_packet(const Packet& packet);
+    bool write_log_packet();
     bool write_profile(uint8_t index, const UserProfile& profile, PacketID packet_id);
     bool write_gamepad(uint8_t index, const Gamepad::PadIn& pad_in);
     void write_error();  

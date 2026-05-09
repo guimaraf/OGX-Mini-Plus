@@ -186,6 +186,8 @@ if(EN_USB_HOST)
         ${SRC}/USBHost/HostDriver/PSClassic/PSClassic.cpp
         ${SRC}/USBHost/HostDriver/SwitchWired/SwitchWired.cpp
         ${SRC}/USBHost/HostDriver/SwitchPro/SwitchPro.cpp
+        ${SRC}/USBHost/HostDriver/SwitchPro/SwitchProCloneRecovery.cpp
+        ${SRC}/USBHost/HostDriver/SwitchPro/SwitchProRumble.cpp
         ${SRC}/USBHost/HostDriver/PS5/PS5.cpp
         ${SRC}/USBHost/HostDriver/PS4/PS4.cpp
         ${SRC}/USBHost/HostDriver/PS3/PS3.cpp
