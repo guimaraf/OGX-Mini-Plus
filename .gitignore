@@ -2,6 +2,7 @@
 Firmware/.vscode
 
 !test/
+!joypadOS/
 
 # Build directories (ignore contents, keep folders)
 Firmware/RP2040/build/
