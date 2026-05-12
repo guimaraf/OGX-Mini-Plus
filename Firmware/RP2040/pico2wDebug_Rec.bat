@@ -1,0 +1,2 @@
+start cmake -S . -B build_pico2w_debuglog -G Ninja -DCMAKE_BUILD_TYPE=Release -DOGXM_BOARD=PI_PICO2W -DOGXM_ENABLE_DEBUG_LOG=ON -DOGXM_ENABLE_BT_RATE_DEBUG=OFF
+pause

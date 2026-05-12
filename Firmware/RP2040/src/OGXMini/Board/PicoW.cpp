@@ -4,6 +4,7 @@
 
 #include <hardware/clocks.h>
 #include <pico/multicore.h>
+#include <pico/platform.h>
 
 #include "tusb.h"
 #include "bsp/board_api.h"
@@ -21,7 +22,9 @@ Gamepad _gamepads[MAX_GAMEPADS];
 void core1_task() {
     board_api::init_bluetooth();
     board_api::set_led(true);
+#if !defined(OGXM_DISABLE_BLE_SERVER_FOR_BT_PERF_TEST)
     BLEServer::init_server(_gamepads);
+#endif
     bluepad32::run_task(_gamepads);
 }
 
@@ -69,7 +72,11 @@ void pico_w::run() {
             device_driver->process(i, _gamepads[i]);
             tud_task();
         }
+#if defined(OGXM_USB_TIGHT_POLL)
+        tight_loop_contents();
+#else
         sleep_ms(1);
+#endif
     }
 }
 

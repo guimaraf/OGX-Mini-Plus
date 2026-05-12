@@ -112,7 +112,7 @@ const std::string UserSettings::DATETIME_KEY() {
 }
 
 DeviceDriverType UserSettings::DEFAULT_DRIVER() {
-  return VALID_DRIVER_TYPES[0];
+  return DeviceDriverType::XINPUT;
 }
 
 // Checks if button combo has been held for 3 seconds, returns true if mode has

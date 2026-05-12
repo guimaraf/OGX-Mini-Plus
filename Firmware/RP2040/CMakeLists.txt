@@ -311,15 +311,23 @@ pico_sdk_init()
 add_executable(${FW_NAME} ${SOURCES_BOARD})
 
 set(BUILD_STR "")
+option(OGXM_ENABLE_DEBUG_LOG "Enable OGXM debug logging without full Debug build" OFF)
+option(OGXM_ENABLE_BT_RATE_DEBUG "Enable Bluetooth/USB rate telemetry logs" OFF)
+option(OGXM_BLUEPAD32_SONY_FAST_INPUT "Skip Sony motion/touch parsing in Bluepad32 input hot path" ON)
+option(OGXM_BLUEPAD32_DS4_DIRECT_INPUT "Bypass Bluepad32 remap/misc processing for DS4 Bluetooth input reports" ON)
+option(OGXM_BLUEPAD32_DS4_L2CAP_RATE_DEBUG "Enable DS4 L2CAP interval telemetry inside Bluepad32" OFF)
+option(OGXM_BLUEPAD32_DS4_CONTROL_ENABLE "Use JoypadOS-style DS4 SET_REPORT output on the control channel" ON)
+option(OGXM_BLUEPAD32_DS4_DELAY_INITIAL_ENABLE "Delay the initial DS4 SET_REPORT that enables enhanced BT reports" OFF)
+option(OGXM_BLUEPAD32_DS4_SKIP_INIT_CALIBRATION "Skip DS4 calibration GET_REPORT during initial BT bring-up" OFF)
+option(OGXM_BLUEPAD32_DS4_SKIP_SDP "Skip SDP for DS4 Wireless Controller and connect with direct L2CAP" OFF)
+option(OGXM_BLUEPAD32_SONY_L2CAP_AFTER_ENCRYPTION "For Sony BT controllers, create HID L2CAP channels only after ACL encryption is active" OFF)
+option(OGXM_BLUEPAD32_DISABLE_SNIFF_FOR_BT_PERF_TEST "Disable Bluetooth Classic sniff mode while testing gamepad performance" ON)
+option(OGXM_BLUEPAD32_FORCE_ACTIVE_LINK_POLICY "Apply active Bluetooth Classic link policy after each connection completes" ON)
+option(OGXM_DISABLE_BLE_SERVER_FOR_BT_PERF_TEST "Disable local BLE server while testing Bluetooth gamepad performance" OFF)
+option(OGXM_USB_TIGHT_POLL "Poll TinyUSB/device driver without the 1 ms sleep in the Pico W main loop" OFF)
+option(OGXM_SWITCH_SEND_ON_CHANGE_ONLY "For Pokken/Switch USB mode, send HID input reports only when input changed or a pending report exists" ON)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    if(OGXM_BOARD STREQUAL "PI_PICOW")
-        message(FATAL_ERROR "Debug build will not work with the Pico W currently")
-    endif()
-
-    message(STATUS "Debug build enabled.")
-    set(BUILD_STR "-Debug")
-
+function(configure_ogxm_debug_log target_name)
     set(TX_PIN 0)
     set(RX_PIN 1)
     set(UART_PORT)
@@ -327,17 +335,28 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     include(${CMAKE_CURRENT_LIST_DIR}/cmake/get_pico_uart_port.cmake)
     get_pico_uart_port(${TX_PIN} UART_PORT)
 
-    message(STATUS "UART port: ${UART_PORT}, TX: ${TX_PIN}, RX: ${RX_PIN}")
+    message(STATUS "OGXM debug log enabled. UART port: ${UART_PORT}, TX: ${TX_PIN}, RX: ${RX_PIN}")
 
-    pico_enable_stdio_uart(${FW_NAME} 1)
-    target_compile_definitions(${FW_NAME} PRIVATE
+    target_compile_definitions(${target_name} PRIVATE
+        OGXM_DEBUG=1
         PICO_DEFAULT_UART=${UART_PORT}
         PICO_DEFAULT_UART_TX_PIN=${TX_PIN}
         PICO_DEFAULT_UART_RX_PIN=${RX_PIN}
     )
+endfunction()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(OGXM_BOARD STREQUAL "PI_PICOW" OR OGXM_BOARD STREQUAL "PI_PICO2W")
+        message(FATAL_ERROR "Full Debug build will not work with the Pico W / Pico 2 W currently. Use OGXM_ENABLE_DEBUG_LOG=ON with a Release build instead.")
+    endif()
+
+    message(STATUS "Debug build enabled.")
+    set(BUILD_STR "-Debug")
+
+    pico_enable_stdio_uart(${FW_NAME} 1)
+    configure_ogxm_debug_log(${FW_NAME})
  
     add_compile_definitions(CFG_TUSB_DEBUG=1)
-    add_compile_definitions(OGXM_DEBUG=1)
 
     target_compile_options(${FW_NAME} PRIVATE
         -Wall                # Enable most warnings
@@ -351,6 +370,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     pico_enable_stdio_uart(${FW_NAME} 0)
     add_compile_definitions(CFG_TUSB_DEBUG=0)
+    if(OGXM_ENABLE_DEBUG_LOG)
+        set(BUILD_STR "-DebugLog")
+        configure_ogxm_debug_log(${FW_NAME})
+    endif()
+
     add_compile_options(
         -O3                     # Optimize for speed
         # -mcpu=cortex-m0plus     # Target ARM Cortex-M0+
@@ -365,6 +389,25 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
         -Wl,--gc-sections       # Remove unused sections
         -flto                   # Link-Time Optimization
     )
+endif()
+
+if(OGXM_ENABLE_BT_RATE_DEBUG)
+    if(NOT OGXM_ENABLE_DEBUG_LOG AND NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+        message(WARNING "OGXM_ENABLE_BT_RATE_DEBUG=ON requires OGXM_ENABLE_DEBUG_LOG=ON or a Debug build to emit logs.")
+    endif()
+    target_compile_definitions(${FW_NAME} PRIVATE OGXM_BT_RATE_DEBUG=1)
+endif()
+
+if(OGXM_DISABLE_BLE_SERVER_FOR_BT_PERF_TEST)
+    target_compile_definitions(${FW_NAME} PRIVATE OGXM_DISABLE_BLE_SERVER_FOR_BT_PERF_TEST=1)
+endif()
+
+if(OGXM_USB_TIGHT_POLL)
+    target_compile_definitions(${FW_NAME} PRIVATE OGXM_USB_TIGHT_POLL=1)
+endif()
+
+if(OGXM_SWITCH_SEND_ON_CHANGE_ONLY)
+    target_compile_definitions(${FW_NAME} PRIVATE OGXM_SWITCH_SEND_ON_CHANGE_ONLY=1)
 endif()
 
 pico_set_program_name(${FW_NAME} ${FW_NAME})
@@ -386,6 +429,36 @@ endif()
 
 if(EN_BLUETOOTH)
     add_subdirectory(${BLUEPAD32_ROOT}/src/components/bluepad32 libbluepad32)
+    if(OGXM_BLUEPAD32_SONY_FAST_INPUT)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_SONY_FAST_INPUT=1)
+    endif()
+    if(OGXM_BLUEPAD32_DS4_DIRECT_INPUT)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_DS4_DIRECT_INPUT=1)
+    endif()
+    if(OGXM_BLUEPAD32_DS4_L2CAP_RATE_DEBUG)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_DS4_L2CAP_RATE_DEBUG=1)
+    endif()
+    if(OGXM_BLUEPAD32_DS4_CONTROL_ENABLE)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_DS4_CONTROL_ENABLE=1)
+    endif()
+    if(OGXM_BLUEPAD32_DS4_DELAY_INITIAL_ENABLE)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_DS4_DELAY_INITIAL_ENABLE=1)
+    endif()
+    if(OGXM_BLUEPAD32_DS4_SKIP_INIT_CALIBRATION)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_DS4_SKIP_INIT_CALIBRATION=1)
+    endif()
+    if(OGXM_BLUEPAD32_DS4_SKIP_SDP)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_DS4_SKIP_SDP=1)
+    endif()
+    if(OGXM_BLUEPAD32_SONY_L2CAP_AFTER_ENCRYPTION)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_SONY_L2CAP_AFTER_ENCRYPTION=1)
+    endif()
+    if(OGXM_BLUEPAD32_DISABLE_SNIFF_FOR_BT_PERF_TEST)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_DISABLE_SNIFF_FOR_BT_PERF_TEST=1)
+    endif()
+    if(OGXM_BLUEPAD32_FORCE_ACTIVE_LINK_POLICY)
+        target_compile_definitions(bluepad32 PRIVATE OGXM_BLUEPAD32_FORCE_ACTIVE_LINK_POLICY=1)
+    endif()
 endif()
 
 add_subdirectory(${LIBFIXMATH_PATH} libfixmath)

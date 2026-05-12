@@ -11,6 +11,10 @@ Firmware/RP2040/build_pico2w/*
 Firmware/RP2040/build-debug/*
 !Firmware/RP2040/build_pico/.gitkeep
 !Firmware/RP2040/build_pico2w/.gitkeep
+
+Firmware/RP2040/build_pico2w_clean/*
+Firmware/RP2040/build_pico2w_flags/*
+
 Firmware/RP2040/.ignore
 
 # Generated files

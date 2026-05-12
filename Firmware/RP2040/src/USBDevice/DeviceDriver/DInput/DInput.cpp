@@ -1,9 +1,64 @@
 #include <cstring>
 
 #include "class/hid/hid_device.h"
+#include <pico/time.h>
 
+#include "Board/ogxm_log.h"
 #include "Descriptors/PS3.h"
 #include "USBDevice/DeviceDriver/DInput/DInput.h"
+
+#ifndef OGXM_BT_RATE_DEBUG
+#define OGXM_BT_RATE_DEBUG 0
+#endif
+
+#if OGXM_BT_RATE_DEBUG
+namespace {
+
+struct UsbRateStats {
+    uint32_t window_start_ms{0};
+    uint32_t process_calls{0};
+    uint32_t new_pad_in{0};
+    uint32_t ready{0};
+    uint32_t not_ready{0};
+    uint32_t sent{0};
+    uint32_t send_failed{0};
+};
+
+UsbRateStats usb_rate_stats[MAX_GAMEPADS];
+
+void log_usb_rate_stats(uint8_t idx)
+{
+    UsbRateStats& stats = usb_rate_stats[idx];
+    uint32_t now_ms = to_ms_since_boot(get_absolute_time());
+
+    if (stats.window_start_ms == 0)
+    {
+        stats.window_start_ms = now_ms;
+        return;
+    }
+
+    uint32_t elapsed_ms = now_ms - stats.window_start_ms;
+    if (elapsed_ms < 1000)
+    {
+        return;
+    }
+
+    OGXM_LOG("[USB_RATE] dinput idx=%u process=%lu new=%lu ready=%lu not_ready=%lu sent=%lu fail=%lu elapsed=%lu\n",
+             idx,
+             stats.process_calls,
+             stats.new_pad_in,
+             stats.ready,
+             stats.not_ready,
+             stats.sent,
+             stats.send_failed,
+             elapsed_ms);
+
+    stats = UsbRateStats{};
+    stats.window_start_ms = now_ms;
+}
+
+} // namespace
+#endif
 
 bool DInputDevice::control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request)
 {
@@ -44,8 +99,16 @@ void DInputDevice::process(const uint8_t idx, Gamepad& gamepad)
 {
     DInput::InReport& in_report = in_reports_[idx];
 
+#if OGXM_BT_RATE_DEBUG
+    UsbRateStats& stats = usb_rate_stats[idx];
+    stats.process_calls++;
+#endif
+
     if (gamepad.new_pad_in())
     {
+#if OGXM_BT_RATE_DEBUG
+        stats.new_pad_in++;
+#endif
         Gamepad::PadIn gp_in = gamepad.get_pad_in();
 
         switch (gp_in.dpad)
@@ -127,8 +190,29 @@ void DInputDevice::process(const uint8_t idx, Gamepad& gamepad)
 
     if (tud_hid_n_ready(idx))
     {
+#if OGXM_BT_RATE_DEBUG
+        stats.ready++;
+        bool sent = tud_hid_n_report(idx, 0, reinterpret_cast<void*>(&in_report), sizeof(DInput::InReport));
+        if (sent)
+        {
+            stats.sent++;
+        }
+        else
+        {
+            stats.send_failed++;
+        }
+#else
         tud_hid_n_report(idx, 0, reinterpret_cast<void*>(&in_report), sizeof(DInput::InReport));
+#endif
     }
+#if OGXM_BT_RATE_DEBUG
+    else
+    {
+        stats.not_ready++;
+    }
+
+    log_usb_rate_stats(idx);
+#endif
 }
 
 uint16_t DInputDevice::get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen)

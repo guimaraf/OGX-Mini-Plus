@@ -3,6 +3,7 @@
 #include <functional>
 #include <pico/mutex.h>
 #include <pico/cyw43_arch.h>
+#include <pico/time.h>
 
 #include "btstack_run_loop.h"
 #include "uni.h"
@@ -23,6 +24,10 @@ namespace bluepad32 {
 static constexpr uint32_t FEEDBACK_TIME_MS = 250;
 static constexpr uint32_t LED_CHECK_TIME_MS = 500;
 
+#ifndef OGXM_BT_RATE_DEBUG
+#define OGXM_BT_RATE_DEBUG 0
+#endif
+
 struct BTDevice {
     bool connected{false};
     Gamepad* gamepad{nullptr};
@@ -33,6 +38,127 @@ btstack_timer_source_t feedback_timer_;
 btstack_timer_source_t led_timer_;
 bool led_timer_set_{false};
 bool feedback_timer_set_{false};
+
+#if OGXM_BT_RATE_DEBUG
+struct BtRateStats {
+    uint32_t window_start_ms{0};
+    uint32_t callbacks{0};
+    uint32_t gamepad_callbacks{0};
+    uint32_t pad_updates{0};
+    uint32_t invalid_index{0};
+    uint32_t not_connected{0};
+    uint32_t last_pad_update_ms{0};
+    uint32_t pad_gap_min_ms{0};
+    uint32_t pad_gap_max_ms{0};
+    uint32_t pad_gap_lt5{0};
+    uint32_t pad_gap_lt10{0};
+    uint32_t pad_gap_10_20{0};
+    uint32_t pad_gap_20_60{0};
+    uint32_t pad_gap_60_75{0};
+    uint32_t pad_gap_gt75{0};
+};
+
+BtRateStats bt_rate_stats_[MAX_GAMEPADS];
+
+static const char* controller_type_name(uni_controller_type_t type)
+{
+    switch (type)
+    {
+        case CONTROLLER_TYPE_XBoxOneController:
+            return "xbox_one";
+        case CONTROLLER_TYPE_PS4Controller:
+            return "ps4";
+        case CONTROLLER_TYPE_PS5Controller:
+            return "ps5";
+        case CONTROLLER_TYPE_SwitchProController:
+            return "switch_pro";
+        case CONTROLLER_TYPE_SwitchJoyConLeft:
+            return "joycon_l";
+        case CONTROLLER_TYPE_SwitchJoyConRight:
+            return "joycon_r";
+        case CONTROLLER_TYPE_AndroidController:
+            return "android";
+        default:
+            return "other";
+    }
+}
+
+static void log_bt_rate_stats(uint8_t idx, uni_hid_device_t* device)
+{
+    BtRateStats& stats = bt_rate_stats_[idx];
+    uint32_t now_ms = to_ms_since_boot(get_absolute_time());
+
+    if (stats.window_start_ms == 0)
+    {
+        stats.window_start_ms = now_ms;
+        return;
+    }
+
+    uint32_t elapsed_ms = now_ms - stats.window_start_ms;
+    if (elapsed_ms < 1000)
+    {
+        return;
+    }
+
+    OGXM_LOG("[BT_RATE] idx=%u type=%s cb=%lu gp=%lu set=%lu bad_idx=%lu not_conn=%lu elapsed=%lu\n",
+             idx,
+             controller_type_name(device->controller_type),
+             stats.callbacks,
+             stats.gamepad_callbacks,
+             stats.pad_updates,
+             stats.invalid_index,
+             stats.not_connected,
+             elapsed_ms);
+
+    OGXM_LOG("[BT_GAP] idx=%u type=%s set_min=%lu set_max=%lu lt5=%lu lt10=%lu 10_20=%lu 20_60=%lu 60_75=%lu gt75=%lu elapsed=%lu\n",
+             idx,
+             controller_type_name(device->controller_type),
+             stats.pad_gap_min_ms,
+             stats.pad_gap_max_ms,
+             stats.pad_gap_lt5,
+             stats.pad_gap_lt10,
+             stats.pad_gap_10_20,
+             stats.pad_gap_20_60,
+             stats.pad_gap_60_75,
+             stats.pad_gap_gt75,
+             elapsed_ms);
+
+    stats = BtRateStats{};
+    stats.window_start_ms = now_ms;
+}
+
+static void record_bt_pad_gap(BtRateStats& stats)
+{
+    uint32_t now_ms = to_ms_since_boot(get_absolute_time());
+    if (stats.last_pad_update_ms != 0)
+    {
+        uint32_t gap_ms = now_ms - stats.last_pad_update_ms;
+        if (stats.pad_gap_min_ms == 0 || gap_ms < stats.pad_gap_min_ms)
+        {
+            stats.pad_gap_min_ms = gap_ms;
+        }
+        if (gap_ms > stats.pad_gap_max_ms)
+        {
+            stats.pad_gap_max_ms = gap_ms;
+        }
+
+        if (gap_ms < 5)
+            stats.pad_gap_lt5++;
+        else if (gap_ms < 10)
+            stats.pad_gap_lt10++;
+        else if (gap_ms < 20)
+            stats.pad_gap_10_20++;
+        else if (gap_ms < 60)
+            stats.pad_gap_20_60++;
+        else if (gap_ms <= 75)
+            stats.pad_gap_60_75++;
+        else
+            stats.pad_gap_gt75++;
+    }
+
+    stats.last_pad_update_ms = now_ms;
+}
+#endif
 
 bool any_connected()
 {
@@ -193,12 +319,51 @@ static void oob_event_cb(uni_platform_oob_event_t event, void* data) {
 static void controller_data_cb(uni_hid_device_t* device, uni_controller_t* controller) {
     static uni_gamepad_t prev_uni_gp[MAX_GAMEPADS] = {};
 
+#if OGXM_BT_RATE_DEBUG
+    int raw_idx = uni_hid_device_get_idx_for_instance(device);
+    if (raw_idx < 0 || raw_idx >= MAX_GAMEPADS)
+    {
+        static BtRateStats invalid_stats;
+        invalid_stats.callbacks++;
+        invalid_stats.invalid_index++;
+        uint32_t now_ms = to_ms_since_boot(get_absolute_time());
+        if (invalid_stats.window_start_ms == 0)
+        {
+            invalid_stats.window_start_ms = now_ms;
+        }
+        else if ((now_ms - invalid_stats.window_start_ms) >= 1000)
+        {
+            OGXM_LOG("[BT_RATE] idx=invalid cb=%lu bad_idx=%lu elapsed=%lu\n",
+                     invalid_stats.callbacks,
+                     invalid_stats.invalid_index,
+                     now_ms - invalid_stats.window_start_ms);
+            invalid_stats = BtRateStats{};
+            invalid_stats.window_start_ms = now_ms;
+        }
+        return;
+    }
+
+    BtRateStats& stats = bt_rate_stats_[raw_idx];
+    stats.callbacks++;
+#endif
+
     if (controller->klass != UNI_CONTROLLER_CLASS_GAMEPAD){
+#if OGXM_BT_RATE_DEBUG
+        log_bt_rate_stats(static_cast<uint8_t>(raw_idx), device);
+#endif
         return;
     }
 
     uni_gamepad_t *uni_gp = &controller->gamepad;
     int idx = uni_hid_device_get_idx_for_instance(device);
+
+#if OGXM_BT_RATE_DEBUG
+    stats.gamepad_callbacks++;
+    if (!bt_devices_[idx].connected)
+    {
+        stats.not_connected++;
+    }
+#endif
 
     Gamepad* gamepad = bt_devices_[idx].gamepad;
     Gamepad::PadIn gp_in;
@@ -260,6 +425,12 @@ static void controller_data_cb(uni_hid_device_t* device, uni_controller_t* contr
     std::tie(gp_in.joystick_rx, gp_in.joystick_ry) = gamepad->scale_joystick_r<10>(uni_gp->axis_rx, uni_gp->axis_ry);
 
     gamepad->set_pad_in(gp_in);
+
+#if OGXM_BT_RATE_DEBUG
+    record_bt_pad_gap(stats);
+    stats.pad_updates++;
+    log_bt_rate_stats(static_cast<uint8_t>(idx), device);
+#endif
 }
 
 const uni_property_t* get_property_cb(uni_property_idx_t idx) 
@@ -306,4 +477,4 @@ void run_task(Gamepad(&gamepads)[MAX_GAMEPADS])
     btstack_run_loop_execute();
 }
 
-} // namespace bluepad32 
+} // namespace bluepad32
